@@ -1,0 +1,4 @@
+int p;
+int *p;
+int **p;
+int ***p;

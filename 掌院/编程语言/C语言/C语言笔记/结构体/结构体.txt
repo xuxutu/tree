@@ -1,0 +1,24 @@
+1.数据往往是有组织的，单一的变量无法满足要求。
+
+   struct Student
+
+   {
+     int age;
+     float score;
+     char sex;
+
+    };//模子
+
+   struct Student st={80,6.6,'f'};定义的同时可以整体赋值，定义完之后只能单个赋值
+
+
+2.如何取出结构体中的成员
+
+  1.stu.age;
+
+  2.struct Student *p;p=&st;p->age //等价于(*p).age，硬性规定
+
+
+3.函数参数传递
+
+ 

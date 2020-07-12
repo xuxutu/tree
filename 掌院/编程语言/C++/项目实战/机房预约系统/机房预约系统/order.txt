@@ -1,0 +1,5 @@
+data:1 interval: stuId:1 stuName:zhangsan roomId:1 status:
+data:2 interval: stuId:1 stuName:zhangsan roomId:2 status:
+data:3 interval: stuId:1 stuName:zhangsan roomId:3 status:
+data:2 interval: stuId:1 stuName:zhangsan roomId:2 status:ÿ
+data:5 interval: stuId:1 stuName:zhangsan roomId:3 status:

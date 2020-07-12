@@ -1,0 +1,13 @@
+指针是const：
+  int *const q=&i  //q是const
+  *q=16  对
+  q++    错
+
+const int *p  //意思是不能通过p修改
+  *p=26 错 *p是const
+  i=26； 对
+  p=&i  对
+
+const int a[]={1,2,3,4,5,6};
+
+数组元素不能变

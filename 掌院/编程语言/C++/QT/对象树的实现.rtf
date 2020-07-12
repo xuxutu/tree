@@ -1,0 +1,365 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang2052 #include<iostream>\par
+#include<vector>\par
+#include<string>\par
+using namespace std;\par
+//MyQObject\par
+//MyQWidget\par
+//MyQDialog MyQMainwindow \par
+//\'d7\'e9\'ba\'cf\'c4\'a3\'ca\'bd\par
+\par
+//\'b6\'a5\'bc\'b6\'b8\'b8\'c0\'e0\par
+class MyQObject\par
+\{\par
+public:\par
+    explicit MyQObject(MyQObject* parent=NULL)//\'ce\'de\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->parent=parent;\par
+\tab\}\par
+    MyQObject(string name)//\'d3\'d0\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->name=name;\par
+\tab\tab parent=NULL;\par
+\tab\}\par
+    virtual ~MyQObject()\par
+\tab\{\par
+\tab      if(this->parent != NULL)\par
+\tab\tab\{\par
+\tab\tab\tab vector<MyQObject*>::iterator it=((this->parent)->v).begin();\par
+\tab\tab     while(it != ((this->parent)->v).end())\par
+\tab\tab\tab\{\par
+\tab\tab\tab     if(this==*it)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab     ((this->parent)->v).erase(it);\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\}\tab\par
+\tab\tab //\'ca\'e4\'b3\'f6\'d7\'d3\'cb\'ef   \par
+\tab     if(!v.empty())\par
+\tab\tab\{\par
+\tab\tab\tab for(vector<MyQObject*>::iterator it=v.begin();it != v.end(); it++)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab //cout<<(*it)->g()<<"\'bd\'ab\'b1\'bb\'c9\'be\'b3\'fd\'a3\'a1"<<endl;\par
+\tab\tab\tab\tab if( *it != NULL)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab delete *it;\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+        \par
+\tab\}\par
+    \par
+\tab //\'c9\'e8\'d6\'c3\'b8\'b8\'b6\'d4\'cf\'f3\par
+    virtual void setParent(MyQObject* parent)\par
+\tab\{   \par
+\tab\tab //1.\'b4\'d3\'d4\'ad\'c0\'b4\'b8\'b8\'b6\'d4\'cf\'f3\'b5\'c4\'ba\'a2\'d7\'d3\'c1\'d0\'b1\'ed\'d6\'d0\'a3\'ac\'d5\'d2\'b5\'bd\'d7\'d4\'bc\'ba\'a3\'ac\'b2\'a2\'c9\'be\'b3\'fd\par
+\tab\tab if(this->parent != NULL)\par
+\tab\tab\{\par
+\tab\tab\tab vector<MyQObject*>::iterator it=((this->parent)->v).begin();\par
+\tab\tab     while(it != ((this->parent)->v).end())\par
+\tab\tab\tab\{\par
+\tab\tab\tab     if(this==*it)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab     ((this->parent)->v).erase(it);\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\par
+        //2.\'d6\'b8\'b6\'a8\'b8\'b8\'b6\'d4\'cf\'f3\par
+\tab\tab if(parent !=NULL) (parent->v).push_back(this);\par
+\tab\}\par
+\par
+    //\'bd\'abma\'cc\'ed\'bc\'d3\'b5\'bd\'c8\'dd\'c6\'f7\par
+\tab  void setChildren(MyQObject* ma)\par
+\tab\{\par
+\tab     v.push_back(ma);\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'b6\'d4\'cf\'f3\'b5\'c4\'c3\'fb\'d7\'d6\par
+\tab virtual string getChildren()\par
+\tab\{\par
+\tab     return this->name;\par
+\tab\}\par
+\tab virtual void children()//\'d3\'c3\'d3\'da\'cf\'d4\'ca\'be\'b5\'b1\'c7\'b0\'b6\'d4\'cf\'f3\'b5\'c4\'c8\'dd\'c6\'f7v\'d6\'d0\'b4\'e6\'b4\'a2\'b5\'c4\'c4\'da\'c8\'dd\par
+\tab\{\par
+\tab\tab\par
+\tab\tab //\'ca\'e4\'b3\'f6\'d7\'d3\'cb\'ef   \par
+\tab     if(!v.empty())\par
+\tab\tab\{\par
+\tab\tab\tab for(vector<MyQObject*>::iterator it=v.begin();it != v.end(); it++)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\par
+\tab\tab\tab\tab (*it)->children();\par
+\tab\tab\tab\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\tab\par
+\tab    //\'ca\'e4\'b3\'f6\'b1\'be\'c9\'ed\par
+\tab    cout<<this->getChildren()<<endl;\par
+\tab    return;\par
+\tab\}\par
+public:\par
+\tab vector<MyQObject*> v;//\'b4\'b4\'bd\'a8\'d2\'bb\'b8\'f6\'b4\'e6\'b4\'a2\'b8\'b8\'c0\'e0\'c0\'e0\'d0\'cd\'d6\'b8\'d5\'eb\'b5\'c4\'c8\'dd\'c6\'f7\par
+\tab string name;//\'b1\'be\'b6\'d4\'cf\'f3\'c3\'fb\'d7\'d6   \par
+\tab MyQObject* parent;//\'b8\'b8\'b6\'d4\'cf\'f3\'c3\'fb\'d7\'d6\par
+\};\par
+\par
+\par
+\par
+class MyQWidget:public MyQObject\par
+\{\par
+public:\par
+    explicit MyQWidget(MyQObject* parent=NULL)//\'ce\'de\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->parent=parent;\par
+\tab\}\par
+    MyQWidget(string name)//\'d3\'d0\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->name=name;\par
+\tab\tab parent=NULL;\par
+\tab\}\par
+    ~MyQWidget()\par
+\tab\{\par
+\tab     if(this->parent != NULL)\par
+\tab\tab\{\par
+\tab\tab\tab vector<MyQObject*>::iterator it=((this->parent)->v).begin();\par
+\tab\tab     while(it != ((this->parent)->v).end())\par
+\tab\tab\tab\{\par
+\tab\tab\tab     if(this==*it)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab     ((this->parent)->v).erase(it);\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\}\tab\par
+\tab\tab //\'ca\'e4\'b3\'f6\'d7\'d3\'cb\'ef   \par
+\tab     if(!v.empty())\par
+\tab\tab\{\par
+\tab\tab\tab for(vector<MyQObject*>::iterator it=v.begin();it != v.end(); it++)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab //cout<<(*it)->g()<<"\'bd\'ab\'b1\'bb\'c9\'be\'b3\'fd\'a3\'a1"<<endl;\par
+\tab\tab\tab\tab if( *it != NULL)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab delete *it;\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+        \par
+\tab\}\par
+    \par
+\tab //\'c9\'e8\'d6\'c3\'b8\'b8\'b6\'d4\'cf\'f3\par
+    void setParent(MyQObject* parent)\par
+\tab\{   \par
+\tab\tab //1.\'b4\'d3\'d4\'ad\'c0\'b4\'b8\'b8\'b6\'d4\'cf\'f3\'b5\'c4\'ba\'a2\'d7\'d3\'c1\'d0\'b1\'ed\'d6\'d0\'a3\'ac\'d5\'d2\'b5\'bd\'d7\'d4\'bc\'ba\'a3\'ac\'b2\'a2\'c9\'be\'b3\'fd\par
+\tab\tab if(this->parent != NULL)\par
+\tab\tab\{\par
+\tab\tab\tab vector<MyQObject*>::iterator it=((this->parent)->v).begin();\par
+\tab\tab     while(it != ((this->parent)->v).end())\par
+\tab\tab\tab\{\par
+\tab\tab\tab     if(this==*it)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab     ((this->parent)->v).erase(it);\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\par
+        //2.\'d6\'b8\'b6\'a8\'b8\'b8\'b6\'d4\'cf\'f3\par
+\tab\tab if(parent !=NULL) (parent->v).push_back(this);\par
+\tab\}\par
+\par
+    //\'bd\'abma\'cc\'ed\'bc\'d3\'b5\'bd\'c8\'dd\'c6\'f7\par
+\tab void setChildren(MyQObject* ma)\par
+\tab\{\par
+\tab     v.push_back(ma);\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'b6\'d4\'cf\'f3\'b5\'c4\'c3\'fb\'d7\'d6\par
+\tab string getChildren()\par
+\tab\{\par
+\tab     return this->name;\par
+\tab\}\par
+\tab void children()//\'d3\'c3\'d3\'da\'cf\'d4\'ca\'be\'b5\'b1\'c7\'b0\'b6\'d4\'cf\'f3\'b5\'c4\'c8\'dd\'c6\'f7v\'d6\'d0\'b4\'e6\'b4\'a2\'b5\'c4\'c4\'da\'c8\'dd\par
+\tab\{\par
+\tab\tab\par
+\tab\tab //\'ca\'e4\'b3\'f6\'d7\'d3\'cb\'ef   \par
+\tab     if(!v.empty())\par
+\tab\tab\{\par
+\tab\tab\tab for(vector<MyQObject*>::iterator it=v.begin();it != v.end(); it++)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\par
+\tab\tab\tab\tab (*it)->children();\par
+\tab\tab\tab\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\tab\par
+\tab    //\'ca\'e4\'b3\'f6\'b1\'be\'c9\'ed\par
+\tab    cout<<this->getChildren()<<endl;\par
+\tab    return;\par
+\tab\}\par
+\par
+public:\par
+\tab vector<MyQObject*> v;//\'b4\'b4\'bd\'a8\'d2\'bb\'b8\'f6\'b4\'e6\'b4\'a2\'b8\'b8\'c0\'e0\'c0\'e0\'d0\'cd\'d6\'b8\'d5\'eb\'b5\'c4\'c8\'dd\'c6\'f7\par
+\tab string name;//\'b1\'be\'b6\'d4\'cf\'f3\'c3\'fb\'d7\'d6   \par
+\tab MyQObject* parent;//\'b8\'b8\'b6\'d4\'cf\'f3\'c3\'fb\'d7\'d6\par
+ \};\par
+\par
+class MyQDialog : public MyQWidget\par
+\{\par
+public:\par
+    explicit MyQDialog(MyQObject* parent=NULL)//\'ce\'de\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->parent=parent;\par
+\tab\}\par
+    MyQDialog(string name)//\'d3\'d0\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->name=name;\par
+\tab\tab parent=NULL;\par
+\tab\}\par
+\tab ~MyQDialog()\par
+\tab\{\par
+\tab     cout<<name<<"\'b1\'bb\'ce\'f6\'b9\'b9\'c1\'cb!"<<endl;\par
+\tab\}\par
+\par
+\tab  //\'bd\'abma\'cc\'ed\'bc\'d3\'b5\'bd\'c8\'dd\'c6\'f7\par
+\tab void setChildren(MyQObject* ma)\par
+\tab\{\par
+\tab     v.push_back(ma);\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'b6\'d4\'cf\'f3\'b5\'c4\'c3\'fb\'d7\'d6\par
+\tab string getChildren()\par
+\tab\{\par
+\tab     return this->name;\par
+\tab\}\par
+\tab void children()//\'d3\'c3\'d3\'da\'cf\'d4\'ca\'be\'b5\'b1\'c7\'b0\'b6\'d4\'cf\'f3\'b5\'c4\'c8\'dd\'c6\'f7v\'d6\'d0\'b4\'e6\'b4\'a2\'b5\'c4\'c4\'da\'c8\'dd\par
+\tab\{\par
+\tab\tab\par
+\tab\tab //\'ca\'e4\'b3\'f6\'d7\'d3\'cb\'ef   \par
+\tab     if(!v.empty())\par
+\tab\tab\{\par
+\tab\tab\tab for(vector<MyQObject*>::iterator it=v.begin();it != v.end(); it++)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\par
+\tab\tab\tab\tab (*it)->children();\par
+\tab\tab\tab\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\tab\par
+\tab    //\'ca\'e4\'b3\'f6\'b1\'be\'c9\'ed\par
+\tab    cout<<this->getChildren()<<endl;\par
+\tab    return;\par
+\tab\}\par
+\};\par
+\par
+class MyQMainwindow :public MyQWidget\par
+\{\par
+public:\par
+    explicit MyQMainwindow(MyQObject* parent=NULL)//\'ce\'de\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->parent=parent;\par
+\tab\}\par
+    MyQMainwindow(string name)//\'d3\'d0\'b2\'ce\'b9\'b9\'d4\'ec\par
+\tab\{\par
+\tab     this->name=name;\par
+\tab\tab parent=NULL;\par
+\tab\}\par
+\tab ~MyQMainwindow()\par
+\tab\{\par
+\tab     cout<<name<<"\'b1\'bb\'ce\'f6\'b9\'b9\'c1\'cb!"<<endl;\par
+\tab\}\par
+   \par
+\tab //\'c9\'e8\'d6\'c3\'b8\'b8\'b6\'d4\'cf\'f3\par
+    void setParent(MyQObject* parent)\par
+\tab\{   \par
+\tab\tab //1.\'b4\'d3\'d4\'ad\'c0\'b4\'b8\'b8\'b6\'d4\'cf\'f3\'b5\'c4\'ba\'a2\'d7\'d3\'c1\'d0\'b1\'ed\'d6\'d0\'a3\'ac\'d5\'d2\'b5\'bd\'d7\'d4\'bc\'ba\'a3\'ac\'b2\'a2\'c9\'be\'b3\'fd\par
+\tab\tab if(this->parent != NULL)\par
+\tab\tab\{\par
+\tab\tab\tab vector<MyQObject*>::iterator it=((this->parent)->v).begin();\par
+\tab\tab     while(it != ((this->parent)->v).end())\par
+\tab\tab\tab\{\par
+\tab\tab\tab     if(this==*it)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab     ((this->parent)->v).erase(it);\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\par
+        //2.\'d6\'b8\'b6\'a8\'b8\'b8\'b6\'d4\'cf\'f3\par
+\tab\tab if(parent !=NULL) (parent->v).push_back(this);\par
+\tab\}\par
+\par
+    //\'bd\'abma\'cc\'ed\'bc\'d3\'b5\'bd\'c8\'dd\'c6\'f7\par
+\tab void setChildren(MyQObject* ma)\par
+\tab\{\par
+\tab     v.push_back(ma);\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'b6\'d4\'cf\'f3\'b5\'c4\'c3\'fb\'d7\'d6\par
+\tab string getChildren()\par
+\tab\{\par
+\tab     return this->name;\par
+\tab\}\par
+\tab void children()//\'d3\'c3\'d3\'da\'cf\'d4\'ca\'be\'b5\'b1\'c7\'b0\'b6\'d4\'cf\'f3\'b5\'c4\'c8\'dd\'c6\'f7v\'d6\'d0\'b4\'e6\'b4\'a2\'b5\'c4\'c4\'da\'c8\'dd\par
+\tab\{\par
+\tab\tab\par
+\tab\tab //\'ca\'e4\'b3\'f6\'d7\'d3\'cb\'ef   \par
+\tab     if(!v.empty())\par
+\tab\tab\{\par
+\tab\tab\tab for(vector<MyQObject*>::iterator it=v.begin();it != v.end(); it++)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\par
+\tab\tab\tab\tab (*it)->children();\par
+\tab\tab\tab\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\tab\par
+\tab    //\'ca\'e4\'b3\'f6\'b1\'be\'c9\'ed\par
+\tab    cout<<this->getChildren()<<endl;\par
+\tab    return;\par
+\tab\}\par
+\};\par
+\par
+void test01()\par
+\{\par
+\tab //\'b4\'b4\'bd\'a8\'b6\'d4\'cf\'f3\par
+    MyQWidget ma1("ma1");//\'b6\'a5\'bc\'b6\'c0\'e0\'b6\'d4\'cf\'f3\'d3\'a6\'b8\'c3\'b4\'b4\'bd\'a8\'d4\'da\'d5\'bb\'c9\'cf\'a3\'ac\'d4\'da\'ba\'af\'ca\'fd\'bd\'e1\'ca\'f8\'ca\'b1\'d7\'d4\'b6\'af\'ca\'cd\'b7\'c5\par
+    MyQDialog* mb1=new MyQDialog("mb1");\par
+\tab MyQDialog* mb2=new MyQDialog("mb2");\par
+\tab MyQDialog* mb3=new MyQDialog("mb3");\par
+    \par
+\tab MyQMainwindow* mc1=new MyQMainwindow("mc1");\par
+\tab MyQMainwindow* mc2=new MyQMainwindow("mc2");\par
+\tab MyQMainwindow* mc3=new MyQMainwindow("mc3");\par
+\tab MyQMainwindow* mc4=new MyQMainwindow("mc4");\par
+    //\'b4\'b4\'bd\'a8\'b6\'d4\'cf\'f3\'ca\'f7\par
+    mb1->setParent(&ma1);\par
+\tab mb2->setParent(&ma1);\par
+\tab mb3->setParent(&ma1);\par
+\tab mc1->setParent(mb1);\par
+\tab mc2->setParent(mb1);\par
+\tab mc3->setParent(mb2);\par
+\tab mc4->setParent(mb2);\par
+\par
+\tab //\'b2\'e2\'ca\'d4\'d2\'fe\'b2\'d8\'ca\'bd\'d7\'aa\'bb\'bb\par
+    //MyQWidget a=&ma1;\par
+    //MyQDialog b=mb1;\par
+\par
+\tab //\'b2\'e2\'ca\'d4,\'b6\'d4\'cf\'f3\'ca\'e4\'b3\'f6\'b1\'be\'c9\'ed\'ba\'cd\'d7\'d3\'cb\'ef\par
+\tab //ma1.children();\par
+    \par
+\tab //\'b2\'e2\'ca\'d4\'a3\'ac\'bb\'f1\'c8\'a1\'b6\'d4\'cf\'f3\'c3\'fb\'d7\'d6\par
+\tab //cout<<ma1.getChildren()<<endl;\par
+\tab //cout<<mb1->getChildren()<<endl;\par
+\tab //system("pause");\par
+\tab\par
+\tab //\'b2\'e2\'ca\'d4\'b5\'b1\'c9\'be\'b3\'fd\'d7\'d3\'b6\'d4\'cf\'f3\'ca\'b1\'a3\'ac\'bb\'e1\'b2\'bb\'bb\'e1\'b1\'a8\'b4\'ed\par
+\tab //delete mb1;\par
+\}\par
+\par
+int main()\par
+\{\par
+    test01();    \par
+  \par
+    \par
+    system("pause");\par
+    return 0;\par
+\}\par
+\par
+}
+ 

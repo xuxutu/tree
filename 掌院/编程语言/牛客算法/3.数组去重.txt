@@ -1,0 +1,68 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int main(void)
+{
+	int inArray[1001] = { 0 };
+	int countArray[1001] = { 0 };
+	int outArray[1001] = { 0 };
+	int n;
+	if (n>1000)
+	{
+		return 0;
+	}
+	scanf("%d", &n);
+	//初始化
+	for (int i = 0; i<n; i++)
+	{
+		scanf("%d", inArray + i);
+		if (inArray[i]>1000)
+		{
+			return 0;
+		}
+		countArray[inArray[i]]++;
+	}
+
+	//去重
+	int index = 0;
+	for (int i = 0; i<n; i++)
+	{
+		if (countArray[inArray[i]] != 1)
+		{
+			countArray[inArray[i]]--;
+		}
+		else
+		{
+			outArray[index] = inArray[i];
+			index++;
+		}
+	}
+
+	//排序
+	int temp;
+	int count = index;
+	while (count>1)
+	{
+		for (int i = 0; i<count - 1; i++)
+		{
+			if (outArray[i]>outArray[i + 1])
+			{
+				temp = outArray[i];
+				outArray[i] = outArray[i + 1];
+				outArray[i + 1] = temp;
+			}
+		}
+		count--;
+	}
+
+	//输出
+	//printf("输出结果如下：\n");
+	for (int i = 0; i<index; i++)
+	{
+		printf("%5d\n", outArray[i]);
+	}
+	system("pause");
+	return 0;
+}

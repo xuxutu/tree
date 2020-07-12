@@ -1,0 +1,184 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil NSimSun;}{\f1\fnil\fcharset134 NSimSun;}{\f2\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\colortbl ;\red155\green155\blue155;\red30\green30\blue30;\red220\green220\blue220;\red189\green99\blue197;\red214\green157\blue133;\red181\green206\blue168;\red86\green156\blue214;\red180\green180\blue180;\red200\green200\blue200;\red78\green201\blue176;\red127\green127\blue127;\red87\green166\blue74;\red218\green218\blue218;}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\cf1\highlight2\f0\fs30\lang2052 #define\cf3  \cf4 _CRT_SECURE_NO_WARNINGS\cf3\par
+\cf1 #include\cf5 <stdio.h>\cf3\par
+\cf1 #include\cf5 <string.h>\cf3\par
+\cf1 #include\cf5 <stdlib.h>\cf3\par
+\cf1 #include\cf5 <memory.h>\cf3\par
+\cf1 #include\cf5 <process.h>\cf3\par
+\cf1 #include\cf5 <Windows.h>\cf3\par
+\cf1 #define\cf3  \cf4 N\cf3  \cf6 692226\cf3\par
+\cf7 char\cf8 *\cf3  \cf9 path\cf3  \cf8 =\cf3  \cf5 "C:\\\\Users\\\\Administrator\\\\Desktop\\\\\f1\'ce\'e4\'b6\'af\'c7\'ac\'c0\'a4.txt"\cf8 ;\cf3\par
+\cf7 char\cf8 **\cf3  \cf9 g_pp\cf8 ;\cf3\par
+\cf7 struct\cf3  \cf10 threads\cf8 *\cf3  \cf9 pthread\cf8 ;\cf3\par
+\par
+\cf7 void\cf3  \cf9 init\cf8 (\cf7 char\cf8 *\cf11 path\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf9 printf\cf8 (\cf5 "init start!\\n"\cf8 );\cf3\par
+\tab\cf9 g_pp\cf3  \cf8 =\cf3  \cf8 (\cf7 char\cf8 **)\cf9 malloc\cf8 (\cf7 sizeof\cf8 (\cf7 char\cf8 *)*\cf4 N\cf8 );\cf3\par
+\tab\cf9 memset\cf8 (\cf9 g_pp\cf8 ,\cf3  \cf5 '\\0'\cf8 ,\cf3  \cf7 sizeof\cf8 (\cf7 char\cf8 *)*\cf4 N\cf8 );\cf3\par
+\tab\cf10 FILE\cf8 *\cf3  \cf9 pf\cf3  \cf8 =\cf3  \cf9 fopen\cf8 (\cf11 path\cf8 ,\cf3  \cf5 "r"\cf8 );\cf3\par
+\tab\cf7 if\cf3  \cf8 (!\cf9 pf\cf8 )\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf9 printf\cf8 (\cf5 "\'ce\'c4\'bc\'fe\'b4\'f2\'bf\'aa\'ca\'a7\'b0\'dc\'a3\'a1"\cf8 );\cf3\par
+\tab\tab\cf7 return\cf8 ;\cf3\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf7 for\cf3  \cf8 (\cf7 int\cf3  \cf9 i\cf3  \cf8 =\cf3  \cf6 0\cf8 ;\cf3  \cf9 i\cf3  \cf8 <\cf3  \cf4 N\cf8 ;\cf3  \cf9 i\cf8 ++)\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 char\cf3  \cf9 str\cf8 [\cf6 1024\cf8 ]\cf3  \cf8 =\cf3  \cf8\{\cf3  \cf6 0\cf3  \cf8\};\cf3\par
+\tab\tab\cf9 fgets\cf8 (\cf9 str\cf8 ,\cf3  \cf6 1024\cf8 ,\cf3  \cf9 pf\cf8 );\cf3\par
+\tab\tab\cf7 int\cf3  \cf9 length\cf3  \cf8 =\cf3  \cf9 strlen\cf8 (\cf9 str\cf8 );\cf3\par
+\tab\tab\cf7 if\cf3  \cf8 (\cf9 length\cf3  \cf8 >=\cf3  \cf6 1\cf8 )\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf9 g_pp\cf8 [\cf9 i\cf8 ]\cf3  \cf8 =\cf3  \cf8 (\cf7 char\cf8 *)\cf9 malloc\cf8 (\cf9 length\cf3  \cf8 +\cf3  \cf6 1\cf8 );\cf12 //\'b7\'d6\'c5\'e4\'c4\'da\'b4\'e6\cf3\par
+\tab\tab\tab\cf9 memset\cf8 (\cf9 g_pp\cf8 [\cf9 i\cf8 ],\cf3  \cf5 '\\0'\cf8 ,\cf3  \cf7 sizeof\cf8 (\cf9 length\cf3  \cf8 +\cf3  \cf6 1\cf8 ));\cf3\par
+\par
+\tab\tab\tab\cf7 if\cf3  \cf8 (\cf9 g_pp\cf8 [\cf9 i\cf8 ]\cf3  \cf8 !=\cf3  \cf4 NULL\cf8 )\cf3\par
+\tab\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\tab\cf9 strcpy\cf8 (\cf9 g_pp\cf8 [\cf9 i\cf8 ],\cf3  \cf9 str\cf8 );\cf3\par
+\tab\tab\tab\cf8\}\cf3\par
+\tab\tab\cf8\}\cf3\par
+\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf9 printf\cf8 (\cf5 "init end!\\n"\cf8 );\cf3\par
+\tab\cf9 fclose\cf8 (\cf9 pf\cf8 );\cf3\par
+\cf8\}\cf3\par
+\par
+\cf12 //\'b2\'e9\'d5\'d2\'d7\'d6\'b7\'fb\'b4\'ae\cf3\par
+\cf7 void\cf3  \cf9 search\cf8 (\cf7 char\cf8 *\cf3  \cf11 str\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf9 init\cf8 (\cf9 path\cf8 );\cf3\par
+\tab\cf7 for\cf3  \cf8 (\cf7 int\cf3  \cf9 i\cf3  \cf8 =\cf3  \cf6 0\cf8 ;\cf3  \cf9 i\cf3  \cf8 <\cf3  \cf4 N\cf8 ;\cf3  \cf9 i\cf8 ++)\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 if\cf3  \cf8 (\cf9 g_pp\cf8 [\cf9 i\cf8 ]\cf3  \cf8 !=\cf3  \cf4 NULL\cf8 )\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf7 char\cf3  \cf8 *\cf9 p\cf3  \cf8 =\cf3  \cf9 strstr\cf8 (\cf9 g_pp\cf8 [\cf9 i\cf8 ],\cf3  \cf11 str\cf8 );\cf3\par
+\tab\tab\tab\cf7 if\cf3  \cf8 (\cf9 p\cf3  \cf8 !=\cf3  \cf4 NULL\cf8 )\cf3\par
+\tab\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\tab\cf9 printf\cf8 (\cf5 "%s\\n"\cf8 ,\cf3  \cf9 g_pp\cf8 [\cf9 i\cf8 ]);\cf3\par
+\tab\tab\tab\cf8\}\cf3\par
+\par
+\tab\tab\cf8\}\cf3\par
+\par
+\tab\cf8\}\cf3\par
+\par
+\cf8\}\cf3\par
+\par
+\par
+\par
+\cf12 //\'bb\'f1\'c8\'a1\'d0\'d0\'ca\'fd\cf3\par
+\cf7 int\cf3  \cf9 getLine\cf8 (\cf7 char\cf8 *\cf3  \cf11 path\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf12 //\'b4\'f2\'bf\'aa\'ce\'c4\'bc\'fe\cf3\par
+\tab\cf10 FILE\cf8 *\cf3  \cf9 pf\cf3  \cf8 =\cf3  \cf9 fopen\cf8 (\cf11 path\cf8 ,\cf3  \cf5 "r"\cf8 );\cf3\par
+\tab\cf7 if\cf3  \cf8 (!\cf9 pf\cf8 )\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf9 printf\cf8 (\cf5 "\'ce\'c4\'bc\'fe\'b4\'f2\'bf\'aa\'ca\'a7\'b0\'dc\'a3\'a1"\cf8 );\cf3\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf7 int\cf3  \cf9 i\cf3  \cf8 =\cf3  \cf6 0\cf8 ;\cf3\par
+\tab\cf7 while\cf3  \cf8 (!\cf9 feof\cf8 (\cf9 pf\cf8 ))\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 char\cf3  \cf9 str\cf8 [\cf6 256\cf8 ]\cf3  \cf8 =\cf3  \cf8\{\cf3  \cf6 0\cf3  \cf8\};\cf3\par
+\tab\tab\cf9 fgets\cf8 (\cf9 str\cf8 ,\cf3  \cf6 256\cf8 ,\cf3  \cf9 pf\cf8 );\cf3\par
+\tab\tab\cf9 i\cf8 ++;\cf3\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf12 //\'b9\'d8\'b1\'d5\'ce\'c4\'bc\'fe\cf3\par
+\tab\cf9 fclose\cf8 (\cf9 pf\cf8 );\cf3\par
+\tab\cf7 return\cf3  \cf9 i\cf8 ;\cf3\par
+\cf8\}\cf3\par
+\cf7 struct\cf3  \cf10 threads\cf3\par
+\cf8\{\cf3\par
+\tab\cf7 char\cf8 **\cf3  \cf13 ppstart\cf8 ;\cf12 //\'d6\'b8\'d5\'eb\'ca\'fd\'d7\'e9\'b5\'c4\'c6\'f0\'ca\'bc\'b5\'d8\'d6\'b7\cf3\par
+\tab\cf7 int\cf3  \cf13 length\cf8 ;\cf3\par
+\tab\cf7 int\cf3  \cf13 id\cf8 ;\cf3\par
+\tab\cf7 char\cf8 *\cf3  \cf13 pstr\cf8 ;\cf12 //\'b2\'e9\'d5\'d2\'b5\'c4\'ca\'fd\'be\'dd\cf3\par
+\cf8\};\cf3\par
+\cf12 //\'cf\'df\'b3\'cc\'c8\'eb\'bf\'da\cf3\par
+\cf7 void\cf3  \cf9 searchthread\cf8 (\cf7 void\cf8 *\cf11 p\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf7 struct\cf3  \cf10 threads\cf8 *\cf3  \cf9 pinfo\cf3  \cf8 =\cf3  \cf8 (\cf7 struct\cf3  \cf10 threads\cf8 *)\cf11 p\cf8 ;\cf3\par
+\tab\cf7 for\cf3  \cf8 (\cf7 int\cf3  \cf9 i\cf8 =\cf6 0\cf8 ;\cf3  \cf9 i\cf3  \cf8 <\cf3  \cf9 pinfo\cf8 ->\cf13 length\cf8 ;\cf3  \cf9 i\cf8 ++)\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 if\cf3  \cf8 (\cf9 pinfo\cf8 ->\cf13 ppstart\cf8 [\cf9 i\cf8 ]\cf3  \cf8 !=\cf3  \cf4 NULL\cf8 )\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf7 char\cf8 *\cf3  \cf9 p\cf3  \cf8 =\cf3  \cf9 strstr\cf8 (\cf9 pinfo\cf8 ->\cf13 ppstart\cf8 [\cf9 i\cf8 ],\cf9 pinfo\cf8 ->\cf13 pstr\cf8 );\cf3\par
+\tab\tab\tab\cf7 if\cf3  \cf8 (\cf9 p\cf3  \cf8 !=\cf3  \cf4 NULL\cf8 )\cf3\par
+\tab\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\tab\cf9 printf\cf8 (\cf5 "\'cf\'df\'b3\'cc%d:%s\\n"\cf8 ,\cf9 pinfo\cf8 ->\cf13 id\cf8 ,\cf9 pinfo\cf8 ->\cf13 ppstart\cf8 [\cf9 i\cf8 ]);\cf3\par
+\tab\tab\tab\cf8\}\cf3\par
+\tab\tab\cf8\}\cf3\par
+\tab\cf8\}\cf3\par
+\par
+\cf8\}\cf3\par
+\par
+\par
+\par
+\cf12 //\'b6\'e0\'cf\'df\'b3\'cc\'b2\'e9\'d5\'d2\'d7\'d6\'b7\'fb\'b4\'ae\cf3\par
+\cf7 void\cf3  \cf9 searchwiththread\cf8 (\cf7 char\cf8 *\cf3  \cf11 str\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf7 int\cf3  \cf9 num\cf3  \cf8 =\cf3  \cf6 23\cf8 ;\cf12 //\'d4\'ad\'d4\'f2\'c9\'cf\'cf\'df\'b3\'cc\'ca\'fd\'d3\'a6\'b8\'c3\'ca\'c7cpu\'ba\'cb\'ca\'fd\'b5\'c4\'b1\'b6\'ca\'fd\cf3\par
+\tab\par
+\tab\cf12 //\'b6\'d1\'c7\'f8\'c9\'cf\'bf\'aa\'b1\'d9\cf3\par
+\tab\cf9 pthread\cf3  \cf8 =\cf3  \cf8 (\cf7 struct\cf3  \cf10 threads\cf8 *)\cf9 malloc\cf8 (\cf7 sizeof\cf8 (\cf7 struct\cf3  \cf10 threads\cf8 )\cf3  \cf8 *\cf3  \cf6 23\cf8 );\cf3\par
+\par
+\tab\cf9 memset\cf8 (\cf9 pthread\cf8 ,\cf3  \cf6 0\cf8 ,\cf3  \cf7 sizeof\cf8 (\cf7 struct\cf3  \cf10 threads\cf8 )\cf3  \cf8 *\cf3  \cf6 23\cf8 );\cf3\par
+\par
+\tab\cf10 HANDLE\cf8 *\cf3  \cf9 phd\cf3  \cf8 =\cf3  \cf8 (\cf10 HANDLE\cf8 *)\cf9 malloc\cf8 (\cf7 sizeof\cf8 (\cf10 HANDLE\cf8 )*\cf9 num\cf8 );\cf3\par
+\par
+\tab\cf7 if\cf3  \cf8 (\cf4 N\cf3  \cf8 %\cf3  \cf9 num\cf3  \cf8 ==\cf3  \cf6 0\cf8 )\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 for\cf3  \cf8 (\cf7 int\cf3  \cf9 i\cf3  \cf8 =\cf3  \cf6 0\cf8 ;\cf3  \cf9 i\cf3  \cf8 <\cf3  \cf9 num\cf8 ;\cf3  \cf9 i\cf8 ++)\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 id\cf3  \cf8 =\cf3  \cf9 i\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 pstr\cf3  \cf8 =\cf3  \cf11 str\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 length\cf3  \cf8 =\cf3  \cf4 N\cf8 /\cf9 num\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 ppstart\cf3  \cf8 =\cf3  \cf9 g_pp\cf8 +\cf9 i\cf8 *(\cf4 N\cf3  \cf8 /\cf3  \cf9 num\cf8 );\cf3\par
+\tab\tab\tab\cf9 phd\cf8 [\cf9 i\cf8 ]=(\cf10 HANDLE\cf8 )\cf9 _beginthread\cf8 (\cf9 searchthread\cf8 ,\cf6 0\cf8 ,&\cf9 pthread\cf8 [\cf9 i\cf8 ]);\cf3\par
+\tab\tab\cf8\}\cf3\par
+\tab\cf8\}\cf3\par
+\tab\cf7 else\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 for\cf3  \cf8 (\cf7 int\cf3  \cf9 i\cf3  \cf8 =\cf3  \cf6 0\cf8 ;\cf3  \cf9 i\cf3  \cf8 <\cf3  \cf9 num\cf8 -\cf6 1\cf8 ;\cf3  \cf9 i\cf8 ++)\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 id\cf3  \cf8 =\cf3  \cf9 i\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 pstr\cf3  \cf8 =\cf3  \cf11 str\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 length\cf3  \cf8 =\cf3  \cf4 N\cf3  \cf8 /\cf3  \cf8 (\cf9 num\cf8 -\cf6 1\cf8 );\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 ppstart\cf3  \cf8 =\cf3  \cf9 g_pp\cf3  \cf8 +\cf3  \cf9 i\cf8 *(\cf4 N\cf3  \cf8 /\cf3  \cf8 (\cf9 num\cf8 -\cf6 1\cf8 ));\cf3\par
+\tab\tab\tab\cf9 phd\cf8 [\cf9 i\cf8 ]\cf3  \cf8 =\cf3  \cf8 (\cf10 HANDLE\cf8 )\cf9 _beginthread\cf8 (\cf9 searchthread\cf8 ,\cf3  \cf6 0\cf8 ,\cf3  \cf8 &\cf9 pthread\cf8 [\cf9 i\cf8 ]);\cf3\par
+\tab\tab\cf8\}\cf3\par
+\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf7 int\cf3  \cf9 i\cf3  \cf8 =\cf3  \cf9 num\cf3  \cf8 -\cf3  \cf6 1\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 id\cf3  \cf8 =\cf3  \cf9 i\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 pstr\cf3  \cf8 =\cf3  \cf11 str\cf8 ;\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 length\cf3  \cf8 =\cf3  \cf4 N\cf3  \cf8 %\cf3  \cf8 (\cf9 num\cf3  \cf8 -\cf3  \cf6 1\cf8 );\cf3\par
+\tab\tab\tab\cf9 pthread\cf8 [\cf9 i\cf8 ].\cf13 ppstart\cf3  \cf8 =\cf3  \cf9 g_pp\cf3  \cf8 +\cf3  \cf9 i\cf8 *(\cf4 N\cf3  \cf8 /\cf3  \cf8 (\cf9 num\cf3  \cf8 -\cf3  \cf6 1\cf8 ));\cf3\par
+\tab\tab\tab\cf9 phd\cf8 [\cf9 i\cf8 ]\cf3  \cf8 =\cf3  \cf8 (\cf10 HANDLE\cf8 )\cf9 _beginthread\cf8 (\cf9 searchthread\cf8 ,\cf3  \cf6 0\cf8 ,\cf3  \cf8 &\cf9 pthread\cf8 [\cf9 i\cf8 ]);\cf3\par
+\par
+\tab\tab\cf8\}\cf3\par
+\par
+\tab\cf8\}\cf3\par
+\tab\cf9 WaitForMultipleObjects\cf8 (\cf9 num\cf8 ,\cf3  \cf9 phd\cf8 ,\cf3  \cf4 TRUE\cf8 ,\cf3  \cf4 INFINITE\cf8 );\cf12 //\'b5\'c8\'b4\'fd\'cb\'f9\'d3\'d0\'cf\'df\'b3\'cc\'cd\'cb\'b3\'f6\cf3\par
+\par
+\cf8\}\cf3\par
+\par
+\cf7 int\cf3  \cf9 main\cf8 (\cf7 void\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf9 init\cf8 (\cf9 path\cf8 );\cf3\par
+\tab\cf7 while\cf3  \cf8 (\cf6 1\cf8 )\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 char\cf3  \cf9 str\cf8 [\cf6 128\cf8 ]\cf3  \cf8 =\cf3  \cf8\{\cf3  \cf6 0\cf3  \cf8\};\cf3\par
+\tab\tab\cf9 scanf\cf8 (\cf5 "%s"\cf8 ,\cf3  \cf9 str\cf8 );\cf3\par
+\tab\tab\cf9 searchwiththread\cf8 (\cf9 str\cf8 );\cf3\par
+\tab\tab\cf12 //search(str);\cf3\par
+\tab\cf8\}\cf3\par
+\tab\cf9 system\cf8 (\cf5 "pause"\cf8 );\cf3\par
+\tab\cf7 return\cf3  \cf6 0\cf8 ;\cf3\par
+\cf8\}\cf0\highlight0\f2\fs22\par
+}
+ 

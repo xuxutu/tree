@@ -1,0 +1,36 @@
+#include<stdio.h>
+#include<stdlib.h>
+//求最小公倍数
+
+void operate(int a, int b)
+{
+	int i = 1;
+	int z = 1;
+	int x = a;
+	int y = b;
+	while (i<=a && i<=b)
+	{
+		i++;
+		if (a%i == 0 && b%i == 0)
+		{
+			z = i;
+			x = a / i;
+			y = b / i;
+		}
+	}
+
+	printf("%d\n", x*y*z);
+}
+
+int main(void)
+{
+	int a , b;
+    scanf("%d",&a);
+    scanf("%d",&b);
+	operate(a, b);
+	// 6  8   2 3 4  24
+	//12 16  4 3 4  48
+	//7  8   56
+	system("pause");
+	return 0;
+}

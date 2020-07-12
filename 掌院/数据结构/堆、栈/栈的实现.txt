@@ -1,0 +1,146 @@
+栈
+  一种可以实现“先进后出”的存储结构
+分类：
+   静态栈：
+   动态栈：
+算法：
+    出栈
+    压栈
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node
+{
+    int data;                                      //数据域
+	struct Node * pNext;                           //指针域，用于存放struct Node类型的地址.
+}NODE,* PNODE;                                     //NODE等价于struct Node;PNODE等价于struct *.
+
+typedef struct Stack
+{
+    PNODE pTop;                                    //栈顶，存放顶部节点的地址
+	PNODE pBottom;                                 //栈底，存放底部节点的地址   
+}STACK,* PSTACK;                                   //STACK等价于struct Stack;PSTACK等价于struct Stack *.
+
+void init (PSTACK pS);                            //初始化栈，初始化后的状态是：栈底与栈顶都指向头结点，头结点的指针域置空。 
+void push(PSTACK pS,int val);                     //压栈
+void traverse(PSTACK pS);
+bool pop(PSTACK pS,int *pVal);
+bool empty(PSTACK pS);
+void clear(PSTACK pS);
+
+int main(void)
+{
+    STACK S;                                      //定义S，S中有个指针变量，指向存放NODE类型的地址
+	int val;
+
+	init(&S);                                     //初始化栈
+	push(&S,1);                                   //压栈，向栈中放入元素   
+	push(&S,2);
+	push(&S,3);
+	push(&S,4);
+	push(&S,5);
+    clear(&S);                                    //清空栈
+	if(pop(&S,&val))                              //出栈
+	    printf("出栈成功，出栈元素是：%d\n",val);
+	else
+	    printf("出栈失败！");
+	
+	traverse(&S);                                //遍历
+
+    system("pause");
+    return 0;
+}
+void init (PSTACK pS)                         //初始化栈
+{
+    pS->pTop=(PNODE)malloc(sizeof(NODE));     //创建一个头节点（含数据域与指针域），地址放入栈顶。
+	if(NULL==pS->pTop)                        //判断内存是否分配成功。
+	{
+	    printf("动态内存分配失败！\n");       
+		exit(-1);
+	}
+	else
+	{ 
+	    pS->pBottom=pS->pTop;                //栈的初始化状态：栈顶与栈底同时指向头节点。
+	    pS->pTop->pNext=NULL;                //头结点的指针域置空，用于判断栈是否为空。   
+	}
+
+}
+
+void push(PSTACK pS,int val)
+{   
+    PNODE pNew=(PNODE)malloc(sizeof(NODE)); //创建新节点，首地址放于pNew中。
+    pNew->data=val;                         //新节点数据域放值
+	pNew->pNext=pS->pTop;                   //旧节点的地址存放于新节点指针域当中，建立关联 
+	pS->pTop=pNew;                          //新节点的地址放于栈顶
+
+	return;
+}
+
+void traverse(PSTACK pS)                   
+{
+    PNODE p=pS->pTop;                      //定义中间指针变量，指向第一个元素
+
+	while(p != pS->pBottom)                //p不等于栈底成真时执行
+    {
+		printf("%d",p->data);              //输出数据域
+	    p=p->pNext;                        //指向下一节点
+	}
+	printf("\n");
+
+	return;
+}
+
+bool empty(PSTACK pS)
+{
+    if(pS->pBottom==pS->pTop)
+	{
+	    return true;
+	}
+	else
+	{
+	    return false;
+	}
+}
+
+bool pop(PSTACK pS,int *pVal)                  
+{
+    if(empty(pS))                    //空栈则返回false
+	{
+	    return false;
+	}
+	else
+	{
+	    PNODE r=pS->pTop;            //中间节点r指向第一个元素
+		*pVal=r->data;               //顶部节点数据域赋值给pVal指向的节点
+		pS->pTop=r->pNext;           //第二节点的指针域存放栈顶
+	    free(r);                     //释放r
+		r=NULL;                      //r置空
+
+		return true;                 //返回true
+	}
+
+}
+
+void clear(PSTACK pS)                       
+{   
+	if(empty(pS))                           //如果栈空，退出
+	{
+	    return;
+	}
+	else
+	{
+	PNODE p=pS->pTop;                      //定义p指向第一节点
+    	PNODE q=NULL;                      //定义q
+
+	while(p!=pS->pBottom)                  //p不等于栈底时，执行
+	{
+	    q=p->pNext;                        //q指向第二节点
+		free(p);                           //第一节点释放
+		p=q;                               //p继续指向第一节点 
+	}
+
+	pS->pTop=pS->pBottom;                 //清空后变为初始化状态，栈顶栈底都指向头节点
+	}
+    
+}

@@ -1,0 +1,49 @@
+域名系统：DNS
+什么是域名：
+       顶级域名：com edu net cn org gov
+       二级域名：91xueit.cm
+谷歌域名：222.222.222.222
+电信域名：8.8.8.8
+nslookup + 域名
+查看谁给我们提供域名解析服务
+
+域名解析过程
+根：
+安装自己的dns服务器
+1.解析内网自己的域名
+2.降低域名访问流量
+
+
+
+动态主机配置协议DHCP；
+
+静态ip：
+动态ip：
+
+
+文件传送协议FTP
+
+
+
+
+远程终端协议TELNET
+
+远程管理
+默认23端口
+net user administrator a1! //设置密码
+net user han a1! /add //添加用户
+
+远程桌面RDP 3389
+mstsc
+
+图形界面
+
+对面并不知晓
+
+万维网WWW
+
+world wide web
+
+
+
+电子邮件（SMTP,POP3,IMAP）

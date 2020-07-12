@@ -1,0 +1,24 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+using namespace std;
+//百敲不如一分析
+int main(void)
+{
+	long a = 64577;
+	int i = 2;
+	while(a != 1)
+	{
+		if (a %i == 0)
+		{
+			a = a / i;
+			printf("%d ",i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+
+	system("pause");
+	return 0;
+}

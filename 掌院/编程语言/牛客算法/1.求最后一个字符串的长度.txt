@@ -1,0 +1,24 @@
+void lastLen(char *str)
+{
+	char* pLast = str + strlen(str);
+	char* pSpace = pLast;
+	while (*pSpace != ' ')
+	{
+		pSpace--;
+		if (pSpace == str)
+		{
+			pSpace = str - 1;
+			break;
+		}
+	}
+	int len = pLast - pSpace-1;
+	printf("%d\n",len);
+}
+int main()
+{
+	char str[100];
+	scanf("%[^\n]",str);
+	lastLen(str);
+	system("pause");
+	return 0;
+}

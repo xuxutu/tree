@@ -1,0 +1,16 @@
+1.for（i=1;i<4;i++）
+    sum=sum+i;
+
+第一步：执行 i=1
+第二步：判断int<4，成立,执行sum=sum+i;
+第三步：i++
+一次循环完毕。
+第一步只执行一次。
+
+2.for循环顺序案例
+for(i=3;i<=10;++i)
+{
+  if(i%3==0)
+  sum=sum+i;
+  printf("sum=%d\n",sum); 
+}

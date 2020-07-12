@@ -1,0 +1,44 @@
+list
+ls-a //显示隐藏文件
+ls / 
+ls-l 长文件
+ls-lh
+ls-ld 查看当前目录
+ls-i 每一个文件的唯一标志
+
+make directories
+mkdir 创建文件
+mkdir -p 递归创建
+cd 切换目录
+pwd 显示当前目录绝对路径（print working directory）
+cd .. 显示上级目录
+rmdir 删除空目录 
+cp 复制
+cp -r 复制目录
+cp -r 保持文件属性
+mv 剪切 改名
+clear 清屏
+rm //删除目录
+rm-r 删除目录
+rm-f 强制执行
+rm-rf 强制删除目录
+
+
+文件创建
+touch “”创建文件
+cat       显示文件
+tac       反向显示
+more     分页显示  进入后空格或f 一页翻；enter 换行；q 退出
+less 
+pageup 向上翻页；上下 换行
+/+搜索内容 搜索 n  后续显示
+
+head -n 7 文件名 前7行
+默认显示前10行
+tail 最后几行
+tail-f 动态显示变动
+
+
+
+ln Link
+ln -s 软链接

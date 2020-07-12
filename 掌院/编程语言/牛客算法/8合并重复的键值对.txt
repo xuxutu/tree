@@ -1,0 +1,208 @@
+define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<vector>
+#include<map>
+#include<algorithm>
+#include<functional>
+using namespace std;
+
+int main(void)
+{
+	//定义并初始化map容器
+	map<int, int>m;
+	m.clear();
+	//定义并初始化vector容器，用来记录map容器的value值
+	vector<int>v;
+	v.clear();
+	int key;
+	int value;
+	bool is_find = false;
+	//在插入之前遍历vector容器，如若存在，直接相加
+	int n = 0;
+	cin >> n;//2
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> key;//0 1 1
+		cin >> value;//1 2 2
+		if (v.size() == 0)
+		{
+			v.push_back(key);//0
+			m.insert(make_pair(key, value));// 0 1
+		}
+		else
+		{
+			//判断是否有重复
+			for (auto it = v.begin(); it != v.end(); it++)
+			{
+				if (*it == key)
+				{			
+					m[*it] = m[*it] + value;
+					cout << m[*it] << endl;
+					is_find = true;
+				}
+				find(v.begin(), v.end(), key);
+			}
+
+			if (is_find)
+			{
+				is_find = false;
+			}
+			else
+			{
+				m.insert(make_pair(key, value));// 1  2
+				v.push_back(key);
+			}
+		}	
+	}
+	
+	//输出容器
+	for (auto it=m.begin(); it != m.end(); it++)
+	{
+		cout <<it->first<<" "<<it->second<< endl;
+	}
+
+
+    system("pause");
+	return 0;
+}
+
+//list容器实现
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+using namespace std;
+//自写List容器
+
+template<class T1, class T2>
+class Node
+{
+public:
+	Node()
+	{
+		this->index = 0;
+		this->data = 0;
+		this->pNext = NULL;
+	}
+
+	Node(T1 index, T2 data)
+	{
+		this->index = index;
+		this->data = data;
+		this->pNext = NULL;
+	}
+
+	~Node()
+	{
+		if (this->pNext != NULL)
+		{
+			delete pNext;
+			this->pNext = NULL;
+		}
+	}
+public:
+	T1 index;
+	T2 data;
+	Node<T1, T2>* pNext;
+};
+
+template<class T1, class T2>
+class List
+{
+public:
+	//默认构造,用来初始化头结点
+	List()
+	{
+		pHead = new Node<T1, T2>;
+		pHead->data = 0;
+		pHead->index = 0;
+		pHead->pNext = NULL;
+		pTail = pHead;
+	}
+	//添加结点
+	void push_back(T1 index, T2 data)
+	{
+		pTail->pNext = new Node<int, int>(index, data);
+		pTail = pTail->pNext;
+	}
+
+	//遍历
+	void travetList()
+	{
+		Node<int, int>* p = pHead;
+		while (p->pNext != NULL)
+		{
+			p = p->pNext;
+			cout << p->index << " " << p->data << endl;
+		}
+	}
+
+	//查重
+	bool is_repeat(T1 index)
+	{
+		Node<int, int>* p = pHead;
+		while (p->pNext != NULL)
+		{
+			p = p->pNext;
+			if (p->index == index)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	Node<int, int>* operator [](int index)
+	{
+		int i = 0;
+		Node<int, int>* p = pHead;
+		while (p->pNext != NULL)
+		{
+			i++;
+			p = p->pNext;
+			if (p->index == index)
+			{
+				return p;
+			}
+		}
+	}
+
+private:
+	Node<T1, T2>* pHead;
+	Node<T1, T2>* pNew;
+	Node<T1, T2>* pTail;
+};
+
+int main(void)
+{
+	List<int, int>L;
+	int index, data, num;
+	cin >> num;
+
+	for (int i = 0; i < num; i++)
+	{
+		cin >> index;
+		cin >> data;
+		if (i == 0)
+		{
+			L.push_back(index, data);
+		}
+		else
+		{
+			if (L.is_repeat(index))
+			{
+				L[index]->data += data;
+			}
+			else
+			{
+				L.push_back(index, data);
+			}
+		}
+		
+	
+	
+	}
+
+	L.travetList();
+	system("pause");
+	return 0;
+}

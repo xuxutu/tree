@@ -1,0 +1,89 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Arr
+{
+  int len;
+  int cnt;
+  int *pBase;
+};
+void init_arr(struct Arr * pArr,int length);//初始化数组
+void show_arr(struct Arr * pArr);           //输出数组
+bool is_empty(struct Arr * pArr);           //判断数组是否为空
+bool append_arr(struct Arr *pArr,int val);  //追加
+bool is_full(struct Arr * pArr);            //判断数组是否已满
+bool insert_arr(struct Arr * pArr,int pos,int val); //插入
+int main(void)
+{
+    struct Arr arr;   
+	init_arr(&arr,6);
+    show_arr(&arr);
+	append_arr(&arr,1);
+	append_arr(&arr,2);
+	append_arr(&arr,3);
+	append_arr(&arr,4);
+	append_arr(&arr,5);
+	show_arr(&arr);
+	insert_arr(&arr,)
+	system("pause");
+	return 0;
+}
+void init_arr(struct Arr * pArr,int length)
+{
+    pArr->pBase =(int *)malloc(sizeof(length) * 6);
+	if(NULL==pArr->pBase )
+    {
+       printf("动态内存分配失败！\n");
+	   exit(-1);
+	}
+	else
+	{
+	pArr->len=length;
+	pArr->cnt=0;
+	}
+    return;
+}
+void show_arr(struct Arr * pArr)
+{
+    if(is_empty(pArr))
+	   printf("数组为空！\n");
+    else
+	{
+       for(int i=0;i<pArr->cnt;++i)
+	       printf("%d",pArr->pBase[i]);
+	printf("\n");
+	}
+}
+bool is_empty(struct Arr * pArr)
+{
+    if(0==pArr->cnt)
+      return true;
+   else
+	  return false;
+}
+bool is_full(struct Arr * pArr)
+{
+    if(pArr->cnt==pArr->len)
+		return true;
+	else
+		return false;
+
+}
+bool append_arr(struct Arr *pArr,int val)
+{
+   if(is_full(pArr))
+	   return false;
+   else
+   {
+	   pArr->pBase[pArr->cnt]=val;
+	   (pArr->cnt)++;
+	   return true;
+   }
+
+}
+bool insert_arr(struct Arr * pArr,int pos,int val)
+{
+
+
+
+
+}

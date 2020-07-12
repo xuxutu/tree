@@ -1,0 +1,5 @@
+1.break不能直接用于if ，如果if位于for循环中，则可以使用，此时用于终止for；
+2.终止循环
+3.终止switch 
+4.break用于多个for循环时，break终止它最近的循环。
+5.多层switch中，break终止最近的。

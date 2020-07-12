@@ -1,0 +1,200 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil NSimSun;}{\f1\fnil\fcharset134 NSimSun;}{\f2\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\colortbl ;\red155\green155\blue155;\red30\green30\blue30;\red214\green157\blue133;\red220\green220\blue220;\red86\green156\blue214;\red200\green200\blue200;\red180\green180\blue180;\red87\green166\blue74;\red78\green201\blue176;\red0\green0\blue0;\red181\green206\blue168;\red218\green218\blue218;}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\cf1\highlight2\f0\fs30\lang2052 #include\cf3 <iostream>\cf4\par
+\cf1 #include\cf3 <vector>\cf4\par
+\cf1 #include\cf3 <string>\cf4\par
+\cf1 #include\cf3 <thread>\cf4\par
+\cf1 #include\cf3 <deque>\cf4\par
+\cf1 #include\cf3 <mutex>\cf4\par
+\cf5 using\cf4  \cf5 namespace\cf4  \cf6 std\cf7 ;\cf4\par
+\par
+\cf8 //\f1\'d2\'bb\'a1\'a2unique_lock\'c8\'a1\'b4\'falock_guard\cf4\par
+\cf8 //\'ca\'c7\'b8\'f6\'c0\'e0\'c4\'a3\'b0\'e5\'a3\'ac\'b9\'a4\'d7\'f7\'d6\'d0\'cd\'c6\'bc\'f6\'ca\'b9\'d3\'c3lock_guard\cf4\par
+\cf8 //unique\'b1\'c8lock_guard\'c1\'e9\'bb\'ee\'a3\'ac\'d0\'a7\'c2\'ca\'b2\'ee\'d0\'a9\cf4\par
+\cf8 //\'b6\'fe\'a1\'a2unique_lock\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\cf4\par
+\cf8 //adopt_lock\'b1\'ea\'bc\'c7\'b1\'ed\'c3\'f7\'ce\'de\'d0\'e8\'d4\'d9lock\'c1\'cb\cf4\par
+\cf8 //tyr_to_lock \'b3\'a2\'ca\'d4\'c9\'cf\'cb\'f8\'a3\'ac\'cb\'f8\'b2\'bb\'c9\'cf\'b7\'b5\'bb\'d8\'a3\'ac\'b2\'bb\'d7\'e8\'c8\'fb\'a3\'bb\'d7\'a2\'d2\'e2:\'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0lock\cf4\par
+\cf8 //defer_lock \'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0\'cf\'c8lock;\'b3\'f5\'ca\'bc\'bb\'af\'d2\'bb\'b8\'f6\'c3\'bb\'d3\'d0\'bc\'d3\'cb\'f8\'b5\'c4mutex\cf4\par
+\cf8 //\'c8\'fd\'a1\'a2unique_lock\'b5\'c4\'b3\'c9\'d4\'b1\'ba\'af\'ca\'fd\cf4\par
+\par
+\cf9 deque\cf7 <\cf5 int\cf7 >\cf6 D\cf7 ;\cf4\par
+\par
+\cf5 class\cf4  \cf9 WRdata\cf4\par
+\cf7\{\cf4\par
+\cf5 public\cf7 :\cf4\par
+\tab\cf8 //\'d0\'b4\'ca\'fd\'be\'dd\cf4\par
+\tab\cf5 void\cf4  \cf6\highlight10 wdata\cf7\highlight2 ()\cf4\par
+\tab\cf7\{\cf4\par
+\tab\tab\cf5 for\cf4  \cf7 (\cf5 int\cf4  \cf6 i\cf4  \cf7 =\cf4  \cf11 0\cf7 ;\cf4  \cf6 i\cf4  \cf7 <\cf4  \cf11 1000\cf7 ;\cf4  \cf6 i\cf7 ++)\cf4\par
+\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\cf8 //\'c9\'cf\'cb\'f8  \'d4\'da\'d0\'b4\'c8\'eb\'ca\'fd\'be\'dd\'b5\'c4\'ca\'b1\'ba\'f2\'a3\'ac\'d6\'bb\'c4\'dc\'d3\'c9\'ce\'d2\'c0\'b4\'d0\'b4\cf4\par
+\tab\tab\tab\cf8 //\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'b1\'ed\'c3\'f7\'ce\'de\'d0\'eb\'d4\'da\'b9\'b9\'d4\'ec\'ba\'af\'ca\'fd\'c0\'ef\'d4\'d9\'b4\'celock\'c1\'cb\cf4\par
+\tab\tab\tab\cf8 //unique_lock<mutex>L1(m1,adopt_lock); \'b4\'cb\'be\'e4\'cf\'e0\'b5\'b1\'d3\'da\'c3\'bb\'c9\'cf\'cb\'f8\cf4\par
+\tab\tab\tab\cf8 //unique_lock<mutex>L1(m1);\cf4\par
+\tab\tab\tab\cf9 unique_lock\cf7 <\cf9 mutex\cf7 >\cf6 L1\cf7 (\cf12 m1\cf7 ,\cf6 try_to_lock\cf7 );\cf4\par
+\tab\tab\tab\cf5 if\cf4  \cf7 (\cf6 L1\cf7 .\cf6\highlight10 owns_lock\cf7\highlight2 ())\cf4\par
+\tab\tab\tab\cf7\{\cf4\par
+\par
+\tab\tab\tab\tab\cf8 //\'c4\'c3\'b5\'bd\'c1\'cb\'cb\'f8\cf4\par
+\tab\tab\tab\tab\cf6 D\cf7 .\cf6\highlight10 push_back\cf7\highlight2 (\cf6 i\cf7 );\cf4\par
+\tab\tab\tab\tab\cf6 cout\cf4  \cf7 <<\cf4  \cf3 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'d0\'b4\'c8\'eb\'b3\'c9\'b9\'a6\'a3\'a1\'d0\'b4\'c8\'eb\'b5\'c4\'ca\'fd\'be\'dd\'ca\'c7"\cf4  \cf7 <<\cf4  \cf6 i\cf4  \cf7 <<\cf4  \cf6 endl\cf7 ;\cf4\par
+\tab\tab\tab\cf7\}\cf4\par
+\tab\tab\tab\cf5 else\cf4\par
+\tab\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\tab\cf6 cout\cf4  \cf7 <<\cf3 "\'c3\'bb\'c4\'c3\'b5\'bd\'cb\'f8\'a3\'ac\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'d0\'b4\'c8\'eb\'ca\'a7\'b0\'dc"\cf4  \cf7 <<\cf4  \cf6 endl\cf7 ;\cf4\par
+\tab\tab\tab\cf7\}\cf4\par
+\tab\tab\tab\par
+\tab\tab\tab\cf8 //\'bd\'e2\'cb\'f8  \'ce\'d2\'d0\'b4\'cd\'ea\'ba\'f3\'c4\'e3\'b2\'c5\'c4\'dc\'c8\'a5\'b6\'c1\cf4\par
+\tab\tab\tab\par
+\par
+\tab\tab\tab\par
+\tab\tab\cf7\}\cf4\par
+\tab\cf7\}\cf4\par
+\par
+\tab\cf8 //\'b6\'c1\'ca\'fd\'be\'dd\cf4\par
+\par
+\tab\cf8 //\'c5\'d0\'b6\'cf\'b5\'b1\'c7\'b0\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'ca\'c7\'b7\'f1\'bf\'c9\'d2\'d4\'b6\'c1\'b3\'f6\cf4\par
+\par
+\tab\cf5 bool\cf4  \cf6\highlight10 Empty\cf7\highlight2 ()\cf4\par
+\tab\cf7\{\cf4\par
+\tab\tab\cf8 //\'c9\'cf\'cb\'f8 \'ce\'d2\'b6\'c1\'b3\'f6\'ca\'fd\'be\'dd\'b5\'c4\'ca\'b1\'ba\'f2\'a3\'ac\'c4\'e3\'b2\'bb\'c4\'dc\'d0\'b4\cf4\par
+\tab\tab\cf9 unique_lock\cf7 <\cf9 mutex\cf7 >\cf6 L1\cf7 (\cf12 m1\cf7 );\cf4\par
+\par
+\tab\tab\cf6 chrono\cf7 ::\cf9 milliseconds\cf4  \cf6 during\cf7 (\cf11 200\cf7 );\cf8 //\'d0\'dd\'cf\'a220s\cf4\par
+\tab\tab\cf6 this_thread\cf7 ::\cf6 sleep_for\cf7 (\cf6 during\cf7 );\cf4\par
+\tab\tab\cf5 if\cf4  \cf7 (\cf6 D\cf7 .\cf6\highlight10 empty\cf7\highlight2 ())\cf4\par
+\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\cf5 return\cf4  \cf5 true\cf7 ;\cf4\par
+\tab\tab\cf7\}\cf4\par
+\tab\tab\cf5 int\cf4  \cf6 val\cf4  \cf7 =\cf4  \cf7 *(\cf6 D\cf7 .\cf6\highlight10 begin\cf7\highlight2 ());\cf4\par
+\tab\tab\cf6 cout\cf4  \cf7 <<\cf4  \cf3 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'b6\'c1\'b3\'f6\'b3\'c9\'b9\'a6!\'b6\'c1\'b3\'f6\'b5\'c4\'ca\'fd\'be\'dd\'ca\'c7\'a3\'ba"\cf4  \cf7 <<\cf6 val\cf7 <<\cf4  \cf6 endl\cf7 ;\cf4\par
+\tab\tab\cf6 D\cf7 .\cf6\highlight10 pop_front\cf7\highlight2 ();\cf4\par
+\par
+\tab\tab\cf5 return\cf4  \cf5 false\cf7 ;\cf4\par
+\par
+\tab\cf7\}\cf4\par
+\par
+\tab\cf5 void\cf4  \cf6\highlight10 rdata\cf7\highlight2 ()\cf4\par
+\tab\cf7\{\cf4\par
+\tab\tab\cf5 for\cf4  \cf7 (\cf5 int\cf4  \cf6 i\cf4  \cf7 =\cf4  \cf11 0\cf7 ;\cf4  \cf6 i\cf4  \cf7 <\cf4  \cf11 1000\cf7 ;\cf4  \cf6 i\cf7 ++)\cf4\par
+\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\cf5 bool\cf4  \cf6 result\cf4  \cf7 =\cf4  \cf6\highlight10 Empty\cf7\highlight2 ();\cf4\par
+\tab\tab\tab\cf5 if\cf4  \cf7 (\cf6 result\cf7 )\cf4\par
+\tab\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\tab\cf6 cout\cf4  \cf7 <<\cf3 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'d2\'d1\'bf\'d5\'a3\'ac\'b6\'c1\'b3\'f6\'ca\'a7\'b0\'dc"\cf4  \cf7 <<\cf4  \cf6 endl\cf7 ;\cf4\par
+\tab\tab\tab\cf7\}\cf4\par
+\tab\tab\tab\par
+\tab\tab\cf7\}\cf4\par
+\tab\par
+\tab\cf7\}\cf4\par
+\cf5 private\cf7 :\cf4\par
+\tab\cf9 mutex\cf4  \cf12 m1\cf7 ;\cf4\par
+\tab\cf9 mutex\cf4  \cf12 m2\cf7 ;\cf4\par
+\cf7\};\cf4\par
+\par
+\cf5 int\cf4  \cf6 main\cf7 (\cf5 void\cf7 )\cf4\par
+\cf7\{\cf4\par
+\tab\cf9 WRdata\cf4  \cf6 wr\cf7 ;\cf4\par
+\tab\cf9 thread\cf4  \cf6 t1\cf7 (&\cf9 WRdata\cf7 ::\cf6\highlight10 rdata\cf7\highlight2 ,&\cf6 wr\cf7 );\cf4\par
+\tab\cf9 thread\cf4  \cf6 t2\cf7 (&\cf9 WRdata\cf7 ::\cf6\highlight10 wdata\cf7\highlight2 ,\cf4  \cf7 &\cf6 wr\cf7 );\cf4\par
+\tab\cf6 t1\cf7 .\cf6\highlight10 join\cf7\highlight2 ();\cf4\par
+\tab\cf6 t2\cf7 .\cf6\highlight10 join\cf7\highlight2 ();\cf4\par
+\par
+\tab\cf6 system\cf7 (\cf3 "pause"\cf7 );\cf4\par
+\tab\cf5 return\cf4  \cf11 0\cf7 ;\cf4\par
+\cf7\}\par
+\par
+\par
+\par
+\par
+\cf1\f0 #include\cf3 <thread>\cf4\par
+\cf1 #include\cf3 <deque>\cf4\par
+\cf1 #include\cf3 <mutex>\cf4\par
+\cf5 using\cf4  \cf5 namespace\cf4  \cf6 std\cf7 ;\cf4\par
+\par
+\cf8 //\f1\'d2\'bb\'a1\'a2unique_lock\'c8\'a1\'b4\'falock_guard\cf4\par
+\cf8 //\'ca\'c7\'b8\'f6\'c0\'e0\'c4\'a3\'b0\'e5\'a3\'ac\'b9\'a4\'d7\'f7\'d6\'d0\'cd\'c6\'bc\'f6\'ca\'b9\'d3\'c3lock_guard\cf4\par
+\cf8 //unique\'b1\'c8lock_guard\'c1\'e9\'bb\'ee\'a3\'ac\'d0\'a7\'c2\'ca\'b2\'ee\'d0\'a9\cf4\par
+\cf8 //\'b6\'fe\'a1\'a2unique_lock\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\cf4\par
+\cf8 //adopt_lock\'b1\'ea\'bc\'c7\'b1\'ed\'c3\'f7\'ce\'de\'d0\'e8\'d4\'d9lock\'c1\'cb\cf4\par
+\cf8 //tyr_to_lock \'b3\'a2\'ca\'d4\'c9\'cf\'cb\'f8\'a3\'ac\'cb\'f8\'b2\'bb\'c9\'cf\'b7\'b5\'bb\'d8\'a3\'ac\'b2\'bb\'d7\'e8\'c8\'fb\'a3\'bb\'d7\'a2\'d2\'e2:\'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0lock\cf4\par
+\cf8 //defer_lock \'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0\'cf\'c8lock;\'b3\'f5\'ca\'bc\'bb\'af\'d2\'bb\'b8\'f6\'c3\'bb\'d3\'d0\'bc\'d3\'cb\'f8\'b5\'c4mutex\cf4\par
+\cf8 //\'c8\'fd\'a1\'a2unique_lock\'b5\'c4\'b3\'c9\'d4\'b1\'ba\'af\'ca\'fd\cf4\par
+\cf8 //1.lock()\cf4\par
+\cf8 //unique_lock<mutex>L1(m1, defer_lock);\cf4\par
+\cf8 //L1.lock();//\'b4\'cb\'ca\'b1\'ce\'de\'d0\'ebunlock\'a3\'ac\'bc\'d3\'c1\'cb\'d2\'b2\'c3\'bb\'ca\'c2\cf4\par
+\cf8 //2.unlock\cf4\par
+\cf8 //\'b4\'a6\'c0\'ed\'b7\'c7\'b9\'b2\'cf\'ed\'b4\'fa\'c2\'eb\'ca\'b1\'bf\'c9\'cb\'e6\'ca\'b1\'c1\'e9\'bb\'ee\'b5\'d8\'bd\'e2\'bf\'aa\cf4\par
+\cf9 deque\cf7 <\cf5 int\cf7 >\cf6 D\cf7 ;\cf4\par
+\par
+\cf5 class\cf4  \cf9 WRdata\cf4\par
+\cf7\{\cf4\par
+\cf5 public\cf7 :\cf4\par
+\tab\cf8 //\'d0\'b4\'ca\'fd\'be\'dd\cf4\par
+\tab\cf5 void\cf4  \cf6\highlight10 wdata\cf7\highlight2 ()\cf4\par
+\tab\cf7\{\cf4\par
+\tab\tab\cf5 for\cf4  \cf7 (\cf5 int\cf4  \cf6 i\cf4  \cf7 =\cf4  \cf11 0\cf7 ;\cf4  \cf6 i\cf4  \cf7 <\cf4  \cf11 1000\cf7 ;\cf4  \cf6 i\cf7 ++)\cf4\par
+\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\cf9 unique_lock\cf7 <\cf9 mutex\cf7 >\cf6 L1\cf7 (\cf12 m1\cf7 ,\cf4  \cf6 defer_lock\cf7 );\cf4\par
+\tab\tab\tab\cf6 L1\cf7 .\cf6\highlight10 lock\cf7\highlight2 ();\cf4\par
+\tab\tab\tab\cf6 D\cf7 .\cf6\highlight10 push_back\cf7\highlight2 (\cf6 i\cf7 );\cf4\par
+\tab\tab\tab\cf6 cout\cf4  \cf7 <<\cf4  \cf3 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'d0\'b4\'c8\'eb\'b3\'c9\'b9\'a6\'a3\'a1\'d0\'b4\'c8\'eb\'b5\'c4\'ca\'fd\'be\'dd\'ca\'c7"\cf4  \cf7 <<\cf4  \cf6 i\cf4  \cf7 <<\cf4  \cf6 endl\cf7 ;\cf4\par
+\tab\tab\tab\cf8 //\'b4\'cb\'ca\'b1\'b2\'bb\'d3\'c3\'d7\'d4\'bc\'baunlock\cf4\par
+\tab\tab\cf7\}\cf4\par
+\tab\cf7\}\cf4\par
+\par
+\tab\cf8 //\'b6\'c1\'ca\'fd\'be\'dd\cf4\par
+\par
+\tab\cf8 //\'c5\'d0\'b6\'cf\'b5\'b1\'c7\'b0\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'ca\'c7\'b7\'f1\'bf\'c9\'d2\'d4\'b6\'c1\'b3\'f6\cf4\par
+\par
+\tab\cf5 bool\cf4  \cf6\highlight10 Empty\cf7\highlight2 ()\cf4\par
+\tab\cf7\{\cf4\par
+\tab\tab\cf8 //\'c9\'cf\'cb\'f8 \'ce\'d2\'b6\'c1\'b3\'f6\'ca\'fd\'be\'dd\'b5\'c4\'ca\'b1\'ba\'f2\'a3\'ac\'c4\'e3\'b2\'bb\'c4\'dc\'d0\'b4\cf4\par
+\tab\tab\cf9 unique_lock\cf7 <\cf9 mutex\cf7 >\cf6 L1\cf7 (\cf12 m1\cf7 );\cf4\par
+\par
+\tab\tab\cf8 //chrono::milliseconds during(200);//\'d0\'dd\'cf\'a220s\cf4\par
+\tab\tab\cf8 //this_thread::sleep_for(during);\cf4\par
+\tab\tab\cf5 if\cf4  \cf7 (\cf6 D\cf7 .\cf6\highlight10 empty\cf7\highlight2 ())\cf4\par
+\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\cf5 return\cf4  \cf5 true\cf7 ;\cf4\par
+\tab\tab\cf7\}\cf4\par
+\tab\tab\cf5 int\cf4  \cf6 val\cf4  \cf7 =\cf4  \cf7 *(\cf6 D\cf7 .\cf6\highlight10 begin\cf7\highlight2 ());\cf4\par
+\tab\tab\cf6 cout\cf4  \cf7 <<\cf4  \cf3 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'b6\'c1\'b3\'f6\'b3\'c9\'b9\'a6!\'b6\'c1\'b3\'f6\'b5\'c4\'ca\'fd\'be\'dd\'ca\'c7\'a3\'ba"\cf4  \cf7 <<\cf6 val\cf7 <<\cf4  \cf6 endl\cf7 ;\cf4\par
+\tab\tab\cf6 D\cf7 .\cf6\highlight10 pop_front\cf7\highlight2 ();\cf4\par
+\par
+\tab\tab\cf5 return\cf4  \cf5 false\cf7 ;\cf4\par
+\par
+\tab\cf7\}\cf4\par
+\par
+\tab\cf5 void\cf4  \cf6\highlight10 rdata\cf7\highlight2 ()\cf4\par
+\tab\cf7\{\cf4\par
+\tab\tab\cf5 for\cf4  \cf7 (\cf5 int\cf4  \cf6 i\cf4  \cf7 =\cf4  \cf11 0\cf7 ;\cf4  \cf6 i\cf4  \cf7 <\cf4  \cf11 1000\cf7 ;\cf4  \cf6 i\cf7 ++)\cf4\par
+\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\cf5 bool\cf4  \cf6 result\cf4  \cf7 =\cf4  \cf6\highlight10 Empty\cf7\highlight2 ();\cf4\par
+\tab\tab\tab\cf5 if\cf4  \cf7 (\cf6 result\cf7 )\cf4\par
+\tab\tab\tab\cf7\{\cf4\par
+\tab\tab\tab\tab\cf6 cout\cf4  \cf7 <<\cf3 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'d2\'d1\'bf\'d5\'a3\'ac\'b6\'c1\'b3\'f6\'ca\'a7\'b0\'dc"\cf4  \cf7 <<\cf4  \cf6 endl\cf7 ;\cf4\par
+\tab\tab\tab\cf7\}\cf4\par
+\tab\tab\tab\par
+\tab\tab\cf7\}\cf4\par
+\tab\par
+\tab\cf7\}\cf4\par
+\cf5 private\cf7 :\cf4\par
+\tab\cf9 mutex\cf4  \cf12 m1\cf7 ;\cf4\par
+\tab\cf9 mutex\cf4  \cf12 m2\cf7 ;\cf4\par
+\cf7\};\cf4\par
+\par
+\cf5 int\cf4  \cf6 main\cf7 (\cf5 void\cf7 )\cf4\par
+\cf7\{\cf4\par
+\tab\cf9 WRdata\cf4  \cf6 wr\cf7 ;\cf4\par
+\tab\cf9 thread\cf4  \cf6 t1\cf7 (&\cf9 WRdata\cf7 ::\cf6\highlight10 rdata\cf7\highlight2 ,&\cf6 wr\cf7 );\cf4\par
+\tab\cf9 thread\cf4  \cf6 t2\cf7 (&\cf9 WRdata\cf7 ::\cf6\highlight10 wdata\cf7\highlight2 ,\cf4  \cf7 &\cf6 wr\cf7 );\cf4\par
+\tab\cf6 t1\cf7 .\cf6\highlight10 join\cf7\highlight2 ();\cf4\par
+\tab\cf6 t2\cf7 .\cf6\highlight10 join\cf7\highlight2 ();\cf4\par
+\par
+\tab\cf6 system\cf7 (\cf3 "pause"\cf7 );\cf4\par
+\tab\cf5 return\cf4  \cf11 0\cf7 ;\cf4\par
+\cf7\}\cf0\highlight0\f2\fs22\par
+}
+ 

@@ -1,0 +1,4 @@
+1.最早支持网络通信 TCP/IP协议
+2.GUN 研发  GCC（编译器）
+3.Redhat  包装发行 Linux+GUN+安装程序
+4.CentOS 

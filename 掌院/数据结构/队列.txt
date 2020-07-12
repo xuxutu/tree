@@ -1,0 +1,130 @@
+循环队列需要两个参数：front，rear
+  
+  1.队列初始化：front和rear的值都是0
+  2.队列非空：front代表的是队列的第一个元素，rear代表的是队列最后一个有效元素的下一个元素
+  3.队列空：front和rear值相等，但不一定是0
+
+入队算法：
+
+  r=(r+1)%长度
+
+出队算法：
+  f=(f+1)%长度
+
+判断队列为满：
+1.增加一个标志位
+2.少用一个元素，r，f相邻，（r+1）%长度=f
+
+
+队列的应用
+
+  所有跟时间有关的操作都与队列有关
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Queue
+{
+    int * pBase;
+    int front;
+	int rear;
+}QUEUE;
+
+void init(QUEUE *pQ);
+bool en_queue(QUEUE * pQ,int val);
+void traverse_queque(QUEUE *pQ);
+bool full_queue(QUEUE *pQ);
+bool out_queue(QUEUE *pQ,int *pVal);
+bool empty(QUEUE *pQ);
+
+int main(void)
+{
+    QUEUE Q;                                        //定义Q，Q中有三个成员：队列头，front；队列尾，rear；pBase，用于存放数组首元素的地址。
+    int val;
+
+	init(&Q);
+	en_queue(&Q,1);
+	en_queue(&Q,2);
+	en_queue(&Q,3);
+	en_queue(&Q,4);
+	en_queue(&Q,5);
+	en_queue(&Q,6);
+	en_queue(&Q,7);
+    en_queue(&Q,8);
+	traverse_queque(&Q);
+    if (out_queue(&Q,&val))
+	{
+	    printf("出队成功！队列出队的元素是：%d\n",val);
+	}
+	else
+	{
+	    printf("出队失败！\n");
+	}
+	traverse_queque(&Q);
+    system("pause");
+    return 0;
+}
+
+void init(QUEUE *pQ)                              //初始化队列Q
+{
+    pQ->pBase=(int *)malloc(sizeof(int)*6);       //开辟24字节（6个整形元素）大小的内存，首地址放于PBase  
+    pQ->front=0;                                  //队首为0
+	pQ->rear=0;                                   //队尾为0
+}
+
+bool full_queue(QUEUE *pQ)                        //判断队列是否已满
+{
+    if((pQ->rear+1) % 6==pQ->front)               //当队首与队尾紧挨（队尾加一等于队首（循环队列要对长度取余）），此时队列为满的状态
+	    return true;
+	else
+		return false;
+}
+
+bool en_queue(QUEUE * pQ,int val)                 //入队
+{
+    if(full_queue(pQ))                            //未满才入队
+	{
+	    return false;
+	}
+	else
+	{   pQ->pBase[pQ->rear]=val;                  //将入队元素放于队尾
+        pQ->rear=(pQ->rear+1) % 6;                //队尾加1
+	    return true;
+	}
+
+}
+
+void traverse_queque(QUEUE *pQ)                   //遍历
+{
+    int i=pQ->front;                              //队首的值赋给i
+
+	while(i != pQ->rear)                          //当i等于队尾时终止循环，因为队尾指向有效节点的下个节点
+	{
+	    printf("%d",pQ->pBase[i]);                //输出数组值
+		i=(i+1) % 6;                              //i+1
+	}
+
+	return;
+}
+bool empty(QUEUE *pQ)                             //判空
+{
+    if(pQ->front==pQ->rear)                       //队首等于队尾时队列为空
+	    return true;
+	else
+		return false;
+
+}
+bool out_queue(QUEUE *pQ,int *pVal)              //出队
+{
+    if( empty(pQ) )
+	{    
+		return false;
+	}
+	else
+	{
+	    *pVal=pQ->pBase[pQ->front];              //将删除对象付给主函数定义的val
+        pQ->front=(pQ->front+1) % 6;             //队首上移
+	    return true;
+	}
+
+}

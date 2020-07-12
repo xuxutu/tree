@@ -1,0 +1,81 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+
+const int N = 5;
+/*
+1  2  3  4  5
+16 17 18 19 6
+15 24 25 20 7
+14 23 22 21 8
+13 12 11 10 9
+*/
+
+void snake(int(*a)[N], int start, int len)
+{
+	if (start > (N*N))
+	{
+		return;
+	}
+	int i = N-len, j = N-len;
+	int data = start;
+	//第一类
+	while (j < len)
+	{
+		a[i][j] = data;
+		j++;
+		data++;
+	}
+	//第二类
+	j--;
+	i++;
+	while(i < len)
+	{
+		a[i][j] = data;
+		i++;
+		data ++ ;
+     }
+	//第三类
+	i--;//4
+	j--;
+	while (j >= N-len)//j==0
+	{
+		a[i][j] = data;
+		j--;
+		data++;
+	}
+	//第四类
+	i--;
+	j++;
+	while (i > N-len)
+	{
+		a[i][j] = data;
+		i--;
+		data++;
+	}
+
+	start = data;
+	len--;
+	snake(a, start, len);
+}
+
+int main(void)
+{
+	int a[N][N] = { 0 };
+	int start = 1;
+	int len=N;
+
+	snake(a, start, len);
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			printf("%3d", a[i][j]);
+		}
+		printf("\n");
+	}
+
+	system("pause");
+	return 0;
+}

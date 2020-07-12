@@ -1,0 +1,265 @@
+{\rtf1\ansi\ansicpg936\deff0\nouicompat{\fonttbl{\f0\fnil NSimSun;}{\f1\fnil\fcharset134 NSimSun;}{\f2\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\colortbl ;\red87\green166\blue74;\red30\green30\blue30;\red220\green220\blue220;\red155\green155\blue155;\red214\green157\blue133;\red86\green156\blue214;\red200\green200\blue200;\red180\green180\blue180;\red78\green201\blue176;\red0\green0\blue0;\red181\green206\blue168;\red218\green218\blue218;\red127\green127\blue127;}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\cf1\highlight2\f0\fs30\lang2052 //\f1\'d2\'bb\'a1\'a2unique_lock\'c8\'a1\'b4\'falock_guard\cf3\par
+\cf1 //\'ca\'c7\'b8\'f6\'c0\'e0\'c4\'a3\'b0\'e5\'a3\'ac\'b9\'a4\'d7\'f7\'d6\'d0\'cd\'c6\'bc\'f6\'ca\'b9\'d3\'c3lock_guard\cf3\par
+\cf1 //unique\'b1\'c8lock_guard\'c1\'e9\'bb\'ee\'a3\'ac\'d0\'a7\'c2\'ca\'b2\'ee\'d0\'a9\cf3\par
+\cf1 //\'b6\'fe\'a1\'a2unique_lock\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\cf3\par
+\cf1 //adopt_lock\'b1\'ea\'bc\'c7\'b1\'ed\'c3\'f7\'ce\'de\'d0\'e8\'d4\'d9lock\'c1\'cb\cf3\par
+\cf1 //tyr_to_lock \'b3\'a2\'ca\'d4\'c9\'cf\'cb\'f8\'a3\'ac\'cb\'f8\'b2\'bb\'c9\'cf\'b7\'b5\'bb\'d8\'a3\'ac\'b2\'bb\'d7\'e8\'c8\'fb\'a3\'bb\'d7\'a2\'d2\'e2:\'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0lock\cf3\par
+\cf1 //defer_lock \'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0\'cf\'c8lock;\'b3\'f5\'ca\'bc\'bb\'af\'d2\'bb\'b8\'f6\'c3\'bb\'d3\'d0\'bc\'d3\'cb\'f8\'b5\'c4mutex\cf3\par
+\cf1 //\'c8\'fd\'a1\'a2unique_lock\'b5\'c4\'b3\'c9\'d4\'b1\'ba\'af\'ca\'fd\cf3\par
+\cf1 //1.lock()\cf3\par
+\cf1 //unique_lock<mutex>L1(m1, defer_lock);\cf3\par
+\cf1 //L1.lock();//\'b4\'cb\'ca\'b1\'ce\'de\'d0\'ebunlock\'a3\'ac\'bc\'d3\'c1\'cb\'d2\'b2\'c3\'bb\'ca\'c2\cf3\par
+\cf1 //2.unlock\cf3\par
+\cf1 //\'b4\'a6\'c0\'ed\'b7\'c7\'b9\'b2\'cf\'ed\'b4\'fa\'c2\'eb\'ca\'b1\'bf\'c9\'cb\'e6\'ca\'b1\'c1\'e9\'bb\'ee\'b5\'d8\'bd\'e2\'bf\'aa\cf3\par
+\cf1 //3.try_lock\cf3\par
+\cf1 //\'b3\'a2\'ca\'d4\'b8\'f8\'bb\'a5\'b3\'e2\'c1\'bf\'bc\'d3\'cb\'f8\'a3\'ac\'c4\'c3\'b5\'bd\'cb\'f8\'b7\'b5\'bb\'d8true,\'c4\'c3\'b2\'bb\'b5\'bd\'cb\'f8\'a3\'ac\'b7\'b5\'bb\'d8false,\'b2\'bb\'d7\'e8\'c8\'fb\cf3\par
+\cf1 //4.release()\cf3\par
+\cf1 //\'b7\'b5\'bb\'d8\'cb\'fc\'b9\'dc\'c0\'ed\'b5\'c4mutex\'b6\'d4\'cf\'f3\'d6\'b8\'d5\'eb\'a3\'ac\'ca\'cd\'b7\'c5\'cb\'f9\'d3\'d0\'c8\'a8\'a3\'ac\'be\'cd\'ca\'c7\'cb\'b5\'a3\'acmutex\'d3\'ebunique_lock\'b2\'bb\'d4\'da\'d3\'d0\'c1\'aa\'cf\'b5\cf3\par
+\cf1 //\'c8\'e7\'b9\'fb\'d4\'ad\'c0\'b4\'ca\'c7\'bc\'cf\'cb\'f8\'d7\'b4\'cc\'ac\'a3\'ac\'c4\'e3release\'a3\'ac\'c4\'c7\'c3\'b4\'c4\'e3\'b1\'d8\'d0\'eb\'ca\'d6\'b6\'af\'bd\'e2\'cb\'f8\cf3\par
+\cf1 //\'cb\'c4\'a1\'a2unique_lock \'cb\'f9\'d3\'d0\'c8\'a8\'b5\'c4\'b4\'ab\'b5\'dd mutex\cf3\par
+\cf1 //\'d2\'bb\'b6\'d4\'d2\'bb,\'c7\'b0\'d5\'df\'d3\'b5\'d3\'d0\'ba\'f3\'d5\'df\'b5\'c4\'cb\'f9\'d3\'d0\'c8\'a8\cf3\par
+\cf1 //\'c7\'b0\'d5\'df\'bf\'c9\'d2\'d4\'d7\'aa\'d2\'c6\'d7\'d4\'bc\'ba\'b5\'c4\'cb\'f9\'d3\'d0\'c8\'a8\cf3\par
+\cf1 //unique_lock<mutex>L1(m1);\cf3\par
+\cf1 //unique_lock<mutex>L2(move(L1));\cf3\par
+\par
+\cf1 //\'c1\'ed\'cd\'e2\'d2\'bb\'d6\'d6\'d7\'aa\'d2\'c6\'cb\'f9\'d3\'d0\'c8\'a8\'b5\'c4\'b7\'bd\'ca\'bd\cf3\par
+\cf1 //\'ba\'af\'ca\'fd\'b7\'b5\'bb\'d8\'d2\'bb\'b8\'f6\'b0\'f3\'b6\'a8m1\'b5\'c4unique_lock\cf4\f0\par
+#include\cf5 <iostream>\cf3\par
+\cf4 #include\cf5 <vector>\cf3\par
+\cf4 #include\cf5 <string>\cf3\par
+\cf4 #include\cf5 <thread>\cf3\par
+\cf4 #include\cf5 <list>\cf3\par
+\cf4 #include\cf5 <mutex>\cf3\par
+\cf6 using\cf3  \cf6 namespace\cf3  \cf7 std\cf8 ;\cf3\par
+\par
+\cf1 //\f1\'b3\'c9\'d4\'b1\'ba\'af\'ca\'fd\'d7\'f7\'ce\'aa\'cf\'df\'b3\'cc\'c8\'eb\'bf\'da\'ba\'af\'ca\'fd\cf3\par
+\cf6 class\cf3  \cf9 A\cf3\par
+\cf8\{\cf3\par
+\cf6 public\cf8 :\cf3\par
+    \cf1 //\'b0\'d1\'ca\'d5\'b5\'bd\'b5\'c4\'d0\'c5\'cf\'a2\'b7\'c5\'c8\'eb\'b5\'bd\'b6\'d3\'c1\'d0\cf3\par
+\tab\cf6 void\cf3  \cf7\highlight10 enList\cf8\highlight2 ()\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf6 for\cf3  \cf8 (\cf6 int\cf3  \cf7 i\cf3  \cf8 =\cf3  \cf11 0\cf8 ;\cf3  \cf7 i\cf3  \cf8 <\cf3  \cf11 1000\cf8 ;\cf3  \cf7 i\cf8 ++)\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf7 cout\cf3  \cf8 <<\cf3  \cf5 "enList()\'d6\'b4\'d0\'d0,\'b2\'e5\'c8\'eb\'d2\'bb\'b8\'f6\'d4\'aa\'cb\'d8"\cf3  \cf8 <<\cf7 i\cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\tab\tab\cf1 //\'b1\'a3\'bb\'a4\'ca\'fd\'be\'dd\cf3\par
+\tab\tab\tab\cf12 m\cf8 .\cf7\highlight10 lock\cf8\highlight2 ();\cf1 //\'bc\'d3\'cb\'f8\cf3\par
+\tab\tab\tab\cf12 cmd\cf8 .\cf7\highlight10 push_back\cf8\highlight2 (\cf7 i\cf8 );\cf3\par
+\tab\tab\tab\cf12 m\cf8 .\cf7\highlight10 unlock\cf8\highlight2 ();\cf1 //\'bd\'e2\'cb\'f8\cf3\par
+\tab\tab\cf8\}\cf3\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf6 bool\cf3  \cf7\highlight10 outlist\cf8\highlight2 (\cf6 int\cf8 &\cf3  \cf13 ncmd\cf8 )\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf9 lock_guard\cf8 <\cf9 mutex\cf8 >\cf3  \cf7 g\cf8 (\cf12 m\cf8 );\cf1 //\'bd\'ab\'bb\'a5\'b3\'e2\'c1\'bf\'b6\'d4\'cf\'f3\'c8\'d3\'bd\'f8\'c8\'a5\cf3\par
+\tab\tab\cf1 //\'b9\'a4\'d7\'f7\'d4\'ad\'c0\'ed\'a3\'ac\'c0\'fb\'d3\'c3\'be\'d6\'b2\'bf\'b6\'d4\'cf\'f3\'b5\'c4\'b9\'b9\'d4\'ec\'d3\'eb\'ce\'f6\'b9\'b9\'cc\'d8\'d0\'d4\cf3\par
+\tab\tab\cf1 //\'b9\'b9\'d4\'ec\'d6\'b4\'d0\'d0lock();\cf3\par
+\tab\tab\cf1 //\'ce\'f6\'b9\'b9\'ba\'af\'ca\'fdunlock();\cf3\par
+\tab\tab\cf1 //m.lock();\cf3\par
+\tab\tab\cf6 if\cf3  \cf8 (!\cf12 cmd\cf8 .\cf7\highlight10 empty\cf8\highlight2 ())\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf6 int\cf3  \cf7 c\cf3  \cf8 =\cf3  \cf12 cmd\cf8 .\cf7\highlight10 front\cf8\highlight2 ();\cf3\par
+\tab\tab\tab\cf12 cmd\cf8 .\cf7\highlight10 pop_front\cf8\highlight2 ();\cf3\par
+\tab\tab\tab\cf1 //\'b4\'a6\'c0\'ed\'ca\'fd\'be\'dd\cf3\par
+\tab\tab\tab\cf1 //m.unlock();\cf3\par
+\tab\tab\tab\cf6 return\cf3  \cf6 true\cf8 ;\cf3\par
+\tab\tab\cf8\}\cf3\par
+\par
+\tab\tab\cf1 //m.unlock();\cf3\par
+\tab\tab\cf6 return\cf3  \cf6 false\cf8 ;\cf3\par
+\tab\tab\tab\par
+\tab\tab\par
+\tab\tab\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf6 void\cf3  \cf7\highlight10 outList\cf8\highlight2 ()\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 cout\cf3  \cf8 <<\cf5 "1"\cf3  \cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\tab\cf6 int\cf3  \cf7 ncmd\cf3  \cf8 =\cf3  \cf11 0\cf8 ;\cf3\par
+\tab\tab\cf6 for\cf3  \cf8 (\cf6 int\cf3  \cf7 i\cf3  \cf8 =\cf3  \cf11 0\cf8 ;\cf3  \cf7 i\cf3  \cf8 <\cf3  \cf11 1000\cf8 ;\cf3  \cf7 i\cf8 ++)\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf6 bool\cf3  \cf7 result\cf3  \cf8 =\cf3  \cf7\highlight10 outlist\cf8\highlight2 (\cf7 ncmd\cf8 );\cf3\par
+\tab\tab\tab\cf6 if\cf3  \cf8 (\cf7 result\cf3  \cf8 ==\cf3  \cf6 false\cf8 )\cf3\par
+\tab\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\tab\cf7 cout\cf3  \cf8 <<\cf3  \cf5 "outList\'a3\'a8\'a3\'a9\'d6\'b4\'d0\'d0\'a3\'ac\'b3\'c9\'b9\'a6\'b3\'f6\'b6\'d3"\cf3  \cf8 <<\cf7 ncmd\cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\tab\tab\tab\cf1 //\'bd\'f8\'d0\'d0\'c3\'fc\'c1\'ee\'b4\'a6\'c0\'ed\cf3\par
+\tab\tab\tab\cf8\}\cf3\par
+\tab\tab\tab\par
+\tab\tab\cf8\}\cf3\par
+\par
+\tab\cf8\}\cf3\par
+\par
+\cf6 private\cf8 :\cf3\par
+\tab\cf1 //\'c8\'dd\'c6\'f7\'a3\'ac\'b4\'e6\'b4\'a2\'c3\'fc\'c1\'ee\cf3\par
+\tab\cf9 list\cf8 <\cf6 int\cf8 >\cf12 cmd\cf8 ;\cf3\par
+\tab\cf9 mutex\cf3  \cf12 m\cf8 ;\cf1 //\'b4\'b4\'bd\'a8\'c1\'cb\'d2\'bb\'b8\'f6\'bb\'a5\'b3\'e2\'c1\'bf\cf3\par
+\cf8\};\cf3\par
+\par
+\cf1 //\'bb\'a5\'b3\'e2\'c1\'bf\'a3\'a8mutex\'a3\'a9\'b5\'c4\'bb\'f9\'b1\'be\'b8\'c5\'c4\'ee\cf3\par
+\cf1 //\'bb\'a5\'b3\'e2\'c1\'bf\'be\'cd\'ca\'c7\'b8\'f6\'c0\'e0\'b6\'d4\'cf\'f3\'a1\'a3\'c0\'ed\'bd\'e2\'b3\'c9\'d2\'bb\'b0\'d1\'cb\'f8\'a3\'ac\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'b3\'a2\'ca\'d4\'d3\'c3lock\'a3\'a8\'a3\'a9\'cb\'c0\'cb\'f8\'a3\'ac\cf3\par
+\cf1 //\'d6\'bb\'d3\'d0\'d2\'bb\'b8\'f6\'cf\'df\'b3\'cc\'cb\'f8\'b6\'a8\'b3\'c9\'b9\'a6\'a3\'ac\'cb\'f8\'b2\'bb\'c9\'cf\'b5\'c4\'d2\'bb\'d6\'b1\'b5\'c8\'d7\'c5\'c9\'cf\'cb\'f8\cf3\par
+\par
+\cf1 //\'bb\'a5\'b3\'e2\'c1\'bf\'d3\'c3\'b5\'c3\'d2\'aa\'ba\'dc\'bd\'b2\'be\'bf\'a3\'ac\'c9\'d9\'c1\'cb\'b4\'ef\'b2\'bb\'b5\'bd\'b1\'a3\'bb\'a4\'d0\'a7\'b9\'fb\'a3\'ac\'b6\'e0\'c1\'cb\'d3\'b0\'cf\'ec\'d4\'cb\'d0\'d0\'d0\'a7\'c2\'ca\cf3\par
+\par
+\cf1 //\'d3\'c3\'b7\'a8\cf3\par
+\cf1 //lock();\cf3\par
+\cf1 //\'b2\'d9\'d7\'f7\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\cf3\par
+\cf1 //unlock();\cf3\par
+\cf1 //\'cb\'f8\'d3\'eb\'bd\'e2\'cb\'f8\'d7\'dc\'ca\'c7\'b3\'c9\'b6\'d4\'b4\'e6\'d4\'da\cf3\par
+\cf1 //\'ce\'aa\'c1\'cb\'b7\'c0\'d6\'b9\'b3\'cc\'d0\'f2\'d4\'b1\'cd\'fc\'bc\'c7unlock\'a3\'acc++\'d2\'fd\'c8\'eblock_guard\'b5\'c4\'c0\'e0\'c4\'a3\'b0\'e5\'a3\'ac\'c4\'e3\'cd\'fc\'bc\'c7unlock\'b2\'bb\'d2\'aa\'bd\'f4\'a3\'ac\'ce\'d2\'c0\'b4\'b0\'ef\'c4\'e3unlock\cf3\par
+\par
+\cf1 //lock_guard\'b5\'c4\'d3\'c3\'b7\'a8\'a1\'a3\'d3\'d0\'cb\'fc\'be\'cd\'b2\'bb\'c4\'dc\'d3\'d0 lock\'ba\'cdunlock\cf3\par
+\par
+\par
+\cf6 class\cf3  \cf9 B\cf3\par
+\cf8\{\cf3\par
+\cf6 public\cf8 :\cf3\par
+\tab\cf7\highlight10 B\cf8\highlight2 ()\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 cout\cf3  \cf8 <<\cf3  \cf5 "Bgouzao"\cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\cf8\}\cf3\par
+\tab\cf7\highlight10 ~B\cf8\highlight2 ()\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf7 cout\cf3  \cf8 <<\cf3  \cf5 "Bxigou"\cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\cf8\}\cf3\par
+\par
+\cf8\};\cf3\par
+\par
+\cf6 int\cf3  \cf7 main\cf8 (\cf6 void\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf9 A\cf3  \cf7 a\cf8 ;\cf3\par
+\tab\cf9 thread\cf3  \cf7 s1\cf8 (&\cf9 A\cf8 ::\cf7\highlight10 outlist\cf8\highlight2 ,&\cf7 a\cf8 );\cf3\par
+\tab\cf9 thread\cf3  \cf7 s2\cf8 (&\cf9 A\cf8 ::\cf7\highlight10 enList\cf8\highlight2 ,\cf3  \cf8 &\cf7 a\cf8 );\cf3\par
+\tab\cf7 s1\cf8 .\cf7\highlight10 join\cf8\highlight2 ();\cf3\par
+\tab\cf7 s2\cf8 .\cf7\highlight10 join\cf8\highlight2 ();\cf3\par
+\par
+\tab\cf1 //\'b2\'e2\'ca\'d4\'d2\'bb\'b8\'f6for\'d1\'ad\'bb\'b7\'d6\'d0\'b5\'c4\'c0\'e0\'b6\'d4\'cf\'f3\'ce\'f6\'b9\'b9\'d3\'eb\'b9\'b9\'d4\'ec\cf3\par
+\tab\par
+\tab\cf1 /*for (int i = 0; i < 10; i++)\cf3\par
+\cf1\tab\{\cf3\par
+\cf1\tab\tab B b;\cf3\par
+\cf1\tab\}*/\cf3\par
+\tab\cf1 //\'bd\'e1\'c2\'db:\'c3\'bf\'b4\'ce\'d1\'ad\'bb\'b7\'b6\'bc\'bb\'e1\'ca\'cd\'b7\'c5\'be\'d6\'b2\'bf\'b1\'e4\'c1\'bf\cf3\par
+\tab\par
+\tab\cf7 system\cf8 (\cf5 "pause"\cf8 );\cf3\par
+\tab\cf6 return\cf3  \cf11 0\cf8 ;\cf3\par
+\cf8\}\par
+\par
+\par
+\par
+\par
+\par
+\par
+\cf4\f0 #include\cf5 <iostream>\cf3\par
+\cf4 #include\cf5 <vector>\cf3\par
+\cf4 #include\cf5 <string>\cf3\par
+\cf4 #include\cf5 <thread>\cf3\par
+\cf4 #include\cf5 <deque>\cf3\par
+\cf4 #include\cf5 <mutex>\cf3\par
+\cf6 using\cf3  \cf6 namespace\cf3  \cf7 std\cf8 ;\cf3\par
+\par
+\cf1 //\f1\'d2\'bb\'a1\'a2unique_lock\'c8\'a1\'b4\'falock_guard\cf3\par
+\cf1 //\'ca\'c7\'b8\'f6\'c0\'e0\'c4\'a3\'b0\'e5\'a3\'ac\'b9\'a4\'d7\'f7\'d6\'d0\'cd\'c6\'bc\'f6\'ca\'b9\'d3\'c3lock_guard\cf3\par
+\cf1 //unique\'b1\'c8lock_guard\'c1\'e9\'bb\'ee\'a3\'ac\'d0\'a7\'c2\'ca\'b2\'ee\'d0\'a9\cf3\par
+\cf1 //\'b6\'fe\'a1\'a2unique_lock\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\cf3\par
+\cf1 //adopt_lock\'b1\'ea\'bc\'c7\'b1\'ed\'c3\'f7\'ce\'de\'d0\'e8\'d4\'d9lock\'c1\'cb\cf3\par
+\cf1 //tyr_to_lock \'b3\'a2\'ca\'d4\'c9\'cf\'cb\'f8\'a3\'ac\'cb\'f8\'b2\'bb\'c9\'cf\'b7\'b5\'bb\'d8\'a3\'ac\'b2\'bb\'d7\'e8\'c8\'fb\'a3\'bb\'d7\'a2\'d2\'e2:\'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0lock\cf3\par
+\cf1 //defer_lock \'ca\'b9\'d3\'c3\'c7\'b0\'b1\'a3\'d6\'a4\'c3\'bb\'d3\'d0\'cf\'c8lock;\'b3\'f5\'ca\'bc\'bb\'af\'d2\'bb\'b8\'f6\'c3\'bb\'d3\'d0\'bc\'d3\'cb\'f8\'b5\'c4mutex\cf3\par
+\cf1 //\'c8\'fd\'a1\'a2unique_lock\'b5\'c4\'b3\'c9\'d4\'b1\'ba\'af\'ca\'fd\cf3\par
+\cf1 //1.lock()\cf3\par
+\cf1 //unique_lock<mutex>L1(m1, defer_lock);\cf3\par
+\cf1 //L1.lock();//\'b4\'cb\'ca\'b1\'ce\'de\'d0\'ebunlock\'a3\'ac\'bc\'d3\'c1\'cb\'d2\'b2\'c3\'bb\'ca\'c2\cf3\par
+\cf1 //2.unlock\cf3\par
+\cf1 //\'b4\'a6\'c0\'ed\'b7\'c7\'b9\'b2\'cf\'ed\'b4\'fa\'c2\'eb\'ca\'b1\'bf\'c9\'cb\'e6\'ca\'b1\'c1\'e9\'bb\'ee\'b5\'d8\'bd\'e2\'bf\'aa\cf3\par
+\cf1 //3.try_lock\cf3\par
+\cf1 //\'b3\'a2\'ca\'d4\'b8\'f8\'bb\'a5\'b3\'e2\'c1\'bf\'bc\'d3\'cb\'f8\'a3\'ac\'c4\'c3\'b5\'bd\'cb\'f8\'b7\'b5\'bb\'d8true,\'c4\'c3\'b2\'bb\'b5\'bd\'cb\'f8\'a3\'ac\'b7\'b5\'bb\'d8false,\'b2\'bb\'d7\'e8\'c8\'fb\cf3\par
+\cf1 //4.release()\cf3\par
+\cf1 //\'b7\'b5\'bb\'d8\'cb\'fc\'b9\'dc\'c0\'ed\'b5\'c4mutex\'b6\'d4\'cf\'f3\'d6\'b8\'d5\'eb\'a3\'ac\'ca\'cd\'b7\'c5\'cb\'f9\'d3\'d0\'c8\'a8\'a3\'ac\'be\'cd\'ca\'c7\'cb\'b5\'a3\'acmutex\'d3\'ebunique_lock\'b2\'bb\'d4\'da\'d3\'d0\'c1\'aa\'cf\'b5\cf3\par
+\cf1 //\'c8\'e7\'b9\'fb\'d4\'ad\'c0\'b4\'ca\'c7\'bc\'cf\'cb\'f8\'d7\'b4\'cc\'ac\'a3\'ac\'c4\'e3release\'a3\'ac\'c4\'c7\'c3\'b4\'c4\'e3\'b1\'d8\'d0\'eb\'ca\'d6\'b6\'af\'bd\'e2\'cb\'f8\cf3\par
+\cf1 //\'cb\'c4\'a1\'a2unique_lock \'cb\'f9\'d3\'d0\'c8\'a8\'b5\'c4\'b4\'ab\'b5\'dd mutex\cf3\par
+\cf1 //\'d2\'bb\'b6\'d4\'d2\'bb,\'c7\'b0\'d5\'df\'d3\'b5\'d3\'d0\'ba\'f3\'d5\'df\'b5\'c4\'cb\'f9\'d3\'d0\'c8\'a8\cf3\par
+\cf1 //\'c7\'b0\'d5\'df\'bf\'c9\'d2\'d4\'d7\'aa\'d2\'c6\'d7\'d4\'bc\'ba\'b5\'c4\'cb\'f9\'d3\'d0\'c8\'a8\cf3\par
+\cf1 //unique_lock<mutex>L1(m1);\cf3\par
+\cf1 //unique_lock<mutex>L2(move(L1));\cf3\par
+\par
+\cf1 //\'c1\'ed\'cd\'e2\'d2\'bb\'d6\'d6\'d7\'aa\'d2\'c6\'cb\'f9\'d3\'d0\'c8\'a8\'b5\'c4\'b7\'bd\'ca\'bd\cf3\par
+\cf1 //\'ba\'af\'ca\'fd\'b7\'b5\'bb\'d8\'d2\'bb\'b8\'f6\'b0\'f3\'b6\'a8m1\'b5\'c4unique_lock\cf3\par
+\cf9 deque\cf8 <\cf6 int\cf8 >\cf7 D\cf8 ;\cf3\par
+\par
+\cf6 class\cf3  \cf9 WRdata\cf3\par
+\cf8\{\cf3\par
+\cf6 public\cf8 :\cf3\par
+\tab\cf1 //\'d0\'b4\'ca\'fd\'be\'dd\cf3\par
+\tab\cf6 void\cf3  \cf7\highlight10 wdata\cf8\highlight2 ()\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf6 for\cf3  \cf8 (\cf6 int\cf3  \cf7 i\cf3  \cf8 =\cf3  \cf11 0\cf8 ;\cf3  \cf7 i\cf3  \cf8 <\cf3  \cf11 1000\cf8 ;\cf3  \cf7 i\cf8 ++)\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf9 unique_lock\cf8 <\cf9 mutex\cf8 >\cf7 L1\cf8 (\cf12 m1\cf8 );\cf1 //\'bc\'d3\'cb\'f8\cf3\par
+\tab\tab\tab\cf1 //unique_lock<mutex>L2(move(L1)); \'d7\'aa\'d2\'c6\'cb\'f9\'d3\'d0\'c8\'a8\cf3\par
+\tab\tab\tab\cf1 //L1.release();//\'bd\'e2\'b3\'fd\cf3\par
+\tab\tab\tab\cf7 D\cf8 .\cf7\highlight10 push_back\cf8\highlight2 (\cf7 i\cf8 );\cf3\par
+\tab\tab\tab\cf7 cout\cf3  \cf8 <<\cf3  \cf5 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'d0\'b4\'c8\'eb\'b3\'c9\'b9\'a6\'a3\'a1\'d0\'b4\'c8\'eb\'b5\'c4\'ca\'fd\'be\'dd\'ca\'c7"\cf3  \cf8 <<\cf3  \cf7 i\cf3  \cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\tab     \par
+\tab\tab\tab\cf1 //\'bd\'e2\'b3\'fd\'ba\'f3\'b1\'d8\'d0\'eb\'ca\'d6\'b6\'af\'bd\'e2\'cb\'f8\cf3\par
+\tab\tab\tab\cf1 //m1.unlock();\cf3\par
+\tab\tab\tab\cf1 //\'b4\'cb\'ca\'b1\'b2\'bb\'d3\'c3\'d7\'d4\'bc\'baunlock\cf3\par
+\tab\tab\cf8\}\cf3\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf1 //\'b6\'c1\'ca\'fd\'be\'dd\cf3\par
+\par
+\tab\cf1 //\'c5\'d0\'b6\'cf\'b5\'b1\'c7\'b0\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'ca\'c7\'b7\'f1\'bf\'c9\'d2\'d4\'b6\'c1\'b3\'f6\cf3\par
+\par
+\tab\cf6 bool\cf3  \cf7\highlight10 Empty\cf8\highlight2 ()\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf1 //\'c9\'cf\'cb\'f8 \'ce\'d2\'b6\'c1\'b3\'f6\'ca\'fd\'be\'dd\'b5\'c4\'ca\'b1\'ba\'f2\'a3\'ac\'c4\'e3\'b2\'bb\'c4\'dc\'d0\'b4\cf3\par
+\tab\tab\cf9 unique_lock\cf8 <\cf9 mutex\cf8 >\cf7 L1\cf8 (\cf12 m1\cf8 );\cf3\par
+\par
+\tab\tab\cf1 //chrono::milliseconds during(200);//\'d0\'dd\'cf\'a220s\cf3\par
+\tab\tab\cf1 //this_thread::sleep_for(during);\cf3\par
+\tab\tab\cf6 if\cf3  \cf8 (\cf7 D\cf8 .\cf7\highlight10 empty\cf8\highlight2 ())\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf6 return\cf3  \cf6 true\cf8 ;\cf3\par
+\tab\tab\cf8\}\cf3\par
+\tab\tab\cf6 int\cf3  \cf7 val\cf3  \cf8 =\cf3  \cf8 *(\cf7 D\cf8 .\cf7\highlight10 begin\cf8\highlight2 ());\cf3\par
+\tab\tab\cf7 cout\cf3  \cf8 <<\cf3  \cf5 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'b6\'c1\'b3\'f6\'b3\'c9\'b9\'a6!\'b6\'c1\'b3\'f6\'b5\'c4\'ca\'fd\'be\'dd\'ca\'c7\'a3\'ba"\cf3  \cf8 <<\cf7 val\cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\tab\cf7 D\cf8 .\cf7\highlight10 pop_front\cf8\highlight2 ();\cf3\par
+\par
+\tab\tab\cf6 return\cf3  \cf6 false\cf8 ;\cf3\par
+\par
+\tab\cf8\}\cf3\par
+\par
+\tab\cf6 void\cf3  \cf7\highlight10 rdata\cf8\highlight2 ()\cf3\par
+\tab\cf8\{\cf3\par
+\tab\tab\cf6 for\cf3  \cf8 (\cf6 int\cf3  \cf7 i\cf3  \cf8 =\cf3  \cf11 0\cf8 ;\cf3  \cf7 i\cf3  \cf8 <\cf3  \cf11 1000\cf8 ;\cf3  \cf7 i\cf8 ++)\cf3\par
+\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\cf6 bool\cf3  \cf7 result\cf3  \cf8 =\cf3  \cf7\highlight10 Empty\cf8\highlight2 ();\cf3\par
+\tab\tab\tab\cf6 if\cf3  \cf8 (\cf7 result\cf8 )\cf3\par
+\tab\tab\tab\cf8\{\cf3\par
+\tab\tab\tab\tab\cf7 cout\cf3  \cf8 <<\cf5 "\'b9\'b2\'cf\'ed\'ca\'fd\'be\'dd\'d2\'d1\'bf\'d5\'a3\'ac\'b6\'c1\'b3\'f6\'ca\'a7\'b0\'dc"\cf3  \cf8 <<\cf3  \cf7 endl\cf8 ;\cf3\par
+\tab\tab\tab\cf8\}\cf3\par
+\tab\tab\tab\par
+\tab\tab\cf8\}\cf3\par
+\tab\par
+\tab\cf8\}\cf3\par
+\cf6 private\cf8 :\cf3\par
+\tab\cf9 mutex\cf3  \cf12 m1\cf8 ;\cf3\par
+\tab\cf9 mutex\cf3  \cf12 m2\cf8 ;\cf3\par
+\cf8\};\cf3\par
+\par
+\cf6 int\cf3  \cf7 main\cf8 (\cf6 void\cf8 )\cf3\par
+\cf8\{\cf3\par
+\tab\cf9 WRdata\cf3  \cf7 wr\cf8 ;\cf3\par
+\tab\cf9 thread\cf3  \cf7 t1\cf8 (&\cf9 WRdata\cf8 ::\cf7\highlight10 rdata\cf8\highlight2 ,&\cf7 wr\cf8 );\cf3\par
+\tab\cf9 thread\cf3  \cf7 t2\cf8 (&\cf9 WRdata\cf8 ::\cf7\highlight10 wdata\cf8\highlight2 ,\cf3  \cf8 &\cf7 wr\cf8 );\cf3\par
+\tab\cf7 t1\cf8 .\cf7\highlight10 join\cf8\highlight2 ();\cf3\par
+\tab\cf7 t2\cf8 .\cf7\highlight10 join\cf8\highlight2 ();\cf3\par
+\par
+\tab\cf7 system\cf8 (\cf5 "pause"\cf8 );\cf3\par
+\tab\cf6 return\cf3  \cf11 0\cf8 ;\cf3\par
+\cf8\}\cf0\highlight0\f2\fs22\par
+}
+ 

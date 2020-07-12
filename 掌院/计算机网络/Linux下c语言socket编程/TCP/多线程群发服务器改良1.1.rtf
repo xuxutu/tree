@@ -1,0 +1,191 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil NSimSun;}{\f1\fnil\fcharset134 NSimSun;}{\f2\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\colortbl ;\red155\green155\blue155;\red30\green30\blue30;\red220\green220\blue220;\red189\green99\blue197;\red214\green157\blue133;\red87\green166\blue74;\red180\green180\blue180;\red181\green206\blue168;\red78\green201\blue176;\red200\green200\blue200;\red86\green156\blue214;\red127\green127\blue127;\red218\green218\blue218;}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\cf1\highlight2\f0\fs30\lang2052 #define\cf3  \cf4 _CRT_SECURE_NO_WARNINGS\cf3\par
+\cf1 #include\cf3  \cf5 <stdio.h>\cf3\par
+\cf1 #include\cf5 <string.h>\cf3\par
+\cf1 #include\cf5 <process.h>\cf3\par
+\cf6 //\f1\'cc\'d7\'bd\'d3\'d7\'d6\'cb\'f9\'d0\'e8\'b5\'c4\'cd\'b7\'ce\'c4\'bc\'fe\cf3\par
+\cf1 #include\cf3  \cf5 <WINSOCK.H>\cf3\par
+\cf6 //windows\'cc\'d7\'bd\'d3\'d7\'d6\'b5\'c4\'bf\'e2\'ce\'c4\'bc\'fe\cf3\par
+\cf1 #pragma\cf3  \cf1 comment\cf7 (\cf1 lib\cf7 ,\cf5 "WSOCK32.LIB"\cf7 )\cf3\par
+\cf6 //\'b3\'cc\'d0\'f2\'ca\'b9\'d3\'c3\'b5\'c4winsock\'d6\'f7\'b0\'e6\'b1\'be\cf3\par
+\cf1 #define\cf3  \cf4 SOCK_VER\cf3  \cf8 2\cf3  \par
+\cf1 #define\cf3  \cf4 port\cf3  \cf8 5529\cf3\par
+\cf1 #define\cf3  \cf4 ip_addr\cf3  \cf5 "127.0.0.1"\cf3\par
+\par
+\cf9 HANDLE\cf3  \cf10 EVENT\cf7 ;\cf3\par
+\cf9 HANDLE\cf3  \cf10 mutex\cf3  \cf7 =\cf3  \cf4 NULL\cf7 ;\cf3\par
+\cf11 char\cf3  \cf10 Sbuf\cf7 [\cf8 256\cf7 ]\cf3  \cf7 =\cf3  \cf7\{\cf3  \cf8 0\cf3  \cf7\};\cf3\par
+\par
+\par
+\cf6 //\'b4\'b4\'bd\'a8\'cf\'df\'b3\'cc\cf3\par
+\cf9 DWORD\cf3  \cf4 WINAPI\cf3  \cf10 clientThread\cf7 (\cf11 void\cf7 *\cf3  \cf12 p\cf7 )\cf3\par
+\cf7\{\cf3\par
+\tab\cf9 SOCKET\cf3  \cf10 client\cf3  \cf7 =\cf3  \cf7 *(\cf9 SOCKET\cf7 *)\cf12 p\cf7 ;\cf6 //\'b2\'ce\'ca\'fd\'d6\'b8\'d5\'eb\'c0\'e0\'d0\'cd\'d7\'aa\'bb\'bb\cf3\par
+\tab\cf11 int\cf3  \cf10 Ret\cf3  \cf7 =\cf3  \cf8 0\cf7 ;\cf3\par
+\tab\cf11 char\cf3  \cf10 Rbuf\cf7 [\cf8 256\cf7 ];\cf3\par
+\par
+\tab\cf11 while\cf3  \cf7 (\cf11 true\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf6 //memset(Rbuf, 0, 256);//\'c7\'e5\'c1\'e3\cf3\par
+\tab\tab\cf6 //Ret = recv(client, Rbuf, 256, 0);//\'b6\'c1\'c8\'a1\cf3\par
+\tab\tab\cf6 //if (Ret == SOCKET_ERROR)\cf3\par
+\tab\tab\cf6 //\{\cf3\par
+\tab\tab\cf6 //\tab printf("\'bf\'cd\'bb\'a7\'b6\'cb\'d2\'d1\'be\'ad\'b9\'d8\'b1\'d5\'a3\'a1\\n");\cf3\par
+\tab\tab\cf6 //\tab break;\cf3\par
+\tab\tab\cf6 //\}\cf3\par
+\tab\tab\cf6 //printf("\\n\'ca\'d5\'b5\'bd\'bf\'cd\'bb\'a7\'b6\'cb\'b5\'c4\'cf\'fb\'cf\'a2:%s",Rbuf);\cf3\par
+\tab\tab\cf10 WaitForSingleObject\cf7 (\cf10 EVENT\cf7 ,\cf3  \cf4 INFINITE\cf7 );\cf3\par
+\tab\tab\cf11 if\cf3  \cf7 (\cf10 strlen\cf7 (\cf10 Sbuf\cf7 )\cf3  \cf7 !=\cf3  \cf8 0\cf7 )\cf3\par
+\tab\tab\cf7\{\cf3\par
+\tab\tab\tab\cf10 printf\cf7 (\cf5 "\'d6\'b8\'c1\'ee\'d2\'d1\'be\'ad\'b7\'a2\'cb\'cd\\n"\cf7 );\cf3\par
+\tab\tab\tab\cf10 Ret\cf3  \cf7 =\cf3  \cf10 send\cf7 (\cf10 client\cf7 ,\cf3  \cf10 Sbuf\cf7 ,\cf3  \cf8 256\cf7 ,\cf3  \cf8 0\cf7 );\cf3\par
+\tab\tab\cf7\}\cf3\par
+\tab\tab\cf10 ResetEvent\cf7 (\cf10 EVENT\cf7 );\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf11 return\cf3  \cf8 0\cf7 ;\cf3\par
+\cf7\}\cf3\par
+\par
+\cf6 //\'b7\'fe\'ce\'f1\'c6\'f7\cf3\par
+\cf11 void\cf3  \cf10 main1\cf7 (\cf11 void\cf7 *\cf12 p\cf7 )\cf3\par
+\cf7\{\cf3\par
+\tab\cf6 //\'b3\'f5\'ca\'bc\'bb\'afWinSock\'bb\'b7\'be\'b3\cf3\par
+\par
+\tab\cf6 //\'d5\'e2\'b8\'f6\'bd\'e1\'b9\'b9\'cc\'e5\'b1\'bb\'d3\'c3\'c0\'b4\'b4\'e6\'b4\'a2 \'b1\'bbWSAStartup\'ba\'af\'ca\'fd\'b5\'f7\'d3\'c3\'ba\'f3\'b7\'b5\'bb\'d8\'b5\'c4 Windows Sockets \'ca\'fd\'be\'dd\'a1\'a3\cf3\par
+\tab\cf9 WSADATA\cf3  \cf10 wd\cf3  \cf7 =\cf3  \cf7\{\cf3  \cf8 0\cf3  \cf7\};\cf3\par
+\tab\cf6 //\'b5\'b1\'d2\'bb\'b8\'f6\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'b5\'f7\'d3\'c3WSAStartup\'ba\'af\'ca\'fd\'ca\'b1\'a3\'ac\'b2\'d9\'d7\'f7\'cf\'b5\'cd\'b3\'b8\'f9\'be\'dd\'c7\'eb\'c7\'f3\'b5\'c4Socket\'b0\'e6\'b1\'be\'c0\'b4\'cb\'d1\'cb\'f7\'cf\'e0\'d3\'a6\'b5\'c4Socket\'bf\'e2\'a3\'ac\cf3\par
+\tab\cf6 //\'c8\'bb\'ba\'f3\'b0\'f3\'b6\'a8\'d5\'d2\'b5\'bd\'b5\'c4Socket\'bf\'e2\'b5\'bd\'b8\'c3\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'d6\'d0\'a1\'a3\'d2\'d4\'ba\'f3\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'be\'cd\'bf\'c9\'d2\'d4\'b5\'f7\'d3\'c3\'cb\'f9\'c7\'eb\'c7\'f3\'b5\'c4Socket\'bf\'e2\'d6\'d0\'b5\'c4\'c6\'e4\'cb\'fcSocket\'ba\'af\'ca\'fd\'c1\'cb\'a1\'a3\cf3\par
+\tab\cf6 //\'b8\'c3\'ba\'af\'ca\'fd\'b5\'c4\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'d6\'b8\'c3\'f7\'b3\'cc\'d0\'f2\'c7\'eb\'c7\'f3\'ca\'b9\'d3\'c3\'b5\'c4 Socket \'b0\'e6\'b1\'be, \'c6\'e4\'d6\'d0\'b8\'df\'ce\'bb\'d7\'d6\'bd\'da\'d6\'b8\'c3\'f7\'b8\'b1\'b0\'e6\'b1\'be\'a1\'a2 \'b5\'cd\'ce\'bb\'d7\'d6\'bd\'da\'d6\'b8\'c3\'f7\'d6\'f7\'b0\'e6\'b1\'be; \cf3\par
+\tab\cf6 //\'b8\'c3\'ba\'af\'ca\'fd\'d6\'b4\'d0\'d0\'b3\'c9\'b9\'a6\'ba\'f3\'b7\'b5\'bb\'d80\'a1\'a3\cf3\par
+\tab\cf11 int\cf3  \cf10 ret\cf3  \cf7 =\cf3  \cf10 WSAStartup\cf7 (\cf4 MAKEWORD\cf7 (\cf4 SOCK_VER\cf7 ,\cf3  \cf8 2\cf7 ),\cf3  \cf7 &\cf10 wd\cf7 );\cf3\par
+\tab\cf11 if\cf3  \cf7 (\cf10 ret\cf3  \cf7 !=\cf3  \cf8 0\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf10 printf\cf7 (\cf5 "\'b0\'e6\'b1\'be\'b2\'bb\'d2\'bb\'d6\'c2\'a3\'acsocket\'bf\'e2\'b0\'f3\'b6\'a8\'ca\'a7\'b0\'dc!\\n"\cf7 );\cf3\par
+\tab\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\tab\cf11 return\cf7 ;\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf6 //#define LOBYTE(x)   (*((_BYTE*)&(x)))   // low byte\cf3\par
+\tab\cf6 //\'cf\'e0\'b5\'b1\'d3\'da\'c8\'a1\'b1\'e4\'c1\'bf\'b5\'c4\'d7\'ee\'b5\'cdbyte\'ce\'bb\'c0\'b4\'b8\'b3\'d6\'b5\cf3\par
+\tab\cf11 if\cf3  \cf7 (\cf4 LOBYTE\cf7 (\cf10 wd\cf7 .\cf13 wVersion\cf7 )\cf3  \cf7 !=\cf3  \cf8 2\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf6 //\'d6\'f7\'b0\'e6\'b1\'be\'b2\'bb\'ca\'c72\'a3\'ac\'d4\'f2\'b3\'f5\'ca\'bc\'bb\'af\'ca\'a7\'b0\'dc\'a3\'bb\cf3\par
+\tab\tab\cf10 printf\cf7 (\cf5 "\'b0\'e6\'b1\'be\'b2\'bb\'d2\'bb\'d6\'c2\'a3\'acsocket\'bf\'e2\'b0\'f3\'b6\'a8\'ca\'a7\'b0\'dc!\\n"\cf7 );\cf3\par
+\tab\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\tab\cf11 return\cf7 ;\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf9 SOCKET\cf3  \cf10 client\cf7 ,\cf3  \cf10 server\cf7 ;\cf6 //\'bf\'cd\'bb\'a7\'b6\'cb,\'b7\'fe\'ce\'f1\'c6\'f7\cf3\par
+\par
+\tab\cf11 struct\cf3  \cf9 sockaddr_in\cf3  \cf10 localaddr\cf7 ,\cf3  \cf10 clientaddr\cf7 ;\cf6 //\'b1\'be\'b5\'d8\'b5\'d8\'d6\'b7\'a3\'ac\'bf\'cd\'bb\'a7\'b6\'cb\'b5\'d8\'d6\'b7\cf3\par
+\tab\cf11 int\cf3  \cf10 addrlength\cf3  \cf7 =\cf3  \cf8 0\cf7 ;\cf3\par
+\tab\cf9 HANDLE\cf3  \cf10 hthread\cf7 ;\cf6 //\'cf\'df\'b3\'cc\'be\'e4\'b1\'fa\cf3\par
+\tab\cf11 int\cf3  \cf10 Ret\cf7 ;\cf6 //\'bd\'e1\'b9\'fb\cf3\par
+\tab\cf11 char\cf3  \cf10 sendbuf\cf7 [\cf8 256\cf7 ]\cf3  \cf7 =\cf3  \cf7\{\cf3  \cf8 0\cf3  \cf7\};\cf3\par
+\par
+\tab\cf6 //\'b4\'b4\'bd\'a8\'cc\'d7\'bd\'d3\'d7\'d6\cf3\par
+\tab\cf6 //domain\'a3\'baAF_INET\cf3\par
+\tab\cf6 //type:\cf3\par
+\tab\cf6 //SOCK_STREAM:\'c1\'f7\'ca\'bd\'cc\'d7\'bd\'d3\'d7\'d6 \'d3\'c3\'d3\'daTCP\'cd\'a8\'d0\'c5\cf3\par
+\tab\cf6 //SOCK_DGRAM: \'b1\'a8\'ca\'bd\'cc\'d7\'bd\'d3\'d7\'d6 \'d3\'c3\'d3\'daUDP\'cd\'a8\'d0\'c5\cf3\par
+\tab\cf6 //protocol\'a3\'ba0\'b4\'fa\'b1\'ed\'d7\'d4\'b6\'af\'d1\'a1\'d4\'f1\cf3\par
+\tab\cf10 server\cf3  \cf7 =\cf3  \cf10 socket\cf7 (\cf4 AF_INET\cf7 ,\cf3  \cf4 SOCK_STREAM\cf7 ,\cf3  \cf8 0\cf7 );\cf3\par
+\tab\cf11 if\cf3  \cf7 (\cf10 server\cf3  \cf7 ==\cf3  \cf4 INVALID_SOCKET\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf10 printf\cf7 (\cf5 "\'b7\'fe\'ce\'f1\'c6\'f7\'b4\'b4\'bd\'a8\'ca\'a7\'b0\'dc!"\cf7 );\cf3\par
+\tab\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\tab\cf11 return\cf7 ;\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf6 //\'b3\'f5\'ca\'bc\'bb\'af\'b1\'be\'b5\'d8\'b5\'d8\'d6\'b7\'bd\'e1\'b9\'b9\'cc\'e5\cf3\par
+\tab\cf10 localaddr\cf7 .\cf13 sin_family\cf3  \cf7 =\cf3  \cf4 AF_INET\cf7 ;\cf6 //IPV4\cf3\par
+\tab\cf10 localaddr\cf7 .\cf13 sin_port\cf3  \cf7 =\cf3  \cf10 htons\cf7 (\cf4 port\cf7 );\cf6 //\'b6\'cb\'bf\'da\cf3\par
+\tab\cf6 //inet_addr:\'bd\'ab\'d2\'bb\'b8\'f6\'b5\'e3\'b7\'d6\'ca\'ae\'bd\'f8\'d6\'c6\'b5\'c4ip\'d7\'aa\'ce\'aa\'b3\'a4\'d5\'fb\'d0\'ce\'ca\'fd\cf3\par
+\tab\cf10 localaddr\cf7 .\cf13 sin_addr\cf7 .\cf4 s_addr\cf3  \cf7 =\cf3  \cf10 htonl\cf7 (\cf4 INADDR_ANY\cf7 );\cf6 //IP\cf3\par
+\tab\cf10 memset\cf7 (\cf10 localaddr\cf7 .\cf13 sin_zero\cf7 ,\cf3  \cf8 0x00\cf7 ,\cf3  \cf8 8\cf7 );\cf3\par
+\par
+\tab\cf6 //\'b0\'f3\'b6\'a8\'b1\'be\'b5\'d8\'b5\'d8\'d6\'b7\cf3\par
+\tab\cf10 Ret\cf3  \cf7 =\cf3  \cf10 bind\cf7 (\cf10 server\cf7 ,\cf3  \cf7 (\cf11 struct\cf3  \cf9 sockaddr\cf7 *)&\cf10 localaddr\cf7 ,\cf3  \cf11 sizeof\cf7 (\cf10 localaddr\cf7 ));\cf3\par
+\tab\cf11 if\cf3  \cf7 (\cf10 ret\cf7 <\cf8 0\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf10 printf\cf7 (\cf5 "\'b0\'f3\'b6\'a8\'ca\'a7\'b0\'dc!\\n"\cf7 );\cf3\par
+\tab\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\tab\cf11 return\cf7 ;\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf6 //\'c9\'e8\'d6\'c3\'bc\'e0\'cc\'fd\'c9\'cf\'cf\'de\cf3\par
+\tab\cf6 //Listen\cf3\par
+\tab\cf6 //int listen(int sockfd,int backlog);\cf3\par
+\tab\cf6 //\'ba\'af\'ca\'fd\'b9\'a6\'c4\'dc\'a3\'ba\'c9\'e8\'d6\'c3\'bf\'c9\'d2\'d4\'cd\'ac\'ca\'b1\'c8\'fd\'b4\'ce\'ce\'d5\'ca\'d6\'b5\'c4\'bf\'cd\'bb\'a7\'b6\'cb\'b5\'c4\'ca\'fd\'c1\'bf\cf3\par
+\tab\cf6 //\'bd\'ab\'cc\'d7\'bd\'d3\'d7\'d6\'d3\'c9\'d6\'f7\'b6\'af\'b1\'e4\'b1\'bb\'b6\'af\'a3\'ac\'b2\'a2\'c7\'d2\'b4\'b4\'bd\'a8\'c1\'bd\'b8\'f6\'c1\'ac\'bd\'d3\'b6\'d3\'c1\'d0\cf3\par
+\tab\cf6 //\'b2\'ce\'ca\'fd\'a3\'ba\cf3\par
+\tab\cf6 //sockfd\'a3\'ba\'cc\'d7\'bd\'d3\'d7\'d6\cf3\par
+\tab\cf6 //backlog \'a3\'ba\'d2\'d1\'cd\'ea\'b3\'c9\'c1\'ac\'bd\'d3\'b6\'d3\'c1\'d0\'ba\'cd\'ce\'b4\'cd\'ea\'b3\'c9\'c1\'ac\'bd\'d3\'b6\'d3\'c1\'d0\'c9\'cf\'c1\'ac\'bd\'d3\'ca\'fd\'d6\'ae\'ba\'cd\'b5\'c4\'d7\'ee\'b4\'f3\'d6\'b5 \'d2\'bb\'b0\'e3\'d0\'b4128\cf3\par
+\tab\cf6 //\'b7\'b5\'bb\'d8\'d6\'b5\'a3\'ba\'b3\'c9\'b9\'a6\'b7\'b5\'bb\'d80\'a3\'ac\'ca\'a7\'b0\'dc\'b7\'b5\'bb\'d8-1 \cf3\par
+\tab\cf10 Ret\cf3  \cf7 =\cf3  \cf10 listen\cf7 (\cf10 server\cf7 ,\cf3  \cf8 5\cf7 );\cf3\par
+\tab\cf11 if\cf3  \cf7 (\cf10 ret\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf10 printf\cf7 (\cf5 "Listen Failed!\\n"\cf7 );\cf3\par
+\tab\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\tab\cf11 return\cf7 ;\cf3\par
+\tab\cf7\}\cf3\par
+\tab\cf11 else\cf3\par
+\tab\cf7\{\cf3\par
+\tab     \cf10 printf\cf7 (\cf5 "\'b7\'fe\'ce\'f1\'c6\'f7\'c6\'f4\'b6\'af...\\n"\cf7 );\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf11 while\cf3  \cf7 (\cf11 true\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf10 addrlength\cf3  \cf7 =\cf3  \cf11 sizeof\cf7 (\cf10 clientaddr\cf7 );\cf3\par
+\tab\tab\cf6 //Accept\cf3\par
+\tab\tab\cf6 //\'b9\'a6\'c4\'dc:\'d7\'e8\'c8\'fb\'b5\'c8\'b4\'fd\'bf\'cd\'bb\'a7\'b6\'cb\'c1\'aa\'c1\'a2\'c1\'ac\'bd\'d3\'a3\'ac\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'b0\'b7\'b5\'bb\'d8\'d2\'bb\'b8\'f6\'d3\'eb\'bf\'cd\'bb\'a7\'b6\'cb\'b3\'c9\'b9\'a6\'c1\'ac\'bd\'d3\'b5\'c4socket\'ce\'c4\'bc\'fe\'c3\'e8\'ca\'f6\'b7\'fb\cf3\par
+\tab\tab\cf6 //\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'a3\'ba\'b4\'ab\'b3\'f6\'b2\'ce\'ca\'fd,\'b3\'c9\'b9\'a6\'d3\'eb\'bf\'cd\'bb\'a7\'b6\'cb\'bd\'a8\'c1\'a2\'c1\'ac\'bd\'d3\'b5\'c4\'c4\'c7\'b8\'f6\'bf\'cd\'bb\'a7\'b6\'cb\'b5\'c4\'b5\'d8\'d6\'b7\'bd\'e1\'b9\'b9\cf3\par
+\tab\tab\cf6 //\'b5\'da\'c8\'fd\'b8\'f6\'b2\'ce\'ca\'fd\'a3\'ba\'b4\'ab\'c8\'eb\'b4\'ab\'b3\'f6\'b2\'ce\'ca\'fd\'a3\'ac\'bd\'f8\'c8\'a5\'ca\'c7\'d4\'ad\'c0\'b4\'b5\'c4\'b3\'a4\'b6\'c8\'a3\'ac\'b3\'f6\'c0\'b4\'ca\'c7\'b3\'c9\'b9\'a6\'bd\'a8\'c1\'a2\'bf\'cd\'bb\'a7\'b6\'cb\'b5\'c4\'b5\'d8\'d6\'b7\'bd\'e1\'b9\'b9\'b3\'a4\'b6\'c8\cf3\par
+\tab\tab\cf10 client\cf3  \cf7 =\cf3  \cf10 accept\cf7 (\cf10 server\cf7 ,\cf3  \cf7 (\cf11 struct\cf3  \cf9 sockaddr\cf7 *)&\cf10 clientaddr\cf7 ,\cf3  \cf7 &\cf10 addrlength\cf7 );\cf3\par
+\tab\tab\cf11 if\cf3  \cf7 (\cf10 client\cf3  \cf7 ==\cf3  \cf4 INVALID_SOCKET\cf7 )\cf3\par
+\tab\tab\cf7\{\cf3\par
+\tab\tab\tab\cf10 printf\cf7 (\cf5 "Accept Failed!\\n"\cf7 );\cf3\par
+\tab\tab\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\tab\tab\cf11 return\cf7 ;\cf3\par
+\tab\tab\cf7\}\cf3\par
+\tab\tab\cf10 printf\cf7 (\cf5 "\'bf\'cd\'bb\'a7\'b6\'cb\'c1\'ac\'bd\'d3%s %d\\n"\cf7 ,\cf3  \cf10 inet_ntoa\cf7 (\cf10 clientaddr\cf7 .\cf13 sin_addr\cf7 ),\cf3  \cf10 clientaddr\cf7 .\cf13 sin_port\cf7 );\cf3\par
+\par
+\tab\tab\cf6 /*\tab printf("\\n\'c7\'eb\'ca\'e4\'c8\'eb\'d6\'b8\'c1\'ee\'a3\'ba\\n");\cf3\par
+\cf6\tab\tab memset(Sbuf, 0, 256);\cf3\par
+\cf6\tab\tab scanf("%s", Sbuf);*/\cf3\par
+\tab\tab\cf10 hthread\cf3  \cf7 =\cf3  \cf10 CreateThread\cf7 (\cf4 NULL\cf7 ,\cf3  \cf8 0\cf7 ,\cf3  \cf10 clientThread\cf7 ,\cf3  \cf7 &\cf10 client\cf7 ,\cf3  \cf8 0\cf7 ,\cf3  \cf4 NULL\cf7 );\cf3\par
+\par
+\tab\tab\cf6 //WaitForSingleObject(hthread, INFINITE);\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf6 //\'b9\'d8\'b1\'d5\'c1\'ac\'bd\'d3\'cc\'d7\'bd\'d3\'d7\'d6\cf3\par
+\tab\cf10 closesocket\cf7 (\cf10 client\cf7 );\cf3\par
+\tab\cf10 closesocket\cf7 (\cf10 server\cf7 );\cf3\par
+\tab\cf6 //\'c7\'e5\'c0\'ed\'cc\'d7\'bd\'d3\'d7\'d6\'bb\'b7\'be\'b3\cf3\par
+\tab\cf6 //\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'d4\'da\'cd\'ea\'b3\'c9\'b6\'d4\'c7\'eb\'c7\'f3\'b5\'c4Socket\'bf\'e2\'b5\'c4\'ca\'b9\'d3\'c3\'ba\'f3\'a3\'ac\'d2\'aa\'b5\'f7\'d3\'c3WSACleanup\'ba\'af\'ca\'fd\'c0\'b4\'bd\'e2\'b3\'fd\'d3\'ebSocket\'bf\'e2\'b5\'c4\'b0\'f3\'b6\'a8\'b2\'a2\'c7\'d2\'ca\'cd\'b7\'c5Socket\'bf\'e2\'cb\'f9\'d5\'bc\'d3\'c3\'b5\'c4\'cf\'b5\'cd\'b3\'d7\'ca\'d4\'b4\'a1\'a3\cf3\par
+\tab\cf10 WSACleanup\cf7 ();\cf3\par
+\par
+\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\cf11 return\cf7 ;\cf3\par
+\cf7\}\cf3\par
+\par
+\cf11 int\cf3  \cf10 main\cf7 (\cf11 void\cf7 )\cf3\par
+\cf7\{\cf3\par
+\tab\cf10 EVENT\cf3  \cf7 =\cf3  \cf4 CreateEvent\cf7 (\cf4 NULL\cf7 ,\cf3  \cf4 TRUE\cf7 ,\cf3  \cf4 FALSE\cf7 ,\cf3  \cf4 NULL\cf7 );\cf3\par
+\tab\cf9 HANDLE\cf3  \cf10 T\cf7 =(\cf9 HANDLE\cf7 )\cf10 _beginthread\cf7 (\cf10 main1\cf7 ,\cf3  \cf8 0\cf7 ,\cf3  \cf4 NULL\cf7 );\cf3\par
+\tab\cf6 //WaitForSingleObject(T, INFINITE);\cf3\par
+\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\cf11 while\cf3  \cf7 (\cf11 true\cf7 )\cf3\par
+\tab\cf7\{\cf3\par
+\tab\tab\cf10 printf\cf7 (\cf5 "\\n\'c7\'eb\'ca\'e4\'c8\'eb\'d6\'b8\'c1\'ee\'a3\'ba\\n"\cf7 );\cf3\par
+\tab\tab\cf10 scanf\cf7 (\cf5 "%s"\cf7 ,\cf3  \cf10 Sbuf\cf7 );\cf3\par
+\tab\tab\cf10 SetEvent\cf7 (\cf10 EVENT\cf7 );\cf3\par
+\tab\cf7\}\cf3\par
+\par
+\tab\cf10 system\cf7 (\cf5 "pause"\cf7 );\cf3\par
+\tab\cf11 return\cf3  \cf8 0\cf7 ;\cf3\par
+\cf7\}\cf0\highlight0\f2\fs22\par
+}
+ 

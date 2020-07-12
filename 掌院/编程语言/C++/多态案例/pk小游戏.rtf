@@ -1,0 +1,310 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang2052 #include<iostream>\par
+#include<string>\par
+using namespace std;\par
+//\'b3\'e9\'cf\'f3\'ce\'e4\'c6\'f7\'c0\'e0\par
+class Weapon\par
+\{\par
+public:\par
+\tab //\'bb\'f1\'c8\'a1\'bb\'f9\'b4\'a1\'c9\'cb\'ba\'a6\par
+\tab virtual int getBaseDamage()=0;\par
+\tab //\'bb\'f1\'c8\'a1\'ce\'fc\'d1\'aa\par
+\tab virtual int getSuckBlood()=0;\par
+\tab //\'bb\'f1\'c8\'a1\'ca\'c7\'b7\'f1\'b6\'a8\'c9\'ed\par
+\tab virtual bool getHold()=0;\par
+\tab //\'bb\'f1\'c8\'a1\'ca\'c7\'b7\'f1\'b1\'a9\'bb\'f7\par
+\tab virtual bool getCrit()=0;\par
+public:\par
+\tab string WeaponName;//\'ce\'e4\'c6\'f7\'c3\'fb\'b3\'c6\par
+\tab int BaseDamage;//\'bb\'f9\'b4\'a1\'c9\'cb\'ba\'a6\par
+\};\par
+//\'d0\'a1\'b5\'b6\'c0\'e0\par
+class Knife:public Weapon\par
+\{\par
+public:\par
+    Knife()\par
+\tab\{\par
+\tab     this->WeaponName="\'d0\'a1\'b5\'b6";\par
+\tab\tab this->BaseDamage=10;\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'bb\'f9\'b4\'a1\'c9\'cb\'ba\'a6\par
+\tab virtual int getBaseDamage()\par
+\tab\{\par
+\tab     return this->BaseDamage;\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'ce\'fc\'d1\'aa\par
+\tab virtual int getSuckBlood()\par
+\tab\{\par
+\tab     return 0;\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'ca\'c7\'b7\'f1\'b6\'a8\'c9\'ed\par
+\tab virtual bool getHold()\par
+\tab\{\par
+\tab     return false;\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'ca\'c7\'b7\'f1\'b1\'a9\'bb\'f7\par
+\tab virtual bool getCrit()\par
+\tab\{\par
+\tab     return false;\par
+\tab\}\par
+\};\par
+//\'cd\'c0\'c1\'fa\'b5\'b6\'c0\'e0\par
+class DragonSword:public Weapon\par
+\{\par
+public:\par
+    DragonSword()\par
+\tab\{\par
+\tab\tab this->WeaponName="\'cd\'c0\'c1\'fa\'b5\'b6";\par
+\tab\tab this->BaseDamage=20;\par
+\tab\tab this->suckRate=20;\par
+\tab\tab this->holdRate=30;\par
+\tab\tab this->critRate=35;\par
+\tab\}\par
+    //\'bb\'f1\'c8\'a1\'bb\'f9\'b4\'a1\'c9\'cb\'ba\'a6\par
+\tab virtual int getBaseDamage()\par
+\tab\{\par
+\tab     return this->BaseDamage;\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'ce\'fc\'d1\'aa\par
+\tab virtual int getSuckBlood()\par
+\tab\{   \par
+\tab\tab if(isTrigger(suckRate))\par
+\tab\tab\{\par
+\tab\tab     return this->BaseDamage*0.5;//\'b0\'b4\'d5\'d5\'bb\'f9\'b4\'a1\'c9\'cb\'ba\'a6\'d2\'bb\'b0\'eb\'ce\'fc\'d1\'aa\par
+\tab\tab\}\par
+\tab\tab return 0;\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'ca\'c7\'b7\'f1\'b6\'a8\'c9\'ed\par
+\tab virtual bool getHold()\par
+\tab\{\par
+\tab     if(isTrigger(holdRate))\par
+\tab\tab\{\par
+\tab\tab     return true;\par
+\tab\tab\}else\par
+\tab\tab\{\par
+\tab\tab     return false;\par
+\tab\tab\}\par
+\tab\}\par
+\tab //\'bb\'f1\'c8\'a1\'ca\'c7\'b7\'f1\'b1\'a9\'bb\'f7\par
+\tab virtual bool getCrit()\par
+\tab\{\par
+\tab     if(isTrigger(critRate))\par
+\tab\tab\{\par
+\tab\tab     return true;\par
+\tab\tab\}else\par
+\tab\tab\{\par
+\tab\tab     return false;\par
+\tab\tab\}\par
+\tab\}\par
+    \par
+\tab //\'b4\'ab\'c8\'eb\'b8\'c5\'c2\'ca\'a3\'ac\'c5\'d0\'b6\'cf\'ca\'c7\'b7\'f1\'b4\'a5\'b7\'a2\par
+\tab bool isTrigger(int rate)\par
+\tab\{\par
+\tab     //\'cb\'e6\'bb\'fa1~100\'b5\'c4\'ca\'fd\'d7\'d6\par
+\tab\tab int num=rand()%100+1;\par
+\tab\tab if(num<rate)\par
+\tab\tab\{\par
+\tab\tab     return true;\par
+\tab\tab\}\par
+\tab\tab else\par
+\tab\tab\{\par
+\tab\tab     return false;\par
+\tab\tab\}\par
+\tab\}\par
+public:\par
+\tab int suckRate;//\'ce\'fc\'d1\'aa\'c2\'ca\par
+\tab int holdRate;//\'b6\'a8\'c9\'ed\'c2\'ca\par
+    int critRate;//\'b1\'a9\'bb\'f7\'c2\'ca\par
+\};\par
+\par
+//class Hero;\par
+//\'b9\'d6\'ce\'ef\'c0\'e0\par
+class Monster\par
+\{\par
+public:\par
+\tab Monster()\par
+\tab\{\par
+\tab\tab this->name="\'b1\'c8\'cc\'d8\'b4\'f3\'c4\'a7\'cd\'f5";\par
+\tab     this->Hp=300;\par
+\tab\tab this->Atk=70;\par
+\tab\tab this->Def=40;\par
+\tab\tab this->Hold=false;\par
+\tab\}\par
+\par
+\tab void Attack(Hero* hero)\par
+\tab\{\par
+\tab     if(this->Hold)\par
+\tab\tab\{\par
+\tab\tab\tab cout<<"\'b9\'d6\'ce\'ef"<<this->name<<"\'b1\'bb\'b6\'a8\'c9\'ed\'c1\'cb"<<"\'b1\'be\'bb\'d8\'ba\'cf\'ce\'de\'b7\'a8\'b9\'a5\'bb\'f7"<<endl;\par
+\tab\tab\tab return;\par
+\tab\tab\}\par
+\par
+\tab\tab int damage=(this->Atk-hero->Def)>0 ? (this->Atk-hero->Def) : 1;\par
+\tab\tab hero->Hp -= damage;\par
+        cout<<"\'b9\'d6\'ce\'ef"<<this->name<<"\'b9\'a5\'bb\'f7\'c1\'cb\'d3\'a2\'d0\'db"<<hero->name<<"\'d4\'ec\'b3\'c9\'c1\'cb\'c9\'cb\'ba\'a6"<<Damage<<endl;\par
+\tab\}\par
+public:\par
+\tab string name;\par
+\tab int Hp;\par
+\tab int Atk;\par
+\tab int Def;\par
+\tab bool Hold;\par
+\};\par
+//\'cd\'e6\'bc\'d2\'c0\'e0\par
+class Hero\par
+\{\par
+\tab Hero()\par
+\tab\{\par
+\tab     this->name="\'c1\'f5\'b7\'a8\'ca\'a6";\par
+\tab\tab this->Hp=500;\par
+\tab\tab this->Atk=50;\par
+\tab\tab this->Def=50;\par
+\tab\tab this->weapon=NULL;\par
+\tab\}\par
+public:\par
+\tab string name;//\'c8\'cb\'c3\'fb\par
+    int Atk;//\'b9\'a5\'bb\'f7\par
+\tab int Def;//\'b7\'c0\'d3\'f9\'c1\'a6\par
+\tab int Hp;//\'d1\'aa\'c1\'bf\par
+\tab Weapon* weapon;//\'ce\'e4\'c6\'f7\par
+\tab void EquipWeapon(Weapon* weapon)//\'d7\'b0\'b1\'b8\'ce\'e4\'c6\'f7\par
+\tab\{\par
+\tab     this->weapon=weapon;\par
+\tab\tab cout<<"\'d3\'a2\'d0\'db\'a3\'ba"<<this->name<<"\'d7\'b0\'b1\'b8\'c1\'cb"<<this->weapon<<endl;\par
+\tab\}\par
+\tab void Attack(Monster* monster)\par
+\tab\{\par
+\tab     int damage=0;\par
+\tab\tab int addHp=0;\par
+\tab\tab bool isHold=false;\par
+        bool isCrit=false;\par
+\par
+\tab\tab if(this->weapon==NULL)\par
+\tab\tab\{\par
+\tab\tab     damage=this->Atk;\par
+\tab\tab\}\par
+\tab\tab else\par
+\tab\tab\{\par
+\tab\tab     //\'bb\'f9\'b4\'a1\'c9\'cb\'ba\'a6\par
+\tab\tab\tab damage =this->Atk+this->weapon->getBaseDamage();\par
+\tab\tab\tab //\'bc\'c6\'cb\'e3\'ce\'fc\'d1\'aa\par
+\tab\tab\tab addHp=this->weapon->getSuckBlood();\par
+\tab\tab\tab //\'bc\'c6\'cb\'e3\'b6\'a8\'c9\'ed\par
+\tab\tab\tab isHold=this->weapon->getHold();\par
+\tab\tab\tab //\'bc\'c6\'cb\'e3\'b1\'a9\'bb\'f7\par
+\tab\tab\tab isCrit=this->weapon->getCrit();\par
+\tab\tab\}\par
+\par
+\tab\tab if(isCrit)\par
+\tab\tab\{\par
+\tab\tab     damage=damage*2;\par
+\tab\tab\tab cout<<"\'d3\'a2\'d0\'db\'b5\'c4\'ce\'e4\'c6\'f7\'b4\'a5\'b7\'a2\'c1\'cb\'b1\'a9\'bb\'f7\'d0\'a7\'b9\'fb\'a3\'ac\'b9\'d6\'ce\'ef\'ca\'dc\'b5\'bd\'c1\'cb\'b1\'a9\'bb\'f7\'c9\'cb\'ba\'a6\'a3\'a1\'c9\'cb\'ba\'a6\'d6\'b5\'a3\'ba"<<damage<<endl;\par
+\tab\tab\}\par
+\tab\tab if(isHold)\par
+\tab\tab\{\par
+\tab\tab     cout<<"\'d3\'a2\'d0\'db\'b5\'c4\'ce\'e4\'c6\'f7\'b4\'a5\'b7\'a2\'c1\'cb\'b6\'a8\'c9\'ed\'d0\'a7\'b9\'fb\'a3\'ac\'b9\'d6\'ce\'ef\'cd\'a3\'d6\'b9\'b9\'a5\'bb\'f7\'d2\'bb\'bb\'d8\'ba\'cf\'a3\'a1"<<endl;\par
+\tab\tab\}\par
+\tab\tab if(addHp>0)\par
+\tab\tab\{\par
+\tab\tab     cout<<"\'d3\'a2\'d0\'db\'b5\'c4\'ce\'e4\'c6\'f7\'b4\'a5\'b7\'a2\'c1\'cb\'ce\'fc\'d1\'aa\'d0\'a7\'b9\'fb\'a3\'ac\'d3\'a2\'d0\'db\'d4\'f6\'bc\'d3\'b5\'c4\'d1\'aa\'c1\'bf\'ce\'aa"<<addHp<<endl;\par
+\tab\tab\}\par
+\par
+\tab\tab //\'c9\'e8\'d6\'c3\'b9\'d6\'ce\'ef\'b6\'a8\'c9\'ed\par
+\tab\tab monster->Hold=isHold;\par
+\par
+\tab\tab //\'bc\'c6\'cb\'e3\'d5\'e6\'ca\'b5\'c9\'cb\'ba\'a6\par
+\tab\tab int trueDamage=(damage-monster->Def)>0 ? (damage-monster->Def) : 1;\par
+        \par
+\tab\tab //\'b5\'f4\'b9\'d6\'ce\'ef\'b5\'c4\'d1\'aa\'c1\'bf\par
+\tab\tab monster->Hp -= trueDamage;\par
+\par
+\tab\tab //\'d3\'a2\'d0\'db\'bb\'d8\'d1\'aa\par
+\tab\tab this->Hp+=addHp;\par
+\par
+\tab\tab cout<<"\'d3\'a2\'d0\'db"<<this->name<<"\'b9\'a5\'bb\'f7\'c1\'cb\'b5\'d0\'c8\'cb"<<monster->name<<"\'d4\'ec\'b3\'c9\'c1\'cb\'c9\'cb\'ba\'a6"<<trueDamage<<endl;\par
+\tab\}\par
+\};\par
+\par
+void play()\par
+\{\par
+    //\'b4\'b4\'bd\'a8\'b9\'d6\'ce\'ef\par
+\tab Monster* monster=new Monster;\par
+\tab //\'b4\'b4\'bd\'a8\'d3\'a2\'d0\'db\par
+    Hero* hero=new Hero;\par
+\tab //\'b4\'b4\'bd\'a8\'ce\'e4\'c6\'f7\par
+\tab Weapon* kinfe=new Kinfe;\par
+\tab Weapon* dragon=new Dragon;\par
+\tab //\'c8\'c3\'d3\'c3\'bb\'a7\'d1\'a1\'d4\'f1\'ce\'e4\'c6\'f7\par
+\par
+\tab cout<<"\'c7\'eb\'d1\'a1\'d4\'f1\'ce\'e4\'c6\'f7\'a3\'ba"<<endl;\par
+\tab cout<<"1.\'b3\'e0\'ca\'d6\'bf\'d5\'c8\'ad"<<endl;\par
+\tab cout<<"2.\'d0\'a1\'b5\'b6"<<endl;\par
+\tab cout<<"1.\'cd\'c0\'c1\'fa\'b5\'b6"<<endl;\par
+    \par
+\tab int oper;\par
+\tab cin>>oper;\par
+\tab switch(oper)\par
+\tab\{\par
+\tab     case 1:\par
+            cout<<"\'b2\'bb\'d7\'d4\'c1\'bf\'c1\'a6\'a3\'a1"<<endl;\par
+\tab\tab     break;\par
+\tab\tab case 2:\par
+            hero->EquipWeapon(kinfe);\par
+\tab\tab\tab break;\par
+\tab\tab case 3:\par
+            hero->EquipWeapon(dragon);\par
+\tab\tab\tab break;\par
+\tab\}\par
+\par
+\tab getchar();//\'ca\'e4\'c8\'eb\'bb\'ba\'b3\'e5\'c7\'f8\'d3\'d0\'b8\'f6\'bb\'d8\'b3\'b5\'a3\'ac\'b6\'e0\'bb\'f1\'c8\'a1\'d2\'bb\'b4\'ce\'d6\'b5\par
+\par
+    int round=1;\par
+\par
+\tab while(true)\par
+\tab\{\par
+\tab     getchar();\par
+\tab\tab system("pause");\par
+        cout<<"--\'b5\'da"round<<"\'bb\'d8\'ba\'cf\'bf\'aa\'ca\'bc\'a3\'a1"<<endl;\par
+\tab     \par
+\tab\tab if(hero->Hp<=0)\par
+\tab\tab\{\par
+            cout<<hero->name<<"\'d2\'d1\'b9\'d2"<<endl;\par
+\tab\tab     break;\par
+\tab\tab\}\par
+\par
+\tab\tab hero->Attack(monster);\par
+\par
+\tab\tab if(monster->Hp<=0)\par
+\tab\tab\{\par
+\tab\tab     cout<<monster->name<<"\'d2\'d1\'b1\'bb\'b4\'f2\'cb\'c0"<<endl;\par
+\tab\tab\tab break;\par
+\tab\tab\}\par
+\par
+\tab\tab monster->Attack(hero);\par
+\tab\tab\par
+\tab\tab if(hero->Hp<=0)\par
+\tab\tab\{\par
+            cout<<hero->name<<"\'d2\'d1\'b9\'d2"<<endl;\par
+\tab\tab     break;\par
+\tab\tab\}\par
+\par
+\tab\tab cout<<"\'b1\'be\'c2\'d6\'bd\'e1\'ca\'f8\'a3\'a1\'d3\'a2\'d0\'db"<<hero->name<<"\'d1\'aa\'c1\'bf\'a3\'ba"<<hero->Hp<<"\'b9\'d6\'ce\'ef"<<monster->name<<"\'d1\'aa\'c1\'bf\'a3\'ba"<<monster->Hp<<endl;\par
+        round++; \par
+\tab\}\par
+\tab\tab\par
+\tab delete monster;\par
+\tab delete hero;\par
+\tab delete kinfe;\par
+\tab delete dragon;\par
+\}\par
+\par
+int main(void)\par
+\{\par
+\tab play();\par
+\par
+    system("pause");\par
+    return 0;\par
+\}\par
+}
+ 

@@ -1,0 +1,203 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+//一个节点的抽象模型
+
+typedef struct Node       //定义节点类型
+{
+    int data;             //数据域
+    struct Node* pNext;   //指针域
+}NODE,*PNODE;
+
+PNODE create_list(void);  //创建链表
+void traverse_list(PNODE pHead);//遍历链表
+bool is_empty(PNODE pHead);//判空
+int length_list(PNODE pHead);//测长
+void sort_list(PNODE pHead,int n);
+void insert_list(PNODE pHead,int val,int pos);
+void delete_list(PNODE pHead,int n);
+
+int main()
+{
+    PNODE pHead;
+
+    pHead=create_list();//创建
+    //traverse_list(pHead);    //遍历
+    int length=length_list(pHead);//测长
+	//printf("链表的长度为：%d",length);
+	//sort_list(pHead,length);
+	//insert_list(pHead,1,-1);
+	delete_list(pHead,5);
+	printf("\n");
+	traverse_list(pHead);
+	system("pause");
+	return 0;
+}
+
+PNODE create_list(void)
+{
+    int val;
+	int len;
+    PNODE pNew;
+    PNODE pTail;
+	printf("请输入你想要创建的节点数：\n");
+	scanf("%d",&len);
+
+//创建头结点
+
+	PNODE pHead=(PNODE)malloc(sizeof(NODE));
+    if(NULL==pHead)
+	{
+		printf("分配失败,程序终止！");
+		return pHead;
+	}
+
+	pHead->data=NULL;
+	pHead->pNext=NULL;
+	pTail=pHead;
+
+//创建有效节点
+
+	for(int i=0;i<len;i++)
+	{
+	    pNew=(PNODE)malloc(sizeof(NODE));//第一步、创建节点
+		if(NULL==pHead)
+		{
+		    printf("分配失败,程序终止！");
+		    exit(-1);
+		}
+
+		printf("请输入第%d个节点的数据域：\n",i+1);
+		scanf("%d",&val);
+		pNew->data=val;//第二步、数据域赋值
+		pTail->pNext=pNew;//第三步、新节点的地址存于前一节点
+		pTail=pNew;//第四步、尾节点刷新，始终指向最新节点，便于操作
+	}
+
+	pTail->pNext=NULL;
+
+	return pHead;
+}
+
+void traverse_list(PNODE pHead) //遍历
+{
+    PNODE p=NULL;
+
+	p=pHead;
+
+    while(p->pNext!=NULL) //头节点不空
+	{
+		p=p->pNext;       
+        printf("%d\n",p->data);//输出首节点
+	}
+  
+   
+}
+
+bool is_empty(PNODE pHead)  //判空
+{
+    if(pHead==NULL)
+	{
+	    return true;
+	}
+	else
+	{
+	    return false;
+	}
+
+}
+
+int length_list(PNODE pHead)//测长
+{
+	int i=0;
+    while(pHead->pNext!=NULL)
+	{
+	    i++;
+		pHead=pHead->pNext;
+	}
+    
+	return i;
+}
+
+void sort_list(PNODE pHead,int n)//排序
+{
+    PNODE p,q;
+    int i,j,t;
+	//此处类似泛型，不同的存储结构，一样的算法
+    for(i=0,p=pHead->pNext;i<n-1;i++,p=p->pNext) //类比，0代表初始值，p也是初始值
+	{
+	    for( j=i+1,q=p->pNext;j<n;j++,q=q->pNext)
+		{
+		    if(p->data > q->data)
+			{
+			    t=p->data;
+				p->data=q->data;
+				q->data=t;
+			}
+		}
+	}
+
+}
+void insert_list(PNODE pHead,int val,int  pos)//规定pos>=0
+{    
+    int i=0;
+	PNODE p=pHead;
+  
+    int length=length_list(pHead);
+
+	while(p->pNext !=NULL && i<pos) //程序退出有两种可能，1.找到最后节点；2.i=pos;
+	{
+		
+	    i++;
+		p=p->pNext;
+	}
+	if(p->pNext==NULL && i==pos) // 此时说明，所查节点刚好处于末端0
+	{
+	    PNODE q=(PNODE)malloc(sizeof(NODE));
+	    q->data=val;
+		q->pNext=NULL;
+		p->pNext=q;
+	}
+    else if(p->pNext==NULL && i<pos)//此时说明，所查节点超出数据长度
+	{
+	    printf("非法插入！\n");
+		return;
+	}
+	else                         //此时都是合法插入
+	{
+	    PNODE q=(PNODE)malloc(sizeof(NODE));
+		q->data=val;
+		q->pNext=p->pNext;
+	    p->pNext=q;
+	}
+
+}
+
+void delete_list(PNODE pHead,int n)
+{
+    int i=0;
+    PNODE p=pHead;
+
+	while(p->pNext != NULL && i< n-1)
+	{
+	    i++;
+		p=p->pNext;
+	}
+
+	if(p->pNext==NULL && i==n-1)
+	{
+	    free(p->pNext);
+		p->pNext=NULL;
+	}
+	else if(p->pNext == NULL && i+1 < n)
+	{
+	    printf("非法删除!");
+	}
+    else
+	{
+	    PNODE q=p->pNext->pNext;
+		free(p->pNext);
+        p->pNext=q;
+	
+	}
+}

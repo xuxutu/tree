@@ -1,0 +1,23 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+
+void reChar(char *str,int i)
+{
+	i++;
+	if (str[i] == '\0')
+	{
+		return;
+	}
+	
+	reChar(str,i);
+	printf("%c", str[i]);
+}
+int main(void)
+{
+	char * str = "helloollehsdtfgretgy65u7i89o87098hghjhjkloo";
+	reChar(str,-1);
+	printf("\n");
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,235 @@
+{\rtf1\ansi\ansicpg936\deff0\nouicompat{\fonttbl{\f0\fnil NSimSun;}{\f1\fnil\fcharset134 NSimSun;}{\f2\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\colortbl ;\red128\green128\blue128;\red255\green255\blue255;\red0\green0\blue0;\red111\green0\blue138;\red163\green21\blue21;\red0\green128\blue0;\red0\green0\blue255;\red43\green145\blue175;}
+{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\cf1\highlight2\f0\fs19\lang2052 #define\cf3  \cf4 _CRT_SECURE_NO_WARNINGS\cf3\par
+\cf1 #include\cf5 <stdlib.h>\cf3\par
+\cf1 #include\cf5 <stdio.h>\cf3\par
+\cf1 #include\cf5 <windows.h>\cf3\par
+\cf1 #include\cf5 <io.h>\cf3\par
+\par
+\cf6 //\f1\'ca\'fd\'be\'dd\'bd\'e1\'b9\'b9\'d1\'d0\'be\'bf\'ca\'fd\'be\'dd\'bc\'b0\'b9\'d8\'cf\'b5\'b5\'c4\'b4\'e6\'b4\'a2\'a3\'ac\'ba\'cd\'b2\'d9\'d7\'f7\'a1\'a3\cf3\par
+\cf6 //\'cb\'e3\'b7\'a8\'a3\'ac\'bd\'e2\'cc\'e2\'b5\'c4\'b2\'bd\'d6\'e8\cf3\par
+\par
+\cf6 //\'ca\'fd\'be\'dd\'bd\'e1\'b9\'b9=\'ca\'fd\'be\'dd\'b5\'c4\'b4\'e6+\'b2\'d9\'d7\'f7\cf3\par
+\par
+\cf6 //\'b3\'e9\'cf\'f3\'bd\'da\'b5\'e3\'c4\'a3\'d0\'cd\cf3\par
+\cf7 typedef\cf3  \cf7 struct\cf3  \cf8 Node\cf3\par
+\{\par
+\tab\cf7 int\cf3  data;\par
+\tab\cf7 struct\cf3  \cf8 Node\cf3 * pNext;\par
+\}\cf8 NODE\cf3 , *\cf8 PNODE\cf3 ;\par
+\par
+\cf8 PNODE\cf3  CreateList()\par
+\{\par
+\tab\cf6 //\'b4\'b4\'bd\'a8\'cd\'b7\'bd\'e1\'b5\'e3\cf3\par
+\tab\cf8 PNODE\cf3  pHead = (\cf8 PNODE\cf3 )malloc(\cf7 sizeof\cf3 (\cf8 NODE\cf3 ));\par
+\tab pHead->pNext = \cf4 NULL\cf3 ;\par
+\tab\cf8 PNODE\cf3  pTail = pHead;\par
+\par
+\tab\cf6 //\'b4\'b4\'bd\'a8\'d6\'f7\'cc\'e5\'bd\'da\'b5\'e3\cf3\par
+\tab printf(\cf5 "\'c7\'eb\'ca\'e4\'c8\'eb\'c4\'fa\'cf\'eb\'d2\'aa\'b4\'b4\'bd\'a8\'b5\'c4\'bd\'da\'b5\'e3\'b8\'f6\'ca\'fd\'a3\'ba\\n"\cf3 );\par
+\tab\cf7 int\cf3  n = 0;\par
+\tab scanf(\cf5 "%d"\cf3 , &n);\par
+\par
+\tab\cf7 for\cf3  (\cf7 int\cf3  i = 0; i < n; i++)\par
+\tab\{\par
+\tab\tab\cf8 PNODE\cf3  pNew = (\cf8 PNODE\cf3 )malloc(\cf7 sizeof\cf3 (\cf8 NODE\cf3 ));\cf6 //\'b4\'b4\'bd\'a8\'d0\'c2\'bd\'da\'b5\'e3\cf3\par
+\tab\tab printf(\cf5 "\'c7\'eb\'ca\'e4\'c8\'eb\'b5\'da%d\'b8\'f6\'bd\'da\'b5\'e3\'b5\'c4\'ca\'fd\'be\'dd\'d3\'f2\'a3\'ba\\n"\cf3 ,i+1);\par
+\tab\tab\cf7 int\cf3  val = 0;\par
+\tab\tab scanf(\cf5 "%d"\cf3 , &val);\par
+\tab\tab pNew->data = val;\cf6 //\'ca\'fd\'be\'dd\'d3\'f2\'b3\'f5\'ca\'bc\'bb\'af\cf3\par
+\tab\tab pNew->pNext = \cf4 NULL\cf3 ;\cf6 //\'d6\'b8\'d5\'eb\'d3\'f2\'b3\'f5\'ca\'bc\'bb\'af\cf3\par
+\tab\tab pTail->pNext = pNew;\cf6 //\'bd\'a8\'c1\'b4\cf3\par
+\tab\tab pTail = pNew;\cf6 //\'ce\'b2\'bd\'da\'b5\'e3\'cb\'a2\'d0\'c2\cf3\par
+\tab\}\par
+\tab\cf7 return\cf3  pHead;\par
+\}\par
+\par
+\cf6 //\'b1\'e9\'c0\'fa\cf3\par
+\cf7 void\cf3  TravelList(\cf8 PNODE\cf3  \cf1 pHead\cf3 )\par
+\{\par
+\par
+\tab\cf8 PNODE\cf3  p = \cf1 pHead\cf3 ;\par
+\tab\cf7 if\cf3  (\cf1 pHead\cf3 ->pNext==\cf4 NULL\cf3 )\par
+\tab\{\par
+\tab\tab printf(\cf5 "\'bf\'d5\'c1\'b4\'b1\'ed\'a3\'a1\\n"\cf3 );\par
+\tab\}\par
+\tab\cf7 while\cf3  (p->pNext != \cf4 NULL\cf3 )\par
+\tab\{\par
+\tab\tab p = p->pNext;\par
+\tab\tab printf(\cf5 "-->%d"\cf3 , p->data);\par
+\tab\}\par
+\par
+\tab printf(\cf5 "\\n"\cf3 );\par
+\par
+\}\par
+\par
+\cf6 //\'c7\'f3\'b3\'a4 \cf3\par
+\cf7 int\cf3  MesureList(\cf8 PNODE\cf3  \cf1 pHead\cf3 )\par
+\{\par
+\tab\cf8 PNODE\cf3  p = \cf1 pHead\cf3 ;\par
+\tab\cf7 int\cf3  i = 0;\par
+\tab\cf7 while\cf3  (p->pNext != \cf4 NULL\cf3 )\par
+\tab\{\par
+\tab\tab i++;\par
+\tab\tab p = p->pNext;\par
+\tab\}\par
+\par
+\tab\cf7 return\cf3  i;\par
+\}\par
+\par
+\cf6 //\'c5\'c5\'d0\'f2\cf3\par
+\cf7 void\cf3  SortList(\cf8 PNODE\cf3  \cf1 pHead\cf3 )\par
+\{\par
+\tab\cf8 PNODE\cf3  p;\par
+\tab\cf7 int\cf3  i;\par
+\tab\cf7 int\cf3  count = MesureList(\cf1 pHead\cf3 );\par
+\tab\cf7 int\cf3  temp = 0;\par
+\tab\cf7 while\cf3  (count > 1)\par
+\tab\{\par
+\tab\tab\cf7 for\cf3  (p = \cf1 pHead\cf3 ->pNext,i = 0; i < count - 1; i++,p=p->pNext)\par
+\tab\tab\{\par
+\tab\tab\tab\cf7 if\cf3  (p->data > p->pNext->data)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\cf7 int\cf3  temp = p->data;\par
+\tab\tab\tab\tab p->data = p->pNext->data;\par
+\tab\tab\tab\tab p->pNext->data = temp;\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\par
+\tab\tab count--;\par
+\tab\}\par
+\tab\cf7 return\cf3 ;\par
+\}\par
+\par
+\cf6 //\'b7\'ad\'d7\'aa\'c1\'b4\'b1\'ed\cf3\par
+\cf7 void\cf3  ReverseList(\cf8 PNODE\cf3  \cf1 pHead\cf3 )\par
+\{\par
+\tab\cf8 PNODE\cf3  pH, pT, pS;\par
+\par
+\tab pH = \cf1 pHead\cf3 ->pNext;\par
+\tab\cf7 if\cf3  (!pH)\par
+\tab\{\par
+\tab\tab printf(\cf5 "\'bf\'d5\'c1\'b4\'b1\'ed\'a3\'a1\\n"\cf3 );\par
+\tab\tab\cf7 return\cf3 ;\par
+\tab\}\par
+\tab pT = pH->pNext;\par
+\tab\cf7 if\cf3  (!pT)\par
+\tab\{\par
+\tab\tab printf(\cf5 "\'ce\'de\'d0\'e8\'b7\'ad\'d7\'aa\\n"\cf3 );\par
+\tab\tab\cf7 return\cf3 ;\par
+\tab\}\par
+    pS = pT->pNext;\par
+\par
+\tab\cf6 //1.\'b8\'c4\'b1\'e4\'d6\'b8\'cf\'f2\cf3\par
+\tab pT->pNext = pH;\par
+\tab\cf7 while\cf3  (pS)\par
+\tab\{\par
+\tab\tab pH = pT;\par
+\tab\tab pT = pS;\par
+\tab\tab pS = pT->pNext;\par
+\tab\tab pT->pNext = pH;\par
+\tab\}\par
+\par
+\tab\cf6 //2.\'ca\'d7\'bd\'e1\'b5\'e3\'b1\'e4\'ce\'aa\'ce\'b2\'b2\'bf\'bd\'e1\'b5\'e3\'a3\'ac\'cd\'b7\'bd\'e1\'b5\'e3\'d6\'bb\'cf\'eb\'ce\'b2\'b2\'bf\'d0\'c2\'b5\'c4\'ca\'d7\'bd\'e1\'b5\'e3\cf3\par
+\tab\cf1 pHead\cf3 ->pNext->pNext = \cf4 NULL\cf3 ;\par
+\tab\cf1 pHead\cf3 ->pNext = pT;\par
+\}\par
+\par
+\cf6 //\'b2\'e5\'c8\'eb\'c1\'b4\'b1\'ed\cf3\par
+\cf7 void\cf3  InsertList(\cf8 PNODE\cf3  \cf1 pHead\cf3 , \cf7 int\cf3  \cf1 pos\cf3 ,\cf7 int\cf3  \cf1 val\cf3 )\par
+\{\par
+\tab\cf8 PNODE\cf3  p = \cf1 pHead\cf3 ;\par
+\tab\cf6 //\'d5\'d2\'b5\'bd\'b2\'e5\'c8\'eb\'ce\'bb\'d6\'c3\cf3\par
+\tab\cf7 int\cf3  i = 0;\par
+\tab\cf7 while\cf3  ( p->pNext != \cf4 NULL\cf3  &&  i < \cf1 pos\cf3 )\cf6 //\'b9\'e6\'b6\'a8\'ba\'cf\'b7\'a8\'b2\'e5\'c8\'eb\'ce\'bb\'d6\'c30\'a3\'ac\'b4\'fa\'b1\'ed\'ca\'d7\'bd\'da\'b5\'e3\'d6\'ae\'c7\'b0\cf3\par
+\tab\{\par
+\tab\tab i++;\par
+\tab\tab p = p->pNext;\par
+\tab\}\par
+\tab\cf6 //\'c5\'d0\'b6\'a8\'be\'df\'cc\'e5\'cd\'cb\'b3\'f6\'cc\'f5\'bc\'fe\cf3\par
+\tab\cf6 //1.p->pNext=NULL && i<pos//\'b2\'bb\'ba\'cf\'b7\'a8\cf3\par
+\tab\cf6 //2.p->pNext=NULL && i=pos//\'ba\'cf\'b7\'a8\'a3\'ac\'d4\'da\'ce\'b2\'b2\'bf\cf3\par
+\tab\cf6 //3.p->pNext=NULL && i>pos//\'b2\'bb\'ba\'cf\'b7\'a8\cf3\par
+\tab\cf6 //4.p->pNext!=NULL && i>pos//\'b2\'bb\'ba\'cf\'b7\'a8\cf3\par
+\tab\cf6 //5.p->pNext!=NULL && i=pos//\'ba\'cf\'b7\'a8\cf3\par
+\par
+\tab\cf7 if\cf3  (i==\cf1 pos\cf3 )\par
+\tab\{\par
+\tab\tab\cf8 PNODE\cf3  pNew = (\cf8 PNODE\cf3 )malloc(\cf7 sizeof\cf3 (\cf8 NODE\cf3 ));\par
+\tab\tab pNew->data = \cf1 val\cf3 ;\par
+\tab\tab pNew->pNext = p->pNext;\par
+\tab\tab p->pNext = pNew;\par
+\tab\}\par
+\tab\cf7 else\cf3\par
+\tab\{\par
+\tab\tab printf(\cf5 "\'b7\'c7\'b7\'a8\'b2\'e5\'c8\'eb!"\cf3 );\par
+\tab\}\par
+\par
+\}\par
+\par
+\cf6 //\'c9\'be\'b3\'fd\'c1\'b4\'b1\'ed\cf3\par
+\cf7 void\cf3  DeleteList(\cf8 PNODE\cf3  \cf1 pHead\cf3 , \cf7 int\cf3  \cf1 pos\cf3 )\par
+\{\par
+\tab\cf8 PNODE\cf3  p = \cf1 pHead\cf3 ;\par
+\tab\cf6 //\'d5\'d2\'b5\'bd\'c9\'be\'b3\'fd\'ce\'bb\'d6\'c3\'b5\'c4\'c7\'b0\'d2\'bb\'b8\'f6\'ce\'bb\'d6\'c3\cf3\par
+\tab\cf7 int\cf3  i = 0;\par
+\tab\cf7 while\cf3  (p->pNext != \cf4 NULL\cf3  && i < \cf1 pos\cf3  - 1)\par
+\tab\{\par
+\tab\tab p = p->pNext;\par
+\tab\tab i++;\par
+\tab\}\par
+\par
+\tab\cf6 //\'ba\'cf\'b7\'a8\'c9\'be\'b3\'fd\'ce\'bb\'d6\'c3 I=POS-1\cf3\par
+\tab\cf7 if\cf3  (p->pNext != \cf4 NULL\cf3  && i == \cf1 pos\cf3  - 1)\par
+\tab\{\par
+\tab\tab\cf8 PNODE\cf3  pS = p->pNext->pNext;\par
+\tab\tab free(p->pNext);\par
+\tab\tab p->pNext = pS;\par
+\tab\}\par
+\tab\cf7 else\cf3\par
+\tab\{\par
+\tab\tab printf(\cf5 "\'b7\'c7\'b7\'a8\'c9\'be\'b3\'fd\'a3\'a1\\n"\cf3 );\par
+\tab\}\par
+\}\par
+\par
+\cf7 void\cf3  DestroyList(\cf8 PNODE\cf3  \cf1 p\cf3 )\par
+\{\tab\par
+\tab\cf7 if\cf3  (!\cf1 p\cf3 )\par
+\tab\{\par
+\tab\tab printf(\cf5 "\'cf\'fa\'bb\'d9\'cd\'ea\'b1\'cf\'a3\'a1\\n"\cf3 );\par
+\tab\tab\cf7 return\cf3 ;\par
+\tab\}\par
+\tab\cf8 PNODE\cf3  pS = \cf1 p\cf3 ->pNext;\par
+\tab printf(\cf5 "%d\'bc\'b4\'bd\'ab\'b1\'bb\'cf\'fa\'bb\'d9\'a3\'a1"\cf3 , \cf1 p\cf3 ->data);\par
+\tab free(\cf1 p\cf3 );\par
+\tab DestroyList(pS);\par
+\}\par
+\par
+\cf7 void\cf3  DeList(\cf8 PNODE\cf3  \cf1 pHead\cf3 )\par
+\{\par
+\tab DestroyList(\cf1 pHead\cf3 ->pNext);\par
+\tab\cf1 pHead\cf3 ->pNext = \cf4 NULL\cf3 ;\par
+\}\par
+\cf7 int\cf3  main(\cf7 void\cf3 )\par
+\{\par
+\tab\cf8 PNODE\cf3  pHead = CreateList();\cf6 //\'b4\'b4\'bd\'a8\'c1\'b4\'b1\'ed\cf3\par
+\par
+\tab\cf6 //MesureList(pHead);//\'b2\'e2\'b3\'a4\cf3\par
+\par
+\tab\cf6 //TravelList(pHead);//\'b1\'e9\'c0\'fa\cf3\par
+\tab\cf6 //SortList(pHead);//\'c5\'c5\'d0\'f2\cf3\par
+\tab\cf6 //ReverseList(pHead);//\'b7\'b4\'d7\'aa\'c1\'b4\'b1\'ed\cf3\par
+\tab\cf6 //InsertList(pHead,0,1000);//\'b2\'e5\'c8\'eb\'c1\'b4\'b1\'ed\cf3\par
+\tab\cf6 //DeleteList(pHead, 6);//\'c9\'be\'b3\'fd\cf3\par
+\tab DeList(pHead);\cf6 //\'cf\'fa\'bb\'d9\'c1\'b4\'b1\'ed\cf3\par
+\par
+\tab TravelList(pHead);\cf6 //\'b1\'e9\'c0\'fa\cf3\par
+\par
+\par
+\tab\par
+\par
+\tab system(\cf5 "pause"\cf3 );\par
+\}\cf0\highlight0\f2\fs22\par
+}
+ 

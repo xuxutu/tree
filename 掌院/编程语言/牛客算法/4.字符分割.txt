@@ -1,0 +1,50 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+void Devide(char* str1,char* str3)
+{
+	int i = 0;
+	char* p1 = str1;
+	char* pTemp = str1;
+	while (*p1 != NULL)
+	{
+		i++;
+		p1++;
+		if (i % 8 == 0)
+		{
+			strncat(str3, pTemp, 8);//12345678\n
+			pTemp = p1;
+			strcat(str3, "\n");
+			i = 0;
+		}
+	}
+	if (i < 8 && i!=0)
+	{
+		int temp = i;
+		while (i != 8)
+		{
+			*p1 = '0';
+			i++;
+			p1++;
+
+		}
+		strncat(str3, pTemp, 8);
+		strcat(str3, "\n");
+	}
+}
+
+int main(void)
+{
+	char str1[101] = {0};
+	char str2[101] = {0};
+	scanf("%s",str1);//12345678
+	scanf("%s", str2);//123
+	char str3[201] = { 0 };
+	Devide(str1,str3);
+	Devide(str2, str3);
+	str3[strlen(str3)-1] = 0;
+	puts(str3);
+	system("pause");
+}

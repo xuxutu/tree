@@ -1,0 +1,311 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+//抽象节点模型
+typedef struct Node
+{
+    int data;//数据域
+	char name[50];
+	struct Node* pNext;//指针域
+}NODE,*PNODE;
+
+PNODE create_list(PNODE pHead)//创建链表
+{
+    pHead=(PNODE)malloc(sizeof(NODE));//创建链表
+    pHead->data=NULL;//初始数据域
+	pHead->pNext=NULL;//初始化指针域
+	
+	PNODE pTail=pHead;//定义中间节点始终指向最新节点
+    
+	int num,val;
+
+	printf("请输入您想要生成的节点个数：\n");
+    scanf("%d",&num);
+
+	for(int i=0;i<num;i++)
+	{
+	    PNODE pNew=(PNODE)malloc(sizeof(NODE));//创建新节点
+		pNew->pNext=NULL;//新节点指针域初始化
+        printf("请输入第%d个学生的名字",i+1);
+        scanf("%s",pNew->name);
+		printf("请输入第%d个学生的年龄",i+1);
+        scanf("%d",&val);
+
+		pNew->data=val;//新节点数据域初始化
+		pTail->pNext=pNew;//与前一节点建链
+		pTail=pNew;//中间节点始终指向新节点
+	}
+
+    return pHead;
+}
+
+void traverse_list(PNODE pHead)
+{
+    PNODE p=pHead;
+    
+	while(NULL != p->pNext)
+	{
+	    p=p->pNext;
+		printf("姓名：%s  ",p->name);
+		printf("年龄：%d  ",p->data);
+		printf("\n");
+	}
+
+	printf("\n");
+
+	return;
+}
+
+int measure_list(PNODE pHead)
+{
+    PNODE p=pHead;
+    int i=0;
+
+	while(NULL !=p->pNext)
+	{
+	    i++;
+		p=p->pNext;
+	}
+
+	return i;
+}
+
+void sort_list(PNODE pHead)
+{
+    PNODE p;
+	int count=measure_list(pHead);
+	int i;
+	int temp;
+
+	while(count>1)
+	{
+		//1.i不能在此定义
+		//2.不能写成p=p->pNext
+		//3.i必须小于count-1
+	    for(i=0,p=pHead->pNext;i<count-1;i++,p=p->pNext)
+		{
+		    if(p->data>p->pNext->data)
+			{
+			    temp=p->data;
+				p->data=p->pNext->data;
+				p->pNext->data=temp;
+			}
+		}
+	    count--;
+	}
+
+}
+
+void delete_list(PNODE pHead,int pos)
+{
+	int i=0;
+	PNODE p=pHead;
+
+	while(p->pNext !=NULL && i<pos-1)
+	{
+	    i++;
+        p=p->pNext;
+	}
+
+	if(i==pos-1 && p->pNext !=NULL)
+	{
+	    PNODE pS=p->pNext->pNext;
+		free(p->pNext);
+		p->pNext=pS;
+	}
+	else
+	{
+	    printf("非法删除!\n");
+	}
+
+    return;    
+}
+
+void insert_list(PNODE pHead,int pos,int val)
+{
+    int i=0;
+    PNODE p=pHead;
+	
+	while(p->pNext != NULL && i <pos)
+	{
+	    i++;
+		p=p->pNext;
+	}
+    //特殊情况尾端插入
+    if(p->pNext == NULL && i==pos)
+	{
+	    PNODE pNew=(PNODE)malloc(sizeof(NODE));
+		pNew->pNext=NULL;
+		pNew->data=val;
+		p->pNext=pNew;
+		
+		return;
+	}
+	//合法情况
+	else if(p->pNext !=NULL && i == pos)
+	{
+	    PNODE pNew=(PNODE)malloc(sizeof(NODE));
+		pNew->pNext=p->pNext;
+        pNew->data=val;
+		p->pNext=pNew;
+
+		return;
+	}
+
+    printf("非法插入\n");
+	
+	return;
+}
+
+void overturn_list(PNODE pHead)
+{
+    PNODE pH,pT,pS;
+
+	if(pHead->pNext != NULL)
+	{
+	    pH=pHead->pNext;
+	}
+	else
+	{
+	    printf("空链表！");
+		return;
+	}
+
+	if(pH->pNext != NULL)
+	{
+	    pT=pH->pNext;
+	}
+	else
+	{
+	    printf("一个节点没必要反转！\n");
+		return;
+	}
+    
+	pS=pT->pNext;
+
+	pT->pNext=pH;//反转
+
+	while(pS != NULL)
+	{
+	    pH=pT;
+		pT=pS;
+		pS=pT->pNext;
+		pT->pNext=pH;//反转
+	}
+	
+	
+	pHead->pNext->pNext=NULL;
+    pHead->pNext=pT;
+	
+	return;
+}
+
+void memset_list(PNODE pHead,int val)
+{
+    PNODE p=pHead;
+
+	while(p->pNext != NULL)
+	{
+	    p=p->pNext;
+		p->data=val;
+	}
+
+    return;
+}
+
+void destroy_list(PNODE pHead)
+{
+    PNODE pH,pT;
+
+    if(pHead->pNext==NULL)
+	{
+	    return;
+	}
+
+	pH=pHead->pNext;
+	pT=pH->pNext;
+    printf("节点%d即将被销毁\n",pH->data);
+    free(pH);
+	while(pT != NULL)
+	{
+	    pH=pT;
+		pT=pH->pNext;
+		printf("节点%d即将被销毁\n",pH->data);
+		free(pH);
+	}
+    
+	pHead->pNext=NULL;
+
+    return;
+}
+
+
+void screen()
+{
+	printf("**************************\n");
+	printf("****1.查看学生信息********\n");
+	printf("****2.插入学生信息********\n");
+	printf("****3.删除学生信息********\n");
+	printf("****4.排序学生信息********\n");
+	printf("****5.反转学生信息********\n");
+	printf("****6.销毁学生信息********\n");
+	printf("****7.清屏****************\n");
+    printf("**************************\n");
+    return;
+}
+
+int main(void)
+{
+	screen();//界面展示
+
+    PNODE pHead;//定义头节点，用于访问链表
+	pHead=create_list(pHead); //创建链表
+    int val;
+
+	while(1)
+	{
+        
+	    printf("请选择你想要的操作：\n");
+        scanf("%d",&val);
+	    switch(val)
+		{
+		    case 1:
+                traverse_list(pHead);     //遍历链表
+			    break;
+		    case 2:
+                insert_list(pHead,0,56);  //插入链表
+			    break;
+		    case 3:
+		        delete_list(pHead,5);     //删除链表
+			    break;
+		    case 4:
+		        sort_list(pHead);         //排序链表
+                break;
+		    case 5:
+	            overturn_list(pHead);     //反转链表
+                break;   
+		    case 6:
+	            destroy_list(pHead);      //销毁链表
+                break;
+			case 7:
+				system("cls");
+				break;
+		    default:
+			    exit(0);
+			    break;
+		}
+       
+		screen(); 
+	}
+    measure_list(pHead);      //测长链表
+   
+    
+    
+    
+    //memset_list(pHead,88);  //格式化链表  
+    
+	traverse_list(pHead);     //遍历链表
+
+	system("pause");
+    return;
+}

@@ -1,0 +1,158 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil NSimSun;}{\f1\fnil\fcharset134 NSimSun;}{\f2\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\colortbl ;\red155\green155\blue155;\red30\green30\blue30;\red220\green220\blue220;\red189\green99\blue197;\red214\green157\blue133;\red181\green206\blue168;\red87\green166\blue74;\red86\green156\blue214;\red180\green180\blue180;\red200\green200\blue200;\red127\green127\blue127;\red78\green201\blue176;}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\cf1\highlight2\f0\fs30\lang2052 #define\cf3  \cf4 _CRT_SECURE_NO_WARNINGS\cf3\par
+\cf1 #include\cf5 <stdio.h>\cf3\par
+\cf1 #include\cf5 <string.h>\cf3\par
+\cf1 #include\cf5 <stdlib.h>\cf3\par
+\cf1 #define\cf3  \cf4 N\cf3  \cf6 692226\cf3\par
+\cf7 //\f1\'b6\'e0\'cf\'df\'b3\'cc\'bc\'ec\'cb\'f7\'ce\'c4\'bc\'fe\cf3\par
+\cf7 //\'ce\'c4\'b1\'be\'ce\'c4\'bc\'fe\'c7\'d0\'b8\'ee\'d3\'eb\'ba\'cf\'b2\'a2\cf3\par
+\par
+\cf7 //fgets() \'d5\'fd\'b3\'a3\'ca\'b1\'b7\'b5\'bb\'d8\'d7\'d6\'b7\'fb\'b4\'ae\'b5\'c4\'ca\'d7\'b5\'d8\'d6\'b7\'a3\'ac\'b3\'f6\'b4\'ed\'bb\'f2\'ce\'c4\'bc\'fe\'ce\'b2\'a3\'ac\'b7\'b5\'bb\'d8NULL\cf3\par
+\cf7 //fputs() \'d5\'fd\'b3\'a3\'ca\'b1\'b7\'b5\'bb\'d8\'d0\'b4\'c8\'eb\'b5\'c4\'b5\'da\'d2\'bb\'b8\'f6\'d7\'d6\'b7\'fb\'a3\'ac\'b3\'f6\'b4\'ed\'b7\'b5\'bb\'d8EOF\cf3\par
+\cf8 char\cf9 *\cf3  \cf10 path\cf3  \cf9 =\cf3  \cf5 "C:\\\\Users\\\\Administrator\\\\Desktop\\\\\'ce\'e4\'b6\'af\'c7\'ac\'c0\'a4.txt"\cf9 ;\cf3\par
+\cf8 char\cf9 *\cf3  \cf10 newpath\cf3  \cf9 =\cf3  \cf5 "C:\\\\Users\\\\Administrator\\\\Desktop\\\\\'ce\'e4\'b6\'af\'c7\'ac\'c0\'a4N.txt"\cf9 ;\cf3\par
+\cf7 //\'bb\'f1\'c8\'a1\'d0\'d0\'ca\'fd\cf3\par
+\cf8 int\cf3  \cf10 getLine\cf9 (\cf8 char\cf9 *\cf3  \cf11 path\cf9 )\cf3\par
+\cf9\{\cf3\par
+\tab\cf7 //\'b4\'f2\'bf\'aa\'ce\'c4\'bc\'fe\cf3\par
+\tab\cf12 FILE\cf9 *\cf3  \cf10 pf\cf3  \cf9 =\cf3  \cf10 fopen\cf9 (\cf11 path\cf9 ,\cf5 "r"\cf9 );\cf3\par
+\tab\cf8 if\cf3  \cf9 (!\cf10 pf\cf9 )\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf10 printf\cf9 (\cf5 "\'ce\'c4\'bc\'fe\'b4\'f2\'bf\'aa\'ca\'a7\'b0\'dc\'a3\'a1"\cf9 );\cf3\par
+\tab\cf9\}\cf3\par
+\tab\par
+\tab\cf8 int\cf3  \cf10 i\cf9 =\cf6 0\cf9 ;\cf3\par
+\tab\cf8 while\cf3  \cf9 (!\cf10 feof\cf9 (\cf10 pf\cf9 ))\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf8 char\cf3  \cf10 str\cf9 [\cf6 256\cf9 ]\cf3  \cf9 =\cf3  \cf9\{\cf3  \cf6 0\cf3  \cf9\};\cf3\par
+\tab\tab\cf10 fgets\cf9 (\cf10 str\cf9 ,\cf3  \cf6 256\cf9 ,\cf3  \cf10 pf\cf9 );\cf3\par
+\tab\tab\cf10 i\cf9 ++;\cf3\par
+\tab\cf9\}\cf3\par
+\par
+\tab\cf7 //\'b9\'d8\'b1\'d5\'ce\'c4\'bc\'fe\cf3\par
+\tab\cf10 fclose\cf9 (\cf10 pf\cf9 );\cf3\par
+\tab\cf8 return\cf3  \cf10 i\cf9 ;\cf3\par
+\cf9\}\cf3\par
+\cf7 //\'ce\'c4\'bc\'fe\'c7\'d0\'b8\'ee\cf3\par
+\cf8 void\cf3  \cf10 space\cf9 (\cf8 char\cf9 *\cf3  \cf11 path\cf9 ,\cf3  \cf8 int\cf3  \cf11 num\cf9 )\cf3\par
+\cf9\{\cf3\par
+\tab\cf8 char\cf9 **\cf3  \cf10 pathes\cf3  \cf9 =\cf3  \cf9 (\cf8 char\cf9 **)\cf10 malloc\cf9 (\cf8 sizeof\cf9 (\cf8 char\cf9 *)*\cf11 num\cf9 );\cf3\par
+\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 i\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 i\cf3  \cf9 <\cf3  \cf11 num\cf9 ;\cf3  \cf10 i\cf9 ++)\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf10 pathes\cf9 [\cf10 i\cf9 ]\cf3  \cf9 =\cf3  \cf9 (\cf8 char\cf9 *)\cf10 malloc\cf9 (\cf8 sizeof\cf9 (\cf8 char\cf9 )*\cf3  \cf6 256\cf9 );\cf3\par
+\tab\tab\cf10 sprintf\cf9 (\cf10 pathes\cf9 [\cf10 i\cf9 ],\cf5 "C:\\\\Users\\\\Administrator\\\\Desktop\\\\\'ce\'e4\'b6\'af\'c7\'ac\'c0\'a4%d.txt"\cf9 ,\cf10 i\cf9 +\cf6 1\cf9 );\cf3\par
+\tab\tab\cf10 printf\cf9 (\cf5 "%s\\n"\cf9 ,\cf10 pathes\cf9 [\cf10 i\cf9 ]);\cf3\par
+\tab\cf9\}\cf3\par
+\par
+\tab\cf7 //\'b4\'f2\'bf\'aa\'ce\'c4\'bc\'fe\cf3\par
+\tab\cf12 FILE\cf9 *\cf3  \cf10 pf\cf3  \cf9 =\cf3  \cf10 fopen\cf9 (\cf11 path\cf9 ,\cf3  \cf5 "r"\cf9 );\cf3\par
+\tab\cf8 if\cf3  \cf9 (!\cf10 pf\cf9 )\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf10 printf\cf9 (\cf5 "\'ce\'c4\'bc\'fe\'b4\'f2\'bf\'aa\'ca\'a7\'b0\'dc\'a3\'a1"\cf9 );\cf3\par
+\tab\tab\cf8 return\cf9 ;\cf3\par
+\tab\cf9\}\cf3\par
+\tab\cf7 //100/10  10\cf3\par
+\tab\cf7 //\cf3\par
+\tab\cf8 if\cf3  \cf9 (\cf4 N\cf9 %\cf11 num\cf3  \cf9 ==\cf3  \cf6 0\cf9 )\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf7 //num\'b8\'f6\'ce\'c4\'bc\'fe\'a3\'ac\'c3\'bf\'b8\'f6\'ce\'c4\'bc\'fe\'d3\'d0N/num\'d0\'d0\cf3\par
+\tab\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 i\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 i\cf3  \cf9 <\cf3  \cf11 num\cf9 ;\cf3  \cf10 i\cf9 ++)\cf3\par
+\tab\tab\cf9\{\cf3\par
+\tab\tab\tab\cf12 FILE\cf9 *\cf3  \cf10 pfw\cf3  \cf9 =\cf3  \cf10 fopen\cf9 (\cf10 pathes\cf9 [\cf10 i\cf9 ],\cf5 "w"\cf9 );\cf3\par
+\tab\tab\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 j\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 j\cf3  \cf9 <\cf3  \cf4 N\cf9 /\cf11 num\cf9 ;\cf3  \cf10 j\cf9 ++)\cf3\par
+\tab\tab\tab\cf9\{\cf3\par
+\tab\tab\tab\tab\cf8 char\cf3  \cf10 str\cf9 [\cf6 1024\cf9 ]\cf3  \cf9 =\cf3  \cf9\{\cf3  \cf6 0\cf3  \cf9\};\cf3\par
+\tab\tab\tab\tab\cf7 //\'b6\'c1\'d2\'bb\'d0\'d0\'a3\'ac\'d0\'b4\'d2\'bb\'d0\'d0\cf3\par
+\tab\tab\tab\tab\cf10 fgets\cf9 (\cf10 str\cf9 ,\cf6 1024\cf9 ,\cf10 pf\cf9 );\cf3\par
+\tab\tab\tab\tab\cf10 fputs\cf9 (\cf10 str\cf9 ,\cf10 pfw\cf9 );\cf3\par
+\tab\tab\tab\cf9\}\cf3\par
+\tab\tab\tab\cf10 fclose\cf9 (\cf10 pfw\cf9 );\cf3\par
+\tab\tab\cf9\}\cf3\par
+\tab\cf9\}\cf3\par
+\tab\cf8 else\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf7 //100/9 8*12+4\cf3\par
+\tab\tab\cf7 //num\'b8\'f6\'ce\'c4\'bc\'fe\'a3\'ac\'c3\'bf\'b8\'f6\'ce\'c4\'bc\'fe\'d3\'d0N/num\'d0\'d0\cf3\par
+\tab\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 i\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 i\cf3  \cf9 <\cf3  \cf11 num\cf9 -\cf6 1\cf9 ;\cf3  \cf10 i\cf9 ++)\cf3\par
+\tab\tab\cf9\{\cf3\par
+\tab\tab\tab\cf12 FILE\cf9 *\cf3  \cf10 pfw\cf3  \cf9 =\cf3  \cf10 fopen\cf9 (\cf10 pathes\cf9 [\cf10 i\cf9 ],\cf3  \cf5 "w"\cf9 );\cf3\par
+\tab\tab\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 j\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 j\cf3  \cf9 <\cf3  \cf4 N\cf3  \cf9 /\cf3  \cf11 num\cf9 -\cf6 1\cf9 ;\cf3  \cf10 j\cf9 ++)\cf3\par
+\tab\tab\tab\cf9\{\cf3\par
+\tab\tab\tab\tab\cf8 char\cf3  \cf10 str\cf9 [\cf6 1024\cf9 ]\cf3  \cf9 =\cf3  \cf9\{\cf3  \cf6 0\cf3  \cf9\};\cf3\par
+\tab\tab\tab\tab\cf7 //\'b6\'c1\'d2\'bb\'d0\'d0\'a3\'ac\'d0\'b4\'d2\'bb\'d0\'d0\cf3\par
+\tab\tab\tab\tab\cf10 fgets\cf9 (\cf10 str\cf9 ,\cf3  \cf6 1024\cf9 ,\cf3  \cf10 pf\cf9 );\cf3\par
+\tab\tab\tab\tab\cf10 fputs\cf9 (\cf10 str\cf9 ,\cf3  \cf10 pfw\cf9 );\cf3\par
+\tab\tab\tab\cf9\}\cf3\par
+\tab\tab\tab\cf10 fclose\cf9 (\cf10 pfw\cf9 );\cf3\par
+\tab\tab\cf9\}\cf3\par
+\par
+\tab\tab\cf9\{\cf3\par
+\tab\tab\tab\cf12 FILE\cf9 *\cf3  \cf10 pfw\cf3  \cf9 =\cf3  \cf10 fopen\cf9 (\cf10 pathes\cf9 [\cf11 num\cf9 -\cf6 1\cf9 ],\cf3  \cf5 "w"\cf9 );\cf3\par
+\tab\tab\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 j\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 j\cf3  \cf9 <\cf3  \cf4 N\cf3  \cf9 /\cf3  \cf9 (\cf11 num\cf9 -\cf6 1\cf9 )\cf3  \cf9 ;\cf3  \cf10 j\cf9 ++)\cf3\par
+\tab\tab\tab\cf9\{\cf3\par
+\tab\tab\tab\tab\cf8 char\cf3  \cf10 str\cf9 [\cf6 1024\cf9 ]\cf3  \cf9 =\cf3  \cf9\{\cf3  \cf6 0\cf3  \cf9\};\cf3\par
+\tab\tab\tab\tab\cf7 //\'b6\'c1\'d2\'bb\'d0\'d0\'a3\'ac\'d0\'b4\'d2\'bb\'d0\'d0\cf3\par
+\tab\tab\tab\tab\cf10 fgets\cf9 (\cf10 str\cf9 ,\cf3  \cf6 1024\cf9 ,\cf3  \cf10 pf\cf9 );\cf3\par
+\tab\tab\tab\tab\cf10 fputs\cf9 (\cf10 str\cf9 ,\cf3  \cf10 pfw\cf9 );\cf3\par
+\tab\tab\tab\cf9\}\cf3\par
+\tab\tab\tab\cf10 fclose\cf9 (\cf10 pfw\cf9 );\cf3\par
+\par
+\par
+\tab\tab\cf9\}\cf3\par
+\tab\cf9\}\cf3\par
+\tab\par
+\par
+\tab\cf7 //\'b9\'d8\'b1\'d5\'ce\'c4\'bc\'fe\cf3\par
+\tab\cf10 fclose\cf9 (\cf10 pf\cf9 );\cf3\par
+\cf9\}\cf3\par
+\par
+\cf7 //\'ce\'c4\'bc\'fe\'ba\'cf\'b2\'a2\cf3\par
+\cf8 void\cf3  \cf10 merge\cf9 (\cf8 char\cf9 *\cf3  \cf11 newpath\cf9 ,\cf8 int\cf3  \cf11 n\cf9 )\cf3\par
+\cf9\{\cf3\par
+\tab\cf8 char\cf9 **\cf3  \cf10 pathes\cf3  \cf9 =\cf3  \cf9 (\cf8 char\cf9 **)\cf10 malloc\cf9 (\cf8 sizeof\cf9 (\cf8 char\cf9 *)*\cf11 n\cf9 );\cf3\par
+\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 i\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 i\cf3  \cf9 <\cf3  \cf11 n\cf9 ;\cf3  \cf10 i\cf9 ++)\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf10 pathes\cf9 [\cf10 i\cf9 ]\cf3  \cf9 =\cf3  \cf9 (\cf8 char\cf9 *)\cf10 malloc\cf9 (\cf8 sizeof\cf9 (\cf8 char\cf9 )*\cf3  \cf6 256\cf9 );\cf3\par
+\tab\tab\cf10 sprintf\cf9 (\cf10 pathes\cf9 [\cf10 i\cf9 ],\cf3  \cf5 "C:\\\\Users\\\\Administrator\\\\Desktop\\\\\'ce\'e4\'b6\'af\'c7\'ac\'c0\'a4%d.txt"\cf9 ,\cf3  \cf10 i\cf3  \cf9 +\cf3  \cf6 1\cf9 );\cf3\par
+\tab\tab\cf10 printf\cf9 (\cf5 "%s\\n"\cf9 ,\cf3  \cf10 pathes\cf9 [\cf10 i\cf9 ]);\cf3\par
+\tab\cf9\}\cf3\par
+\par
+\tab\cf7 //\'b4\'f2\'bf\'aa\'ce\'c4\'bc\'fe\cf3\par
+\tab\cf12 FILE\cf9 *\cf3  \cf10 pf\cf3  \cf9 =\cf3  \cf10 fopen\cf9 (\cf11 newpath\cf9 ,\cf3  \cf5 "w"\cf9 );\cf3\par
+\tab\cf8 if\cf3  \cf9 (!\cf10 pf\cf9 )\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf10 printf\cf9 (\cf5 "\'ce\'c4\'bc\'fe\'b4\'f2\'bf\'aa\'ca\'a7\'b0\'dc\'a3\'a1"\cf9 );\cf3\par
+\tab\tab\cf8 return\cf9 ;\cf3\par
+\tab\cf9\}\cf3\par
+\par
+\par
+\tab\cf8 for\cf3  \cf9 (\cf8 int\cf3  \cf10 i\cf3  \cf9 =\cf3  \cf6 0\cf9 ;\cf3  \cf10 i\cf3  \cf9 <\cf3  \cf11 n\cf9 ;\cf3  \cf10 i\cf9 ++)\cf3\par
+\tab\cf9\{\cf3\par
+\tab\tab\cf12 FILE\cf9 *\cf3  \cf10 pfr\cf3  \cf9 =\cf3  \cf10 fopen\cf9 (\cf10 pathes\cf9 [\cf10 i\cf9 ],\cf3  \cf5 "r"\cf9 );\cf3\par
+\tab\tab\cf8 while\cf3  \cf9 (!\cf10 feof\cf9 (\cf10 pfr\cf9 ))\cf3\par
+\tab\tab\cf9\{\cf3\par
+\tab\tab\tab\cf8 char\cf3  \cf10 str\cf9 [\cf6 1024\cf9 ]\cf3  \cf9 =\cf3  \cf9\{\cf3  \cf6 0\cf3  \cf9\};\cf3\par
+\tab\tab\tab\cf7 //\'b6\'c1\'d2\'bb\'d0\'d0\'a3\'ac\'d0\'b4\'d2\'bb\'d0\'d0\cf3\par
+\tab\tab\tab\cf10 fgets\cf9 (\cf10 str\cf9 ,\cf3  \cf6 1024\cf9 ,\cf3  \cf10 pfr\cf9 );\cf3\par
+\tab\tab\tab\cf10 fputs\cf9 (\cf10 str\cf9 ,\cf3  \cf10 pf\cf9 );\cf3\par
+\tab\tab\cf9\}\cf3\par
+\par
+\tab\tab\cf10 fclose\cf9 (\cf10 pfr\cf9 );\cf3\par
+\tab\cf9\}\cf3\par
+\par
+\tab\cf10 fclose\cf9 (\cf10 pf\cf9 );\cf3\par
+\cf9\}\cf3\par
+\cf8 int\cf3  \cf10 main\cf9 (\cf8 void\cf9 )\cf3\par
+\cf9\{\cf3\par
+\tab\cf8 int\cf3  \cf10 num\cf3  \cf9 =\cf3  \cf6 19\cf9 ;\cf3\par
+\tab\cf10 space\cf9 (\cf10 path\cf9 ,\cf6 19\cf9 );\cf3\par
+\tab\cf10 merge\cf9 (\cf10 newpath\cf9 ,\cf6 19\cf9 );\cf3\par
+\tab\cf7 /*int num=getLine(path);\cf3\par
+\cf7\tab printf("\'ce\'c4\'bc\'fe\'b9\'b2\'d3\'d0%d\'d0\'d0\\n",num);*/\cf3\par
+\tab\cf10 system\cf9 (\cf5 "pause"\cf9 );\cf3\par
+\tab\cf8 return\cf3  \cf6 0\cf9 ;\cf3\par
+\cf9\}\cf0\highlight0\f2\fs22\par
+}
+ 

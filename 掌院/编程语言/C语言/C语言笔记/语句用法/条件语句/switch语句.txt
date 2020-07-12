@@ -1,0 +1,20 @@
+格式：
+    
+    switch（val）
+   ｛
+     case 1:
+            执行语句
+            break；
+     case 2：
+            执行语句
+            break；
+     case 3:
+            执行语句
+            break；
+     default：
+
+            执行语句
+            break；
+     ｝
+
+注意：直到break终止
